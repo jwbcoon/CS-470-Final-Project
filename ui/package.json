@@ -1,0 +1,16 @@
+{
+  "name": "img470-ui",
+  "version": "1.0.0",
+  "description": "Render images in the user interface.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joseph Coon, Gary Singh, Matthew Vitullo",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1"
+  }
+}
