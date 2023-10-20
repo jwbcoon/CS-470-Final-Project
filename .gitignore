@@ -129,10 +129,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 database/.DS_Store
-.idea/vcs.xml
-.idea/modules.xml
-.idea/CS-470-Final-Project.iml
 .DS_Store
-.idea/vcs.xml
-.idea/modules.xml
-.idea/CS-470-Final-Project.iml
+.idea
