@@ -1,0 +1,55 @@
+.preview {
+    width: 50px;
+    height: 100%;
+    background-color: #ffffff;
+    transition: 0.6s ease;
+}
+
+
+.preview svg {
+    width: 30px;
+    height: 30px;
+    color: #ffffff;
+    transform: rotate(180deg);
+    transition: 0.3s ease-out;
+}
+
+
+.container {
+    width: 50px;
+    height: 100%;
+    background-color: #ffffff;
+}
+
+
+.container:hover .preview {
+    background-color: #d8d8d8;
+}
+
+
+.preview:hover svg {
+    color: #000000;
+    transform: translateX(calc(100% - 20px));
+}
+
+
+.nav {
+    width: 300px;
+    height: 100%;
+    background-color: #2f2f2f;
+    color: #ffffff;
+    border-color: #000000;
+    border-style: solid;
+    border-width: 1px;
+    transition: 0.6s;
+}
+
+
+.nav svg {
+    width: 30px;
+    height: 30px;
+    color: #ffffff;
+    transform: translateX(850%) rotate(180deg);
+    transition: 0.8s ease-out;
+}
+

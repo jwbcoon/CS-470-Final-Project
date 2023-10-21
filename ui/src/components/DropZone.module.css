@@ -1,0 +1,10 @@
+.dropzone {
+  width: 50vw;
+  height: calc(100% - 40vh);
+  background-color: #eed9ff;
+  border-color: #8a6fac;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 2em;
+}
+

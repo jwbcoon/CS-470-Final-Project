@@ -1,3 +1,5 @@
+import styles from './DropZone.module.css';
+
 function dragEnter(e) {
   e.stopPropagation();
   e.preventDefault();
@@ -20,7 +22,10 @@ function drop(e, handleFiles) {
 
 
 export default function DropZone(props) {
-	return <div className={props.className} onDragEnter={e => dragEnter(e)} onDragOver={e => dragOver(e)} onDrop={e => drop(e, props.handleFiles)}>
+	return <div className={styles['dropzone']}
+              onDragEnter={e => dragEnter(e)}
+              onDragOver={e => dragOver(e)}
+              onDrop={e => drop(e, props.handleFiles)}>
             <input type='file' style={{ display: 'none' }}/>
          </div>;
 }
