@@ -1,4 +1,5 @@
 import EditEase from './pages/EditEase';
+import Login from './pages/Login';
 import './App.css'
 
 // Note: console.log(JSON.stringify(data)) will always return empty even when data is there.
@@ -6,9 +7,10 @@ import './App.css'
 // https://stackoverflow.com/questions/11573710/event-datatransfer-files-is-empty-when-ondrop-is-fired
 
 const App = props => {
+  const login = true;
 	return (
 		<div className='layout'>
-        <EditEase/>
+        { login ? <EditEase/> : <Login/> }
 		</div>
 	);
 }
