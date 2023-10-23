@@ -30,7 +30,7 @@ export default function EditEase(props) {
 	return (
 		<div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
         <SideNav/>
-        <div style={{ width: '100vw', height: '100%', position: 'absolute', top: '25%', left: 0, transform: 'translateX(25%)' }}>
+        <div>
             <DropZone setEdit={setEdit} handleFiles={handleFiles}/>
         </div>
 		</div>

@@ -69,9 +69,9 @@ export default function Login({setUser}) {
 
     return (
        <Fragment>
-          <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center" height='100vh' width="100vw" position='relative'>
-              <Box position='absolute' height='10%' width='80%' justifyContent='center' alignItems='center' top='-30%' left='20%'>
-                  <EditEaseLogo/>
+          <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center" height='100vh' width="100vw" mb='10%' mt='-10%'>
+              <Box width='60%' height='40%' mb='5em' ml='52.5%' mr='25%' justifyContent='center'>
+                  <EditEaseLogo style={{ width: '100%', height: '100%' }}  alignSelf='stretch'/>
               </Box>
               <TextField
                   error={authFailed}

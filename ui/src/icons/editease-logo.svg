@@ -1,7 +1,7 @@
 <svg width="1140" height="1024" xmlns="http://www.w3.org/2000/svg">
  <g>
   <title>Layer 1</title>
-  <g id="svg_3">
+  <g id="svg_3" transform="scale(0.5)" viewBox="0 0 [1140] [1024]">
    <path stroke="null" id="svg_4" d="m1.06444,-1.25602l1136.84116,0l0,1020.41771l-1136.84116,0l0,-1020.41771z" opacity="undefined" stroke-width="0" fill="none"/>
    <text font-weight="normal" transform="rotate(2 253.702 520.36) matrix(15.5407 0 0 15.67 -11448.4 -6726.21)" stroke="null" xml:space="preserve" text-anchor="start" font-family="'Yanone Kaffeesatz'" font-size="24" id="svg_7" y="468.81676" x="747.98166" stroke-width="0" fill="#d4aaff">3</text>
    <text transform="rotate(2 259.263 515.791) matrix(15.5407 0 0 15.67 -11719 -6831.97)" stroke="null" xml:space="preserve" text-anchor="start" font-family="'Yanone Kaffeesatz'" font-size="24" id="svg_6" y="475.27446" x="765.75184" stroke-width="0" fill="#000000">3</text>
