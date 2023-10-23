@@ -47,8 +47,8 @@ export default function Login({setUser}) {
         if( ! verifyUser || userInput.length === 0)
             return;
 
-        const api = new API();
-        async function getUserInfo() {
+        //const api = new API();
+        /*async function getUserInfo() {
             api.getUserInfo(userInput)
                 .then( userInfo => {
                 console.log(`api returns user info and it is: ${JSON.stringify(userInfo)}`);
@@ -62,36 +62,33 @@ export default function Login({setUser}) {
             });
         }
 
-        getUserInfo();
+        getUserInfo();*/
+        setUser('Joe.Coon');
     }, [verifyUser, setUser, userInput]);
 
 
     return (
        <Fragment>
-           <Stack display='flex' direction='column'>
-              <EditEaseLogo/>
-              <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={10}>
-
-                    <TextField
-                        error={authFailed}
-                        id="outlined-error-helper-text"
-                        label="Login name"
-                        placeholder=""
-                        value={userInput}
-                        helperText="Only for existing users!"
-                        onChange={handleInputChange}
-                    />
-                    <Divider />
+          <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center" height='100vh' width="100vw" position='relative'>
+              <Box position='absolute' height='10%' width='80%' justifyContent='center' alignItems='center' top='-30%' left='20%'>
+                  <EditEaseLogo/>
               </Box>
-
-              <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
+              <TextField
+                  error={authFailed}
+                  id="outlined-error-helper-text"
+                  label="Login name"
+                  placeholder=""
+                  value={userInput}
+                  helperText="Only for existing users!"
+                  onChange={handleInputChange}
+              />
+              <Divider />
               <Button
                         variant="outlined"
                         size="medium"
                         onClick={() => {setVerifyUser(true)}}
                     >Proceed</Button>
-              </Box>
-           </Stack>
+          </Box>
        </Fragment>
 
     );
