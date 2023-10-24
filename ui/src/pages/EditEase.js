@@ -7,14 +7,13 @@ import styles from './EditEase.module.css';
 // Note: console.log(JSON.stringify(data)) will always return empty even when data is there.
 // Specify a key name like "name" within a file object and the data will present itself.
 // https://stackoverflow.com/questions/11573710/event-datatransfer-files-is-empty-when-ondrop-is-fired
-const handleFiles = (data, setEdit) => {
+const handleFiles = (data, setImage) => {
     console.log(`handling files! ${JSON.stringify(data[0].name)}`);
-    //if (edit !== undefined) console.log(`edit has data! ${JSON.stringify(edit)}`);
-    //setEdit({...data[0]});
+    setImage({file: URL.createObjectURL(data[0])});
 }
 
 export default function EditEase(props) {
-  const [edit, setEdit] = useState(undefined);
+  const [image, setImage] = useState({file: undefined});
   
   /*useEffect(() => {
       const api = new API();
@@ -32,7 +31,11 @@ export default function EditEase(props) {
 		<div className={styles['layout']}>
         <SideNav/>
         <div className={styles['viewport']}>
-            <DropZone setEdit={setEdit} handleFiles={handleFiles}/>
+            <div>
+            {
+              image.file ? <img src={image.file}/> : <DropZone setImage={setImage} handleFiles={handleFiles}/>
+            }
+            </div>
         </div>
 		</div>
 	);

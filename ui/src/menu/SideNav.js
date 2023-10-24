@@ -30,23 +30,17 @@ export default function SideNav(props) {
                     <div onClick={e => onClick(e, open, setOpen)}>
                         <StartIcon/> 
                     </div>
-                    <List style={{p: 0}}>
-                        <Divider className={styles['divider']}/>
-                        <ListItem className={styles['li']}>
-                            <p>Open Tools</p>
-                        </ListItem>
-                        <Divider className={styles['divider']}/>
-                        <ListItem className={styles['li']}>
-                            <p>Save Image</p>
-                        </ListItem>
-                        <Divider className={styles['divider']}/>
-                        <ListItem className={styles['li']}>
-                            <p>Import Image</p>
-                        </ListItem>
-                        <Divider className={styles['divider']}/>
-                        <ListItem className={styles['li']}>
-                            <p>Upload Image</p>
-                        </ListItem>
+                    <List>
+                        {
+                            ['Open Tools', 'Save Image', 'Import Image', 'Upload Image'].map(option => (
+                                <>
+                                    <Divider className={styles['divider']}/>
+                                    <ListItem className={styles['li']}>
+                                        <p>{option}</p>
+                                    </ListItem>
+                                </>
+                            ))
+                        }
                     </List>
                 </div>
                 )
