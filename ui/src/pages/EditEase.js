@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import DropZone from '../components/DropZone';
 import SideNav from '../menu/SideNav';
 import API from '../API_Interface/API_Interface.js';
+import styles from './EditEase.module.css';
 
 // Note: console.log(JSON.stringify(data)) will always return empty even when data is there.
 // Specify a key name like "name" within a file object and the data will present itself.
@@ -28,9 +29,9 @@ export default function EditEase(props) {
   }, [edit])*/
 
 	return (
-		<div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
+		<div className={styles['layout']}>
         <SideNav/>
-        <div>
+        <div className={styles['viewport']}>
             <DropZone setEdit={setEdit} handleFiles={handleFiles}/>
         </div>
 		</div>

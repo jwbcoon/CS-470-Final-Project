@@ -1,9 +1,9 @@
 import {useState} from 'react';
-import {List, ListItem} from '@mui/material';
+import {List, ListItem, Divider} from '@mui/material';
 import StartIcon from '@mui/icons-material/Start';
 import styles from './SideNav.module.css';
 
-const onClick = (e, open, setOpen, setCurrStyles) => {
+const onClick = (e, open, setOpen) => {
     if (open === false) {
         setOpen(true);
     }
@@ -15,23 +15,37 @@ const onClick = (e, open, setOpen, setCurrStyles) => {
 
 export default function SideNav(props) {
     const [open, setOpen] = useState(false);
-    const [currStyles, setCurrStyles] = useState(styles);
 
     return (
-        <div className={currStyles['container']}>
+        <div className={styles['container']}>
             {
                 !open
                 ? ( 
-                <div className={currStyles['preview']}>
-                    <StartIcon onClick={e => onClick(e, open, setOpen, setCurrStyles)}/>
+                <div className={styles['preview']}>
+                    <StartIcon onClick={e => onClick(e, open, setOpen)}/>
                 </div>
                 )
                 : (
-                <div className={currStyles['nav']}>
-                    <StartIcon onClick={e => onClick(e, open, setOpen, setCurrStyles)}/> 
-                    <List>
-                        <ListItem>
-                            <h4>SideNav!</h4>
+                <div className={styles['nav']}>
+                    <div onClick={e => onClick(e, open, setOpen)}>
+                        <StartIcon/> 
+                    </div>
+                    <List style={{p: 0}}>
+                        <Divider className={styles['divider']}/>
+                        <ListItem className={styles['li']}>
+                            <p>Open Tools</p>
+                        </ListItem>
+                        <Divider className={styles['divider']}/>
+                        <ListItem className={styles['li']}>
+                            <p>Save Image</p>
+                        </ListItem>
+                        <Divider className={styles['divider']}/>
+                        <ListItem className={styles['li']}>
+                            <p>Import Image</p>
+                        </ListItem>
+                        <Divider className={styles['divider']}/>
+                        <ListItem className={styles['li']}>
+                            <p>Upload Image</p>
                         </ListItem>
                     </List>
                 </div>

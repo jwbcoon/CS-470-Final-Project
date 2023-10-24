@@ -1,5 +1,6 @@
 import React, {useState, useEffect, Fragment} from 'react';
 import API from '../API_Interface/API_Interface';
+import styles from './Login.module.css';
 
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
@@ -69,8 +70,8 @@ export default function Login({setUser}) {
 
     return (
        <Fragment>
-          <Box display="flex" flexDirection='column' justifyContent="center" alignItems="center" height='100vh' width="100vw" mb='10%' mt='-10%'>
-              <Box width='60%' height='40%' mb='5em' ml='52.5%' mr='25%' justifyContent='center'>
+          <Box className={styles['container']}>
+              <Box className={styles['logo-box']}>
                   <EditEaseLogo style={{ width: '100%', height: '100%' }}  alignSelf='stretch'/>
               </Box>
               <TextField
