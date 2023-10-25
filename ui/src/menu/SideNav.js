@@ -21,8 +21,8 @@ export default function SideNav(props) {
             {
                 !open
                 ? ( 
-                <div className={styles['preview']}>
-                    <StartIcon onClick={e => onClick(e, open, setOpen)}/>
+                <div className={styles['preview']} onClick={e => onClick(e, open, setOpen)}>
+                    <StartIcon/>
                 </div>
                 )
                 : (

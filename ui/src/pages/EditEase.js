@@ -33,7 +33,7 @@ export default function EditEase(props) {
         <div className={styles['viewport']}>
             <div>
             {
-              image.file ? <img src={image.file}/> : <DropZone setImage={setImage} handleFiles={handleFiles}/>
+              image.file ? <DropZone setImage={setImage} handleFiles={handleFiles} mask={<img src={image.file}/>}/> : <DropZone setImage={setImage} handleFiles={handleFiles}/>
             }
             </div>
         </div>

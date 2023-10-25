@@ -22,12 +22,13 @@
     margin-top: 0.5em;
     color: #00000000;
     transform: rotate(180deg);
-    transition: 0.3s ease-out;
+    transition: 0.1s ease-in;
 }
 
 .preview:hover svg {
     color: #000000;
     transform: translateX(calc(100% - 20px));
+    transition: 0.3s ease-out;
 }
 
 .nav {

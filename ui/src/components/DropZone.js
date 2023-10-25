@@ -27,5 +27,6 @@ export default function DropZone(props) {
               onDragOver={e => dragOver(e)}
               onDrop={e => drop(e, props.handleFiles, props.setImage)}>
             <input type='file' style={{ display: 'none' }}/>
+            { props.mask }
          </div>;
 }
