@@ -10,11 +10,8 @@ const handleZoom = (ev, element, zoom, setZoom) => {
     if (ev.ctrlKey) {
         console.log('in handleZoom!');
         ev.preventDefault();
-        let newZoom = zoom;
-        if (ev.deltaY > 0)
-            element.style.transform = `scale(${newZoom = zoom + ZOOM_BASE})`;
-        else 
-            element.style.transform = `scale(${newZoom = zoom + ZOOM_BASE})`;
+        const newZoom = ev.deltaY > 0 ? zoom + ZOOM_BASE : zoom - ZOOM_BASE;
+        element.style.transform = `scale(${newZoom})`;
         setZoom(newZoom);
     }
 }
