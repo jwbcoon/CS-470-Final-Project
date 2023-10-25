@@ -4,7 +4,7 @@ import SideNav from '../menu/SideNav';
 import API from '../API_Interface/API_Interface.js';
 import styles from './EditEase.module.css';
 
-const ZOOM_BASE = 0.1
+const ZOOM_BASE = 0.05;
 
 const handleZoom = (ev, element, zoom, setZoom) => {
     if (ev.ctrlKey) {

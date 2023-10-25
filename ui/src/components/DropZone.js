@@ -32,7 +32,7 @@ export default function DropZone(props) {
           div.addEventListener('wheel', onWheel);
       }
       return () => div.removeEventListener('wheel', onWheel);
-  }, [])
+  }, [props.zoom])
 
 	return <div className={styles['dropzone']}
               onDragEnter={e => dragEnter(e)}
