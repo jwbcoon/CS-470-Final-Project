@@ -72,7 +72,7 @@ export default function Login({setUser}) {
        <Fragment>
           <Box className={styles['container']}>
               <Box className={styles['logo-box']}>
-                  <EditEaseLogo style={{ width: '100%', height: '100%' }}  alignSelf='stretch'/>
+                  <EditEaseLogo/>
               </Box>
               <TextField
                   error={authFailed}

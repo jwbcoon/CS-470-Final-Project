@@ -32,10 +32,10 @@ export default function SideNav(props) {
                     </div>
                     <List>
                         {
-                            ['Open Tools', 'Save Image', 'Import Image', 'Upload Image'].map(option => (
+                            ['Open Tools', 'Save Image', 'Import Image', 'Upload Image'].map((option, key) => (
                                 <>
-                                    <Divider className={styles['divider']}/>
-                                    <ListItem className={styles['li']}>
+                                    <Divider key={`divider${key}`} className={styles['divider']}/>
+                                    <ListItem key={`li${key}`} className={styles['li']}>
                                         <p>{option}</p>
                                     </ListItem>
                                 </>
