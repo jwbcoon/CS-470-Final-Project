@@ -19,7 +19,7 @@
 .preview svg {
     width: 30px;
     height: 30px;
-    margin-top: 0.5em;
+    margin-top: 1em;
     color: #00000000;
     transform: rotate(180deg);
     transition: 0.1s ease-in;

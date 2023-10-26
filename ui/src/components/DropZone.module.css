@@ -1,9 +1,7 @@
 .dropzone {
     position: relative;
-    max-width: 1000%;
-    max-height: 1000%;
-    min-width: 10%;
-    min-height: 10%;
+    min-width: 1%;
+    min-height: 1%;
     width: 100%;
     height: 100%;
     background-color: #00000000;
@@ -15,6 +13,7 @@
 .mask {
     position: absolute;
     padding: 20vh 20vw 20vh 20vw;
+    display: inline-block;
 }
 
 .mask:not(img) {
@@ -25,7 +24,8 @@
 .mask:only-child {
     width: 100%;
     height: 100%;
-    justify-content: center;
-    align-items: center;
+    display: block;
+    object-position: center;
+    object-fit: contain;
 }
 
