@@ -48,8 +48,9 @@ export default function Login({setUser}) {
         if( ! verifyUser || userInput.length === 0)
             return;
 
-        //const api = new API();
-        /*async function getUserInfo() {
+        /*
+        const api = new API();
+        async function getUserInfo() {
             api.getUserInfo(userInput)
                 .then( userInfo => {
                 console.log(`api returns user info and it is: ${JSON.stringify(userInfo)}`);
@@ -63,7 +64,9 @@ export default function Login({setUser}) {
             });
         }
 
-        getUserInfo();*/
+        getUserInfo();
+        */
+         
         setUser('Joe.Coon');
     }, [verifyUser, setUser, userInput]);
 

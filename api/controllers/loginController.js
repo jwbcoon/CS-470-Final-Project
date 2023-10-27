@@ -7,17 +7,12 @@ require('dotenv').config();
 const authorizeUser = async (ctx) => {
     return new Promise((resolve, reject) => {
 
-        // Right up here, you could inspect the provided uers_id to
-        // make sure that it is, at the surface, a legitimate ID.
-        // For example, if user ids are suppose to be email addresses,
-        // you can at least make sure that user's input is consistent
-        // with the format of email addresses.
 
-        let query = "SELECT * FROM scheduler_users WHERE user_id = ?";
+        let query = "SELECT * FROM users WHERE userID = ?";
         dbConnection.query(
             {
                 sql: query,
-                values: [ctx.params.user_id]
+                values: [ctx.params.userID]
             }, (error, tuples) => {
                 if (error) {
                     console.log("Query error.", error);
@@ -25,7 +20,7 @@ const authorizeUser = async (ctx) => {
                 }
                 if (tuples.length === 1) {  // Did we have a matching user record?
                     setAccessToken(ctx, tuples[0]);
-                    console.log('from studentRecord. About to return ', tuples[0]);
+                    console.log('from authorizeUser. About to return ', tuples[0]);
                     ctx.body = {
                         status: "OK",
                         user: tuples[0],
