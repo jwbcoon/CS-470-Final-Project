@@ -33,7 +33,7 @@ const allImages = async (ctx) => {
     });
 }
 
-const imagesWithUserName = (ctx) => {
+const imagesWithUserID = (ctx) => {
     console.log('images imagesWithUserName called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -41,11 +41,11 @@ const imagesWithUserName = (ctx) => {
                         FROM 
                             images
                         WHERE 
-                            username = ?
+                            userID = ?
                         `;
         dbConnection.query({
             sql: query,
-            values: [ctx.params.username]
+            values: [ctx.params.userID]
         }, (error, tuples) => {
             if (error) {
                 console.log("Connection error in imagesController::imagesWithUserName", error);
@@ -68,5 +68,5 @@ const imagesWithUserName = (ctx) => {
 
 module.exports = {
     allImages,
-    imagesWithUserName
+    imagesWithUserID
 };

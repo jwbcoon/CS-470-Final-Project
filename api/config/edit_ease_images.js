@@ -35,7 +35,8 @@ const LoginController = require('../controllers/loginController');
 const loginRouter = require('koa-router')({
     prefix: '/login'
 });
-loginRouter.get('/:user_id', LoginController.authorizeUser, (err) => console.log("draught_services_accounts.js: login-route error:", err));
+loginRouter.get('/:user_id', LoginController.authorizeUser,
+    (err) => console.log("draught_services_accounts.js: login-route error:", err));
 
 // Accounts router configuration.
 
@@ -48,7 +49,7 @@ const imagesRouter = require('koa-router')({
 imagesRouter.use(VerifyJWT);
 imagesRouter.get('/all-allImages', Authorize('admin'), ImagesController.allImages,
     err => console.log(`allAccounts ran into an error: ${err}`));
-imagesRouter.get('/:userName/', Authorize('admin'), ImagesController.imagesWithUserName,
+imagesRouter.get('/:userID/', Authorize('admin'), ImagesController.imagesWithUserID,
     err => console.log(`imagesWithUserName ran into an error: ${err}`));
 
 

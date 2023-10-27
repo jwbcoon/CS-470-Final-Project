@@ -33,7 +33,7 @@ const allUsers = async (ctx) => {
     });
 }
 
-const usersWithUserName = (ctx) => {
+const usersWithUserID = (ctx) => {
     console.log('users usersWithUserName called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -41,11 +41,11 @@ const usersWithUserName = (ctx) => {
                         FROM 
                             users
                         WHERE 
-                            username = ?
+                            userID = ?
                         `;
         dbConnection.query({
             sql: query,
-            values: [ctx.params.username]
+            values: [ctx.params.userID]
         }, (error, tuples) => {
             if (error) {
                 console.log("Connection error in usersController::usersWithUserName", error);
@@ -68,5 +68,5 @@ const usersWithUserName = (ctx) => {
 
 module.exports = {
     allUsers,
-    usersWithUserName
+    usersWithUserID
 };
