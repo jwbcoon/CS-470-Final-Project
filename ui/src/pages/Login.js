@@ -48,26 +48,23 @@ export default function Login({setUser}) {
         if( ! verifyUser || userInput.length === 0)
             return;
 
-        /*
         const api = new API();
         async function getUserInfo() {
-            api.getUserInfo(userInput)
+            console.log(JSON.stringify(userInput));
+            api.getLoginFromUsername(userInput)
                 .then( userInfo => {
-                console.log(`api returns user info and it is: ${JSON.stringify(userInfo)}`);
-                const user = { ...userInfo.user[0], unpack: () => makeUserName(userInfo.user[0]) };
-                if( userInfo.status === "OK" ) {
-                    setUser(user);
-                } else  {
-                    setVerifyUser(false);
-                    setAuthFailed(true);
-                }
-            });
+                    console.log(`api returns user info and it is: ${JSON.stringify(userInfo)}`);
+                    const user = userInfo.user;
+                    if( userInfo.status === "OK" ) {
+                        setUser(user);
+                    } else  {
+                        setVerifyUser(false);
+                        setAuthFailed(true);
+                    }
+                });
         }
 
         getUserInfo();
-        */
-
-        setUser('Joe.Coon');
     }, [verifyUser, setUser, userInput]);
 
 
