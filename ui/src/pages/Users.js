@@ -14,13 +14,13 @@ import Paper from '@mui/material/Paper';
 
 const usersTableAttributes = [
     {
-        title: 'Account Name',
-        attributeDBName: 'username',
+        title: 'User ID',
+        attributeDBName: 'userID',
         align: 'left'
     },
     {
-        title: 'user ID',
-        attributeDBName: 'userID',
+        title: 'User Name',
+        attributeDBName: 'username',
         align: 'left'
     },
     {
