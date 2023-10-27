@@ -40,7 +40,7 @@ export default function Users(props) {
         const api = new API();
 
         async function getUsers() {
-            const usersJSONString = await api.getTestUser(1);
+            const usersJSONString = await api.getUserFromID(1);
             console.log(`users from the DB ${JSON.stringify(usersJSONString)}`);
             setUsers(usersJSONString.data);
         }

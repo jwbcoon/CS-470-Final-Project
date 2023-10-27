@@ -66,7 +66,7 @@ export default function Login({setUser}) {
 
         getUserInfo();
         */
-         
+
         setUser('Joe.Coon');
     }, [verifyUser, setUser, userInput]);
 
