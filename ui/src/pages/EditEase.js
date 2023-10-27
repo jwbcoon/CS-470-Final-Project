@@ -53,6 +53,7 @@ export default function EditEase(props) {
     const [image, setImage] = useState({file: undefined});
     const [zoom, setZoom] = useState(1);
 
+
     /*useEffect(() => {
         const api = new API();
 
