@@ -10,16 +10,18 @@
   "author": "Joseph Coon, Gary Singh, Matthew Vitullo",
   "license": "ISC",
   "dependencies": {
+    "dateformat": "^5.0.3",
     "dotenv": "^4.0.0",
+    "kcors": "^2.2.2",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
     "koa-bunyan-logger": "^2.0.0",
     "koa-compress": "^2.0.0",
     "koa-jwt": "^3.3.2",
-    "koa-router": "^7.3.0"
+    "koa-router": "^7.3.0",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.4"
   }
 }
-
