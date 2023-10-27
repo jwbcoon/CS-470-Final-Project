@@ -33,9 +33,14 @@ export default class APIInterface {
                  }));
     }
 
-    async getUserFromID(userID) {
-        return axiosAgent.post(`users/${userID}`);
+    async getLoginFromUsername(username) {
+        return axiosAgent.get(`login/${username}`);
     }
+
+    async getUserFromID(userID) {
+        return axiosAgent.get(`users/${userID}`);
+    }
+
     async postUserOriginalImage(image_id) {
         return axiosAgent.post(`imageadd/${image_id}/original`);
     }

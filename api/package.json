@@ -4,8 +4,8 @@
   "description": "An node-based application for Shared Services",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "nodemon index.js"
+    "start": "node api_server.js",
+    "test": "nodemon api_server.js"
   },
   "author": "Joseph Coon, Gary Singh, Matthew Vitullo",
   "license": "ISC",

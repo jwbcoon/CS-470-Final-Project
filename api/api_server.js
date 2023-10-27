@@ -23,8 +23,9 @@ app.use(async (ctx, next) => {
     });
 });
 
-require('./config/edit_ease_users.js')(app);
-require('./config/edit_ease_images.js')(app);
+require('./routers/edit_ease_login.js')(app);
+require('./routers/edit_ease_users.js')(app);
+require('./routers/edit_ease_images.js')(app);
 
 const httpsServer = require('./config/ssl/ssl.js')(app.callback());
 httpsServer.listen(process.env.APP_PORT, () =>
