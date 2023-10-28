@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import DropZone from '../components/DropZone';
 import SideNav from '../menu/SideNav';
+import EditCanvas from '../components/EditCanvas.js';
 import API from '../API_Interface/API_Interface.js';
 import styles from './EditEase.module.css';
 
@@ -12,7 +13,6 @@ const handleZoom = (ev, element, zoom, setZoom) => {
         ev.preventDefault();
 
         const zoomOutBoundary = 0.01, zoomInBoundary = 1000;
-        const gridSizeBound = size => size < 8 || size > 200 ? 50 : size;
         const zoomScaler = z => {
             if (z > 1) {
                 if (z < 10) {
@@ -26,16 +26,10 @@ const handleZoom = (ev, element, zoom, setZoom) => {
                 return ZOOM_BASE;
             }
         }
-
-        const viewport = document.querySelector(`.${styles['viewport']}`);
         const zoomDelta = ev.deltaY > 0 ? zoom + zoomScaler(zoom) : zoom - zoomScaler(zoom);
-        const gridDelta = gridSizeBound(50 + (zoomDelta >= 1
-                        ? 4 * Number(zoomDelta.toPrecision(1).replace(/(\..*e\+.*)$/, ''))
-                        : -4 * Number(zoomDelta.toPrecision(1).replace(/^(0\.0*)/, ''))));
  
         if (zoomDelta > zoomOutBoundary && zoomDelta < zoomInBoundary) {
             element.style['transform'] = `scale(${zoomDelta})`;
-            viewport.style['background-size'] = `${gridDelta}px ${gridDelta}px`;
             setZoom(zoomDelta);
         }
     }
@@ -73,9 +67,9 @@ export default function EditEase(props) {
               {
                 image.file 
                 ? <DropZone setImage={setImage} handleFiles={handleFiles} handleZoom={handleZoom}
-                            zoom={zoom} setZoom={setZoom} mask={<img src={image.file}/>}/>
+                            zoom={zoom} setZoom={setZoom} mask={<EditCanvas src={image.file}/>}/>
                 : <DropZone setImage={setImage} handleFiles={handleFiles} handleZoom={handleZoom}
-                            zoom={zoom} setZoom={setZoom}/>
+                            zoom={zoom} setZoom={setZoom} mask={<EditCanvas/>}/>
               }
           </div>
       </div>
