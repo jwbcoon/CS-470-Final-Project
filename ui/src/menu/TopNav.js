@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {List, ListItem, Divider} from '@mui/material';
 import StartIcon from '@mui/icons-material/Start';
-import styles from './SideNav.module.css';
+import styles from './TopNav.module.css';
 
 const onClick = (e, open, setOpen) => {
     if (open === false) {
@@ -13,8 +13,8 @@ const onClick = (e, open, setOpen) => {
 }
 
 
-export default function SideNav(props) {
-    const [open, setOpen] = useState(false);
+export default function TopNav(props) {
+    const [open, setOpen] = useState(true);
 
     return (
         <div className={styles['container']}>
@@ -34,7 +34,7 @@ export default function SideNav(props) {
                         {
                             ['Open Tools', 'Save Image', 'Import Image', 'Upload Image'].map((option, key) => (
                                 <>
-                                    <Divider key={`divider${key}`} className={styles['divider']}/>
+                                    <Divider key={`divider${key}`} className={styles['divider']} orientation='vertical'/>
                                     <ListItem key={`li${key}`} className={styles['li']}>
                                         <p>{option}</p>
                                     </ListItem>

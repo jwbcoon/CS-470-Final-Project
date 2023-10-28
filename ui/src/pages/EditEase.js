@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import DropZone from '../components/DropZone';
-import SideNav from '../menu/SideNav';
+import TopNav from '../menu/TopNav';
 import EditCanvas from '../components/EditCanvas.js';
 import API from '../API_Interface/API_Interface.js';
 import styles from './EditEase.module.css';
@@ -62,15 +62,10 @@ export default function EditEase(props) {
 
     return (
       <div className={styles['layout']}>
-          <SideNav/>
+          <TopNav/>
           <div className={styles['viewport']}>
-              {
-                image.file 
-                ? <DropZone setImage={setImage} handleFiles={handleFiles} handleZoom={handleZoom}
-                            zoom={zoom} setZoom={setZoom} mask={<EditCanvas src={image.file}/>}/>
-                : <DropZone setImage={setImage} handleFiles={handleFiles} handleZoom={handleZoom}
-                            zoom={zoom} setZoom={setZoom} mask={<EditCanvas/>}/>
-              }
+              <DropZone setImage={setImage} handleFiles={handleFiles} handleZoom={handleZoom}
+                        zoom={zoom} setZoom={setZoom} mask={<EditCanvas src={image.file}/>}/>
           </div>
       </div>
     );
