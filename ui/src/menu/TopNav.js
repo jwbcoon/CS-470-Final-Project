@@ -35,7 +35,9 @@ export default function TopNav(props) {
                             props.options.map((option, key) => (
                                 <>
                                     <Divider key={`divider${key}`} className={styles['divider']} orientation='vertical'/>
-                                    <ListItem key={`${option.child.innerText}${key}`} className={styles['li']} onClick={option.onClick}>
+                                    <ListItem key={`${option.child.innerText}${key}`}
+                                              className={option.pageName === props.current ? styles['selected'] : styles['li']}
+                                              onClick={option.onClick}>
                                         {option.child}
                                     </ListItem>
                                 </>

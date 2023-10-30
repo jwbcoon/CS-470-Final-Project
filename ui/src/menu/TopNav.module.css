@@ -84,6 +84,20 @@
     align-items: center;
 }
 
+.nav ul .selected {
+    width: 100%;
+    height: 100%;
+    padding-right: 2em;
+    padding-left: 2em;
+    display: flex;
+    justify-content: center;
+    align-self: stretch;
+    flex-wrap: wrap;
+    align-content: flex-end;
+    background-color: #a96fb3;
+    transition: 0.3s;
+}
+
 .nav .li {
     width: 100%;
     height: 100%;
@@ -101,11 +115,11 @@
     transition: 0.3s;
 }
 
-.nav .li p {
+.nav .selected,.li p {
     font: 1.2em sans-serif;
 }
 
-.nav .li:hover p {
+.nav .selected:hover,.li:hover p {
     color: #000000;
 }
 

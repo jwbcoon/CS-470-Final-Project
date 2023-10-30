@@ -10,25 +10,24 @@ function handleOpenPage(page, setSelectedPage) {
 }
 
 export default function EditEase(props) {
-    const [selectedPage, setSelectedPage] = useState(<ViewPort/>);
-    const navOptions = [{child: <p>Open Tools</p>,
-                         onClick: ()=>console.log('Clicked on Open Tools!')},
-                        {child: <p>Save Image</p>,
-                         onClick: ()=>console.log('Clicked on Save Image!')},
-                        {child: <p>Import Image</p>,
-                         onClick: ()=>console.log('Clicked on Import Image!')},
-                        {child: <p>Upload Image</p>,
-                         onClick: ()=>console.log('Clicked on Upload Image!')},
-                        {child: <p>Open Gallery</p>,
-                         onClick: () => handleOpenPage(<Gallery user={props.user}/>, setSelectedPage)}];
+    const [selectedPage, setSelectedPage] = useState({ element: <ViewPort/>, name: 'viewport' });
+    const navOptions = [{child: <p>Editor</p>,
+                         pageName: 'viewport',
+                         onClick: () => handleOpenPage({ element: <ViewPort/>, name: 'viewport' }, setSelectedPage)},
+                        {child: <p>Gallery</p>,
+                         pageName: 'gallery',
+                         onClick: () => handleOpenPage({ element: <Gallery user={props.user}/>, name: 'gallery' }, setSelectedPage)},
+                        {child: <p>My Edits</p>,
+                         pageName: 'my_edits',
+                         onClick: () => handleOpenPage(selectedPage, setSelectedPage)}];
 
     return (
-      <div className={styles['layout']}>
-          <>
-              <TopNav options={navOptions}/>
-              {selectedPage}
-          </>
-      </div>
+        <div className={styles['layout']}>
+            <>
+                <TopNav options={navOptions} current={selectedPage.name}/>
+                {selectedPage.element}
+            </>
+        </div>
     );
 }
 
