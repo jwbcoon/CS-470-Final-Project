@@ -32,11 +32,11 @@ export default function TopNav(props) {
                     </div>
                     <List>
                         {
-                            ['Open Tools', 'Save Image', 'Import Image', 'Upload Image'].map((option, key) => (
+                            props.options.map((option, key) => (
                                 <>
                                     <Divider key={`divider${key}`} className={styles['divider']} orientation='vertical'/>
-                                    <ListItem key={`li${key}`} className={styles['li']}>
-                                        <p>{option}</p>
+                                    <ListItem key={`${option.child.innerText}${key}`} className={styles['li']} onClick={option.onClick}>
+                                        {option.child}
                                     </ListItem>
                                 </>
                             ))
