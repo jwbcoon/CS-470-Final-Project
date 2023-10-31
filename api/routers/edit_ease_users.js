@@ -1,5 +1,5 @@
-const Authorize = require('../Middleware/Authorize.js');
-const VerifyJWT = require('../Middleware/VerifyJWT.js');
+const Authorize = require('../middleware/Authorize.js');
+const VerifyJWT = require('../middleware/VerifyJWT.js');
 
 
 /*
@@ -35,9 +35,9 @@ const LoginController = require('../controllers/loginController');
 const loginRouter = require('koa-router')({
     prefix: '/login'
 });
-loginRouter.get('/:user_id', LoginController.authorizeUser,
-    (err) => console.log("edit_ease_users.js: login-route error:", err));
 
+loginRouter.get('/:username', LoginController.authorizeUser,
+    err => console.log(`usersWithUsername ran into an error: ${err}`));
 // Accounts router configuration.
 
 const UsersController = require('../controllers/usersController.js');
@@ -49,7 +49,10 @@ const usersRouter = require('koa-router')({
 usersRouter.use(VerifyJWT);
 usersRouter.get('/all-users', Authorize('admin'), UsersController.allUsers,
     err => console.log(`allUsers ran into an error: ${err}`));
-usersRouter.get('/:userID/', Authorize('admin'), UsersController.usersWithUserID,
+usersRouter.get('/:userID', Authorize('admin'), UsersController.usersWithUserID,
+    err => console.log(`usersWithUserID ran into an error: ${err}`));
+
+usersRouter.get('/:username', Authorize('admin'), UsersController.usersWithUserName,
     err => console.log(`usersWithUserName ran into an error: ${err}`));
 
 

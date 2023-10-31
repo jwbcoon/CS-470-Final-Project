@@ -33,9 +33,25 @@ export default class APIInterface {
                  }));
     }
 
-    async getUserFromID(userID) {
-        return axiosAgent.post(`users/${userID}`);
+    async getLoginFromUsername(username) {
+        return axiosAgent.get(`login/${username}`);
     }
+
+    async createLoginFromUserName(username) {
+        return axiosAgent.put(`create/${username}`);
+    }
+
+    async deleteUserFromUserName(username) {
+        return axiosAgent.put(`delete/${username}`);
+    }
+
+    async getUserFromID(userID) {
+        return axiosAgent.get(`users/${userID}`);
+    }
+    async getUserFromUsername(username) {
+        return axiosAgent.get(`users/${username}`);
+    }
+
     async postUserOriginalImage(image_id) {
         return axiosAgent.post(`imageadd/${image_id}/original`);
     }

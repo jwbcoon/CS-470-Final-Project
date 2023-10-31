@@ -8,11 +8,11 @@ const authorizeUser = async (ctx) => {
     return new Promise((resolve, reject) => {
 
 
-        let query = "SELECT * FROM users WHERE userID = ?";
+        let query = "SELECT * FROM users WHERE username = ?";
         dbConnection.query(
             {
                 sql: query,
-                values: [ctx.params.userID]
+                values: [ctx.params.username]
             }, (error, tuples) => {
                 if (error) {
                     console.log("Query error.", error);
@@ -27,6 +27,9 @@ const authorizeUser = async (ctx) => {
                     };
                 } else {
                     console.log('Not able to identify the user.');
+                    ctx.body = {
+                        status: "NOT OK"
+                    };
                     return reject('No such user.');
                 }
                 return resolve();
