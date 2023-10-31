@@ -27,6 +27,9 @@ const authorizeUser = async (ctx) => {
                     };
                 } else {
                     console.log('Not able to identify the user.');
+                    ctx.body = {
+                        status: "NOT OK"
+                    };
                     return reject('No such user.');
                 }
                 return resolve();
@@ -43,40 +46,6 @@ const authorizeUser = async (ctx) => {
     });
 }
 
-const usersWithUsername = (ctx) => {
-    console.log('users usersWithUserName called.');
-    return new Promise((resolve, reject) => {
-        const query = `
-                       SELECT *
-                        FROM 
-                            users
-                        WHERE 
-                            username = ?
-                        `;
-        dbConnection.query({
-            sql: query,
-            values: [ctx.params.username]
-        }, (error, tuples) => {
-            if (error) {
-                console.log("Connection error in usersController::usersWithUserName", error);
-                ctx.body = [];
-                ctx.status = 200;
-                return reject(error);
-            }
-            ctx.body = tuples;
-            ctx.status = 200;
-            return resolve();
-        });
-    }).catch(err => {
-        console.log("Database connection error in usersWithUserName.", err);
-        // The UI side will have to look for the value of status and
-        // if it is not 200, act appropriately.
-        ctx.body = [];
-        ctx.status = 500;
-    });
-}
-
 module.exports = {
     authorizeUser,
-    usersWithUsername
 };

@@ -50,13 +50,12 @@ export default function Login({setUser}) {
 
         const api = new API();
         async function getUserInfo() {
-            console.log(JSON.stringify(userInput));
+            console.log(`user input is: ${userInput}`);
             api.getLoginFromUsername(userInput)
                 .then( userInfo => {
                     console.log(`api returns user info and it is: ${JSON.stringify(userInfo)}`);
-                    const user = userInfo.user;
-                    if( userInfo.status === "OK" ) {
-                        setUser(user);
+                    if( userInfo.data.status === "OK" ) {
+                        setUser(userInfo.data.user.username);
                     } else  {
                         setVerifyUser(false);
                         setAuthFailed(true);
