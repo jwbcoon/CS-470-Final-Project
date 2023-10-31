@@ -3,13 +3,6 @@ import EditEase from './pages/EditEase';
 import Login from './pages/Login';
 import './App.css'
 
-const logout = (setUser) => {
-    return () => {
-        setUser(undefined);
-    }
-};
-
-
 export default function Main() {
 
     const [user, setUser] = useState(undefined);
@@ -18,7 +11,7 @@ export default function Main() {
         <Fragment>
             {
                 user !== undefined ? (
-                    <EditEase user={user} logoutAction={logout(setUser)} />
+                    <EditEase user={user} logoutAction={() => setUser(undefined)} />
                 ) : (
                     <Login user={user} setUser={setUser} />
                 )

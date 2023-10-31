@@ -127,7 +127,7 @@
 
 .nav .selected:hover p {
     color: #000000;
-    transform: translateY(-10%);
+    transform: translateY(-15%);
 }
 
 .nav .li:hover p {

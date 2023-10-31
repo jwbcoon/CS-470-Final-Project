@@ -1,0 +1,10 @@
+
+.toolbox {
+    width: 200px;
+    height: 150px;
+    background-color: #00000000;
+    border: #000000 solid 1px;
+    transition: 0.3s;
+}
+
+

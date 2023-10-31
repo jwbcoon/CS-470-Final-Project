@@ -3,16 +3,6 @@ import {List, ListItem, Divider} from '@mui/material';
 import StartIcon from '@mui/icons-material/Start';
 import styles from './TopNav.module.css';
 
-const onClick = (e, open, setOpen) => {
-    if (open === false) {
-        setOpen(true);
-    }
-    else {
-        setOpen(false);
-    }
-}
-
-
 export default function TopNav(props) {
     const [open, setOpen] = useState(true);
 
@@ -21,13 +11,13 @@ export default function TopNav(props) {
             {
                 !open
                 ? ( 
-                <div className={styles['preview']} onClick={e => onClick(e, open, setOpen)}>
+                <div className={styles['preview']} onClick={() => setOpen(open === false)}>
                     <StartIcon/>
                 </div>
                 )
                 : (
                 <div className={styles['nav']}>
-                    <div onClick={e => onClick(e, open, setOpen)}>
+                    <div onClick={() => setOpen(open === false)}>
                         <StartIcon/> 
                     </div>
                     <List>
