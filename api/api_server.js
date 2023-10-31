@@ -23,7 +23,6 @@ app.use(async (ctx, next) => {
     });
 });
 
-require('./routers/edit_ease_login.js')(app);
 require('./routers/edit_ease_users.js')(app);
 require('./routers/edit_ease_images.js')(app);
 

@@ -35,7 +35,7 @@ const LoginController = require('../controllers/loginController');
 const loginRouter = require('koa-router')({
     prefix: '/login'
 });
-loginRouter.get('/:username', Authorize('admin'), LoginController.usersWithUsername,
+loginRouter.get('/:username', Authorize('admin'), LoginController.authorizeUser,
     err => console.log(`usersWithUsername ran into an error: ${err}`));
 
 // Accounts router configuration.
@@ -47,7 +47,7 @@ const imagesRouter = require('koa-router')({
 
 
 imagesRouter.use(VerifyJWT);
-imagesRouter.get('/all-allImages', Authorize('admin'), ImagesController.allImages,
+imagesRouter.get('/all-images', Authorize('admin'), ImagesController.allImages,
     err => console.log(`allAccounts ran into an error: ${err}`));
 imagesRouter.get('/:userID/', Authorize('admin'), ImagesController.imagesWithUserID,
     err => console.log(`imagesWithUserName ran into an error: ${err}`));
