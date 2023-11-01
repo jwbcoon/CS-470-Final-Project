@@ -1,7 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import EditEase from './pages/EditEase';
 import Login from './pages/Login';
-import './App.css'
 
 export default function Main() {
 

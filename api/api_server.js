@@ -6,7 +6,7 @@ const http = require('http');
 // Load environment variables (or .env if local environment)
 require('dotenv').config();
 app.use(bodyParser());
-require('./Middleware/CORS.js')(app);
+require('./middleware/CORS.js')(app);
 
 // Custom error catch for koa-jwt so that we can log the specific error message
 // when attempting to read and parse the access_token

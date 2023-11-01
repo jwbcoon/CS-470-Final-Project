@@ -1,20 +1,18 @@
-import React, {useState, useEffect, Fragment} from 'react';
+import {useState, useEffect} from 'react';
 import API from '../API_Interface/API_Interface';
 import styles from './Login.module.css';
 
-import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
 import { ReactComponent as EditEaseLogo } from '../icons/editease-logo.svg';
+import CredentialField from '../components/CredentialField';
 
 
 export default function Login({setUser}) {
     const [userInput, setUserInput] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
     const [authFailed, setAuthFailed] = useState(false);
+    const [openSignUp, setOpenSignUp] = useState(false);
 
     const makeUserName = ({user_fName, user_mName, user_lName}) => {
 
@@ -68,28 +66,39 @@ export default function Login({setUser}) {
 
 
     return (
-       <Fragment>
-          <Box className={styles['container']}>
-              <Box className={styles['logo-box']}>
-                  <EditEaseLogo/>
-              </Box>
-              <TextField
-                  error={authFailed}
-                  id="outlined-error-helper-text"
-                  label="Login name"
-                  placeholder=""
-                  value={userInput}
-                  helperText="Only for existing users!"
-                  onChange={handleInputChange}
-              />
-              <Divider />
-              <Button
-                        variant="outlined"
-                        size="medium"
-                        onClick={() => {setVerifyUser(true)}}
-                    >Proceed</Button>
-          </Box>
-       </Fragment>
-
+        <div className={styles['container']}>
+            <div className={styles['logo-box']}>
+                <EditEaseLogo/>
+            </div>
+            <div className={styles['form']}>
+            {
+                !openSignUp
+                ?
+                <>
+                    <CredentialField type='text' placeholder={'username'} onChange={e => handleInputChange(e)}/>
+                    <Divider/>
+                    <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e)}/>
+                    <Divider/>
+                    <Button   style={{ backgroundColor: '#1f0a0a', color: '#a96fb3', border: '1px solid #a96fb3' }}
+                              variant="contained"
+                              onClick={() => {setVerifyUser(true)}}
+                          >Proceed</Button> 
+                    <span onClick={() => setOpenSignUp(openSignUp === false)}>New here? Click here to sign up</span>
+                </>
+                :
+                <>
+                    <CredentialField type='text' placeholder={'username'} onChange={e => handleInputChange(e)}/>
+                    <Divider/>
+                    <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e)}/>
+                    <Divider/>
+                    <Button   style={{ backgroundColor: '#1f0a0a', color: '#a96fb3', border: '1px solid #a96fb3' }}
+                              variant="contained"
+                              onClick={() => {setVerifyUser(true)}}
+                          >Submit</Button> 
+                    <span onClick={() => setOpenSignUp(openSignUp === false)}>Click here to sign in</span>
+                </>
+            }
+            </div>
+        </div>
     );
 }

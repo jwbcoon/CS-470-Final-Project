@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import TopNav from '../menu/TopNav';
+import TopNav from '../components/TopNav';
 import ViewPort from './Viewport';
 import Gallery from './Gallery';
 import MyEdits from './MyEdits';
