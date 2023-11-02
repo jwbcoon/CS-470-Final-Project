@@ -80,9 +80,9 @@ const Login = forwardRef(function Login(props, ref) {
                     <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e)}/>
                     <Divider/>
                     <Button style={{
-                                backgroundColor: globalStyle ? globalStyle.getPropertyValue('--accent-dim') : '#888',
-                                color: globalStyle ? globalStyle.getPropertyValue('--accent-text') : '#fff',
-                                border: globalStyle ? globalStyle.getPropertyValue('--btn-border') : '#000'
+                                backgroundColor: '#888',
+                                color: '#fff',
+                                border: '#000'
                             }}
                             variant="contained"
                             onClick={() => {setVerifyUser(true)}}
@@ -96,9 +96,9 @@ const Login = forwardRef(function Login(props, ref) {
                     <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e)}/>
                     <Divider/>
                     <Button style={{
-                                backgroundColor: globalStyle ? globalStyle.getPropertyValue('--accent-dim') : '#888',
-                                color: globalStyle ? globalStyle.getPropertyValue('--accent-text') : '#fff',
-                                border: globalStyle ? globalStyle.getPropertyValue('--btn-border') : '#000'
+                                '#888',
+                                '#fff',
+                                '#000'
                             }}
                             variant="contained"
                             onClick={() => {setVerifyUser(true)}}
