@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, forwardRef} from 'react';
 import TopNav from '../components/TopNav';
 import ViewPort from './Viewport';
 import Gallery from './Gallery';
@@ -7,7 +7,7 @@ import ToolBox from '../components/ToolBox';
 import API from '../API_Interface/API_Interface.js';
 import styles from './EditEase.module.css';
 
-export default function EditEase(props) {
+const EditEase = forwardRef(function EditEase(props, ref) {
     const [selectedPage, setSelectedPage] = useState({ element: <ViewPort/>, name: 'viewport' });
     const [toolsOpen, setToolsOpen] = useState(false);
     const navOptions = [
@@ -42,5 +42,6 @@ export default function EditEase(props) {
             </>
         </div>
     );
-}
+});
 
+export default EditEase;

@@ -38,8 +38,8 @@
     min-height: 50px;
     display: flex;
     justify-content: space-between;
-    background-color: #2f2f2f;
-    color: #ffffff;
+    background: linear-gradient(to bottom, var(--accent-dim), #2f2f2f);
+    color: var(--primary-text);
     border-color: #000000;
     border-style: solid;
     border-width: 1px;
@@ -59,13 +59,13 @@
 .nav div svg {
     width: 30px;
     height: 30px;
-    color: #ffffff;
+    color: var(--primary-text);
     transform: rotate(-90deg);
     transition: 0.3s;
 }
 
 .nav div:hover {
-    background-color: #ad82b5;
+    background: linear-gradient(to bottom, #bbb, #ad82b5 80%, #ad82b5);
     transition: 0.3s;
 }
 
@@ -94,7 +94,7 @@
     align-self: stretch;
     flex-wrap: wrap;
     align-content: flex-end;
-    background-color: #a96fb3;
+    background: linear-gradient(to bottom, #bbb, #ad82b5 80%, #ad82b5);
     transition: 0.3s;
 }
 
@@ -111,7 +111,7 @@
 }
 
 .nav .li:hover {
-    background-color: #a96fb3;
+    background: linear-gradient(to bottom, #bbb, #ad82b5 80%, #ad82b5);
     transition: 0.3s;
 }
 
@@ -136,12 +136,12 @@
 }
 
 .nav .divider {
-    background-color: #a96fb3;
+    background-color: var(--accent-text);
     transition: 0.3s;
 }
 
 .nav:hover .divider {
-    background-color: #ffffff;
+    background-color: var(--primary-text);
     transition: 0.3s;
 }
 
