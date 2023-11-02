@@ -82,7 +82,7 @@ const Login = forwardRef(function Login(props, ref) {
                     <Button style={{
                                 backgroundColor: '#888',
                                 color: '#fff',
-                                border: '#000'
+                                border: '1px solid #000'
                             }}
                             variant="contained"
                             onClick={() => {setVerifyUser(true)}}
@@ -96,9 +96,9 @@ const Login = forwardRef(function Login(props, ref) {
                     <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e)}/>
                     <Divider/>
                     <Button style={{
-                                '#888',
-                                '#fff',
-                                '#000'
+                                backgroundColor: '#888',
+                                color: '#fff',
+                                border: ' 1px solid #000'
                             }}
                             variant="contained"
                             onClick={() => {setVerifyUser(true)}}
