@@ -7,28 +7,6 @@ import Divider from '@mui/material/Divider';
 import { ReactComponent as EditEaseLogo } from '../icons/editease-logo.svg';
 import CredentialField from '../components/CredentialField';
 
-const makeUserName = ({user_fName, user_mName, user_lName}) => {
-
-    console.log(`making user name with: ${user_fName} : ${user_mName} : ${user_lName}`);
-    const middleName = () => user_mName !== undefined && user_mName !== null  
-                        ? `${user_mName.length === 1 ? user_mName[0] + '.' : user_mName}` 
-                        : '';
-
-    return `${user_fName} ${middleName()} ${user_lName}`;
-};
-
-const handleInputChange = event => {
-    console.log("handleInputChange called.");
-
-    setUserInput(event.target.value);
-    setAuthFailed(false);
-
-    if(event.key === "Enter") {
-        console.log("handleKeyPress: Verify user input.");
-        setVerifyUser(true);
-    }
-};
-
 const Login = forwardRef(function Login(props, ref) {
     const [userInput, setUserInput] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
@@ -39,6 +17,28 @@ const Login = forwardRef(function Login(props, ref) {
     useEffect(() => {
        globalStyle = ref.current;
     }, [ref.current])
+
+    const makeUserName = ({user_fName, user_mName, user_lName}) => {
+
+        console.log(`making user name with: ${user_fName} : ${user_mName} : ${user_lName}`);
+        const middleName = () => user_mName !== undefined && user_mName !== null  
+                            ? `${user_mName.length === 1 ? user_mName[0] + '.' : user_mName}` 
+                            : '';
+
+        return `${user_fName} ${middleName()} ${user_lName}`;
+    };
+
+    const handleInputChange = event => {
+        console.log("handleInputChange called.");
+
+        setUserInput(event.target.value);
+        setAuthFailed(false);
+
+        if(event.key === "Enter") {
+            console.log("handleKeyPress: Verify user input.");
+            setVerifyUser(true);
+        }
+    };
 
     useEffect(() => {
 
