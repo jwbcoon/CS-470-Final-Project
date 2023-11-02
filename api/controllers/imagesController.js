@@ -66,7 +66,70 @@ const imagesWithUserID = (ctx) => {
     });
 }
 
+const insertImageWithFilename = (ctx) => {
+    console.log('images insertImageWithFilename called.');
+    return new Promise((resolve, reject) => {
+        const query = `
+                       INSERT INTO images
+                        (userID, fileName, filePath)
+                        VALUES (?, ?, ?);
+                        `;
+        dbConnection.query({
+            sql: query,
+            values: [ctx.params.userID, ctx.params.fileName, ctx.params.filePath]
+        }, (error, tuples) => {
+            if (error) {
+                console.log("Connection error in imagesController::insertImageWithFilename", error);
+                ctx.body = [];
+                ctx.status = 200;
+                return reject(error);
+            }
+            ctx.body = tuples;
+            ctx.status = 200;
+            return resolve();
+        });
+    }).catch(err => {
+        console.log("Database connection error in insertImageWithFilename.", err);
+        // The UI side will have to look for the value of status and
+        // if it is not 200, act appropriately.
+        ctx.body = [];
+        ctx.status = 500;
+    });
+}
+
+const removeImageWithFilename = (ctx) => {
+    console.log('images removeImageWithFilename called.');
+    return new Promise((resolve, reject) => {
+        const query = `
+                       DELETE FROM images
+                WHERE fileName = ?;
+                        `;
+        dbConnection.query({
+            sql: query,
+            values: [ctx.params.fileName]
+        }, (error, tuples) => {
+            if (error) {
+                console.log("Connection error in imagesController::removeImageWithFilename", error);
+                ctx.body = [];
+                ctx.status = 200;
+                return reject(error);
+            }
+            ctx.body = tuples;
+            ctx.status = 200;
+            return resolve();
+        });
+    }).catch(err => {
+        console.log("Database connection error in removeImageWithFilename.", err);
+        // The UI side will have to look for the value of status and
+        // if it is not 200, act appropriately.
+        ctx.body = [];
+        ctx.status = 500;
+    });
+}
+
 module.exports = {
     allImages,
-    imagesWithUserID
+    imagesWithUserID,
+    insertImageWithFilename,
+    removeImageWithFilename
 };

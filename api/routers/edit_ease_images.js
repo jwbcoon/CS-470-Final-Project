@@ -47,11 +47,14 @@ const imagesRouter = require('koa-router')({
 
 
 imagesRouter.use(VerifyJWT);
-imagesRouter.get('/all-images', Authorize('admin'), ImagesController.allImages,
+imagesRouter.get('/all-images', ImagesController.allImages,
     err => console.log(`allAccounts ran into an error: ${err}`));
-imagesRouter.get('/:userID/', Authorize('admin'), ImagesController.imagesWithUserID,
+imagesRouter.get('/:userID/', ImagesController.imagesWithUserID,
     err => console.log(`imagesWithUserName ran into an error: ${err}`));
-
+imagesRouter.put('/addImage/:fileName/', ImagesController.insertImageWithFilename,
+    err => console.log(`imagesWithUserName ran into an error: ${err}`));
+imagesRouter.delete('/removeImage/:fileName/', ImagesController.removeImageWithFilename,
+    err => console.log(`imagesWithUserName ran into an error: ${err}`));
 
 /**
  * Register all of the controllers into the default controller.

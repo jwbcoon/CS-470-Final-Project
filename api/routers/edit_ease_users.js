@@ -47,12 +47,12 @@ const usersRouter = require('koa-router')({
 
 
 usersRouter.use(VerifyJWT);
-usersRouter.get('/all-users', Authorize('admin'), UsersController.allUsers,
+usersRouter.get('/all-users', UsersController.allUsers,
     err => console.log(`allUsers ran into an error: ${err}`));
-usersRouter.get('/:userID', Authorize('admin'), UsersController.usersWithUserID,
+usersRouter.get('/:userID', UsersController.usersWithUserID,
     err => console.log(`usersWithUserID ran into an error: ${err}`));
 
-usersRouter.get('/:username', Authorize('admin'), UsersController.usersWithUserName,
+usersRouter.get('/:username', UsersController.usersWithUserName,
     err => console.log(`usersWithUserName ran into an error: ${err}`));
 
 

@@ -33,6 +33,7 @@ export default class APIInterface {
                  }));
     }
 
+    // Users routes
     async getLoginFromUsername(username) {
         return axiosAgent.get(`login/${username}`);
     }
@@ -52,7 +53,12 @@ export default class APIInterface {
         return axiosAgent.get(`users/${username}`);
     }
 
-    async postUserOriginalImage(image_id) {
-        return axiosAgent.post(`imageadd/${image_id}/original`);
+    // Images Routes
+    async addImageByFilename(filename) {
+        return axiosAgent.post(`addImage/${filename}`);
     }
+    async removeImageByFilename(filename) {
+        return axiosAgent.delete(`removeImage/${filename}`);
+    }
+
 }
