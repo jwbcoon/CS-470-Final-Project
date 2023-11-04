@@ -1,0 +1,104 @@
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+
+.drop-menu {
+    position: absolute;
+    top: 6vh;
+    right: 1vw;
+    min-width: 80px;
+    min-height: 150px;
+    max-width: 250px;
+    max-height: 200px;
+    height: 5vh;
+    width: 4vw;
+    background-color: var(--primary-bg);
+    border: 1px solid var(--accent-text);
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    transition: 0.3s;
+
+    .dmul {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .dmli0, .dmli1, .dmli2, .dmli3 {
+            width: 100%;
+            height: 25%;
+            display: flex;
+            justify-content: center;
+            align-self: stretch;
+            flex-wrap: wrap;
+            align-content: center;
+        }
+
+        .dmli0 {
+            transition: 0.1s calc(0.1s * 0);
+        }
+
+        .dmli1 {
+            transition: 0.1s calc(0.1s * 1);
+        }
+
+        .dmli2 {
+            transition: 0.1s calc(0.1s * 2);
+        }
+
+        .dmli3 {
+            transition: 0.1s calc(0.1s * 3);
+        }
+
+        .dmli0:hover, .dmli1:hover, .dmli2:hover, .dmli3:hover {
+            background: linear-gradient(to left, #bbb, #ad82b5 80%, #ad82b5);
+        }
+
+        .selected0, .selected1, .selected2, .selected3 {
+            width: 100%;
+            height: 25%;
+            background: linear-gradient(to left, #bbb, #ad82b5 80%, #ad82b5);
+            display: flex;
+            justify-content: center;
+            align-self: stretch;
+            flex-wrap: wrap;
+            align-content: center;
+        }
+
+        .selected0 {
+            transition: 0.1s calc(0.1s * 0);
+        }
+
+        .selected1 {
+            transition: 0.1s calc(0.1s * 1);
+        }
+
+        .selected2 {
+            transition: 0.1s calc(0.1s * 2);
+        }
+
+        .selected3 {
+            transition: 0.1s calc(0.1s * 3);
+        }
+
+        .drop-menu .divider {
+            background-color: var(--accent-text);
+            transition: 0.3s;
+        }
+    }
+}
+
+.drop-menu:hover .divider {
+    background-color: var(--primary-text);
+    transition: 0.3s;
+}
+

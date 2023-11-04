@@ -10,7 +10,7 @@ import styles from './EditEase.module.css';
 const EditEase = forwardRef(function EditEase(props, ref) {
     const [selectedPage, setSelectedPage] = useState({ element: <ViewPort/>, name: 'viewport' });
     const [toolsOpen, setToolsOpen] = useState(false);
-    const navOptions = [
+    const dropOptions = [
         {
             child: <p>Editor</p>,
             pageName: 'viewport',
@@ -24,8 +24,15 @@ const EditEase = forwardRef(function EditEase(props, ref) {
         {
             child: <p>My Edits</p>,
             pageName: 'my_edits',
-            onClick: () => setSelectedPage({ element: <MyEdits user={props.user}/>, name: 'my_edits'})
+            onClick: () => setSelectedPage({ element: <MyEdits user={props.user}/>, name: 'my_edits' })
         },
+        {
+            child: <p>Logout</p>,
+            pageName: 'logout',
+            onClick: () => props.logout()
+        }
+    ];
+    const barOptions = [
         {
             child: <p>Open Tools</p>,
             pageName: '',
@@ -36,7 +43,7 @@ const EditEase = forwardRef(function EditEase(props, ref) {
     return (
         <div className={styles['layout']}>
             <>
-                <TopNav options={navOptions} current={selectedPage.name}/>
+                <TopNav options={barOptions} dropOptions={dropOptions} current={selectedPage.name}/>
                 {selectedPage.element}
                 {toolsOpen && <ToolBox/>}
             </>
