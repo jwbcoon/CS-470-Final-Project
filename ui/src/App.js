@@ -12,7 +12,7 @@ export default function Main() {
         <div id={theme} ref={themeRef}>
             {
                 user !== undefined ? (
-                    <EditEase user={user} updateColorTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} logoutAction={() => setUser(undefined)} ref={themeRef}/>
+                    <EditEase user={user} updateColorTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} logout={() => setUser(undefined)} ref={themeRef}/>
                 ) : (
                     <Login user={user} updateColorTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} setUser={setUser} ref={themeRef}/>
                 )
