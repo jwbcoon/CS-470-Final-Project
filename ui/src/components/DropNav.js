@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {Divider} from '@mui/material';
 import styles from './DropNav.module.css';
 
-export default function DropMenu(props) {
+export default function DropNav(props) {
     const [open, setOpen] = useState(false);
 
     return (
