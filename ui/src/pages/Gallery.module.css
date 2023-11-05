@@ -1,0 +1,89 @@
+
+.layout {
+    position: absolute;
+    width: 60vw;
+    height: calc(100vh - 100px);
+    top: 0;
+    left: 0;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    padding-left: 20vw;
+    padding-right: 20vw;
+    background: conic-gradient(from 180deg, var(--accent-text), var(--accent-dim) 25%, var(--accent-bg) 40%, var(--accent-bg) 60%, var(--accent-dim) 75%, var(--accent-text));
+}
+
+.head {
+    max-width: 950px;
+    min-width: 400px;
+    width: calc(Min(100%, 950px - 0.5em) - 0.5em);
+    height: 20vh;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 1.5em;
+    background: linear-gradient(to top right, var(--accent-text), var(--accent-bg) 15%, var(--accent-bg) 85%, var(--accent-text));
+    border: var(--btn-border);
+    border-top: transparent;
+    border-bottom: transparent;
+}
+
+.user-info {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    color: var(--primary-text);
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.user-info svg {
+    max-width: 60px;
+    min-width: 30px;
+    width: 100%;
+    height: 50%;
+    padding: 0.5em;
+}
+
+.user-info p {
+    width: 75%;
+    font-size: 1.2em;
+    align-self: stretch;
+    padding: 0.5em;
+    padding-right: Min(3em, 10vw);
+}
+
+.options {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    color: var(--accent-text);
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.options > * {
+    padding: 0.5em;
+    padding-left: Min(3em, 10vw);
+}
+
+.gallery {
+    max-width: 950px;
+    min-width: 400px;
+    width: calc(Max(100%, 400px + 0.5em) + 0.5em);
+    height: calc(80vh - 100px);
+    padding: 0.5em;
+    background: linear-gradient(175deg, var(--accent-text), var(--accent-bg) 4%, var(--secondary-bg));
+    border: var(--btn-border);
+    border-top: transparent;
+    border-bottom: transparent;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    grid-auto-rows: 10rem;
+    grid-gap: 2vh;
+    justify-items: center;
+    align-items: center;
+}
+

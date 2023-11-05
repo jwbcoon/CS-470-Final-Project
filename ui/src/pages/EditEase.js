@@ -43,7 +43,7 @@ const EditEase = forwardRef(function EditEase(props, ref) {
     return (
         <div className={styles['layout']}>
             <>
-                <TopNav options={barOptions} dropOptions={dropOptions} current={selectedPage.name}/>
+                <TopNav user={props.user} options={barOptions} dropOptions={dropOptions} current={selectedPage.name}/>
                 {selectedPage.element}
                 {toolsOpen && <ToolBox/>}
             </>

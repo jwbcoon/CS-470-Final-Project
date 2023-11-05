@@ -59,10 +59,10 @@ export default function Viewport(props) {
     }, [edit])*/
 
     return (
-      <div className={styles['viewport']}>
+      <main className={styles['viewport']}>
           <DropZone setImage={setImage} handleFiles={handleFiles} handleZoom={handleZoom}
                     zoom={zoom} setZoom={setZoom} mask={<EditCanvas src={image.file}/>}/>
-      </div>
+      </main>
     );
 }
 

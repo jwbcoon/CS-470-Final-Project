@@ -2,17 +2,17 @@
 .container {
     width: 100%;
     height: 50px;
-    background-color: #00000000;
+    background-color: transparent;
 }
 
 .container:hover .preview {
-    background-color: #d8d8d8;
+    background-color: var(--secondary-bg);
 }
 
 .preview {
     width: 100%;
     height: 50px;
-    background-color: #00000000;
+    background-color: transparent;
     transition: 0.3s ease;
 }
 
@@ -20,13 +20,13 @@
     width: 30px;
     height: 30px;
     margin-left: 1em;
-    color: #00000000;
+    color: transparent;
     transform: translateY(-100%) rotate(-90deg);
     transition: 0.1s ease-in;
 }
 
 .preview:hover svg {
-    color: #000000;
+    color: var(--primary-text);
     transform: translateY(30%) rotate(90deg);
     transition: 0.3s ease-out;
 }
@@ -47,6 +47,13 @@
 }
 
 .left {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.left div {
     padding-right: 1.5em;
     padding-left: 1.5em;
     padding-bottom: 1em;
@@ -55,7 +62,14 @@
     align-items: flex-end;
     justify-content: center;
     transition: 0.3s;
+}
+
+.left div:first-of-type {
     cursor: pointer;
+}
+
+.left div:last-of-type {
+    cursor: default;
 }
 
 .left svg {
@@ -66,11 +80,11 @@
     transition: 0.3s;
 }
 
-.left:hover {
+.left div:first-of-type:hover {
     background: linear-gradient(to bottom, #bbb, #ad82b5 80%, #ad82b5);
 }
 
-.left:hover svg {
+.left div:first-of-type:hover svg {
     color: #000;
     transform: translateY(-20%) rotate(-90deg);
 }
@@ -87,7 +101,7 @@
     transition: 0.3s;
 }
 
-.right div:hover > svg {
+.right .nav-ul + nav:hover > div > svg {
     color: #000;
     transform: translateY(0.5em);
 }
@@ -104,10 +118,10 @@
     cursor: pointer;
 }
 
-.right .nav-ul + div {
+.right .nav-ul + nav {
     display: flex;
-    min-width: 10vw;
-    max-width: 15vw;
+    min-width: 80px;
+    max-width: 250px;
     width: 10vw;
     height: 100%;
     align-self: stretch;
@@ -115,7 +129,7 @@
     cursor: pointer;
 }
 
-.right .nav-ul:hover, .right .nav-ul + div:hover {
+.right .nav-ul:hover, .right .nav-ul + nav:hover {
     background: linear-gradient(to bottom, #bbb, #ad82b5 80%, #ad82b5);
 }
 
@@ -159,15 +173,5 @@
 .nav .nav-li:hover p {
     color: #000;
     transform: translateY(-10%);
-}
-
-.nav .divider {
-    background-color: var(--accent-text);
-    transition: 0.3s;
-}
-
-.nav:hover .divider {
-    background-color: var(--primary-text);
-    transition: 0.3s;
 }
 

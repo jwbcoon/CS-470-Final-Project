@@ -91,10 +91,10 @@ const Login = forwardRef(function Login(props, ref) {
     return (
         <div className={styles['container']}>
             <span className={styles['theme-btn']} onClick={props.updateColorTheme}>Change Theme</span>
-            <div className={styles['logo-box']}>
+            <header className={styles['logo-box']}>
                 <EditEaseLogo/>
-            </div>
-            <div className={styles['form']}>
+            </header>
+            <main className={styles['form']}>
             {
                 !openSignUp
                 ?
@@ -130,7 +130,7 @@ const Login = forwardRef(function Login(props, ref) {
                     <span onClick={() => setOpenSignUp(openSignUp === false)}>Click here to sign in</span>
                 </>
             }
-            </div>
+            </main>
         </div>
     );
 });
