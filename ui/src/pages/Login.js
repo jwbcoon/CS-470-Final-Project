@@ -7,16 +7,6 @@ import Divider from '@mui/material/Divider';
 import { ReactComponent as EditEaseLogo } from '../icons/editease-logo.svg';
 import CredentialField from '../components/CredentialField';
 
-const makeUserName = ({user_fName, user_mName, user_lName}) => {
-
-    console.log(`making user name with: ${user_fName} : ${user_mName} : ${user_lName}`);
-    const middleName = () => user_mName !== undefined && user_mName !== null  
-                        ? `${user_mName.length === 1 ? user_mName[0] + '.' : user_mName}` 
-                        : '';
-
-    return `${user_fName} ${middleName()} ${user_lName}`;
-};
-
 const Login = forwardRef(function Login(props, ref) {
     const [userInput, setUserInput] = useState('');
     const [secretInput, setSecretInput] = useState('');
@@ -57,7 +47,7 @@ const Login = forwardRef(function Login(props, ref) {
                     if(userInfo.data.status === "OK") {
                         const {username, password} = userInfo.data.user;
                         if (password === secretInput) {
-                            props.setUser(userInfo.data.user.username);
+                            props.setUser(username);
                             return;
                         }
                     }
