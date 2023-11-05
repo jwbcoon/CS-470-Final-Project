@@ -6,8 +6,8 @@ export default function DropNav(props) {
     const [open, setOpen] = useState(false);
 
     return (
-        <>
-            <div className={styles['container']} onClick={() => setOpen(!open)}>
+        <nav>
+            <div className={styles['mask']} onClick={() => setOpen(!open)}>
                 {props.mask}
             </div>
             {
@@ -22,7 +22,6 @@ export default function DropNav(props) {
                                         className={option.pageName === props.current ? styles[`selected${key}`] : styles[`dmli${key}`]}>
                                         {option.child}
                                     </li>
-                                    <Divider/>
                                 </>
                             )
                         }
@@ -30,13 +29,12 @@ export default function DropNav(props) {
                 </div>
                 )
                 : (
-                <div style={{ width: '0', height: '0', backgroundColor: 'transparent', transform: 'scale(0.01)' }}>
+                <div style={{ width: '0', height: '0', transform: 'translateX(250px)' }}>
                     <ul className={styles['dmul']}>
                         {
                             props.options.map((option, key) => 
                                 <>
-                                    <Divider className={styles['divider']}/>
-                                    <li onClick={option.onClick} style={{ transform: 'scale(0.01)' }}
+                                    <li onClick={option.onClick}
                                         className={option.pageName === props.current ? styles[`selected${key}`] : styles[`dmli${key}`]}>
                                         {option.child}
                                     </li>
@@ -47,6 +45,6 @@ export default function DropNav(props) {
                 </div>
                 )
             }
-        </>
+        </nav>
     );
 }
