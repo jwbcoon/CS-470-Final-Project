@@ -45,9 +45,9 @@ const Login = forwardRef(function Login(props, ref) {
                 .then( userInfo => {
                     console.log(`api returns user info and it is: ${JSON.stringify(userInfo)}`);
                     if(userInfo.data.status === "OK") {
-                        const {username, password} = userInfo.data.user;
+                        const {password} = userInfo.data.user;
                         if (password === secretInput) {
-                            props.setUser(username);
+                            props.setUser(userInfo.data.user);
                             return;
                         }
                     }

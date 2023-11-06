@@ -8,13 +8,15 @@ import API from '../API_Interface/API_Interface.js';
 import styles from './EditEase.module.css';
 
 const EditEase = forwardRef(function EditEase(props, ref) {
-    const [selectedPage, setSelectedPage] = useState({ element: <ViewPort/>, name: 'viewport' });
     const [toolsOpen, setToolsOpen] = useState(false);
+    const [saveImage, setSaveImage] = useState(false);
+    const [selectedPage, setSelectedPage] = useState({ element: <ViewPort user={props.user} saveImage={saveImage => saveImage} setSaveImage={setSaveImage}/>, name: 'viewport' });
+    const [barOptions, setBarOptions] = useState([{child: <p>Open Tools</p>, onClick: () => setToolsOpen(toolsOpen => !toolsOpen)}]);
     const dropOptions = [
         {
             child: <p>Editor</p>,
             pageName: 'viewport',
-            onClick: () => setSelectedPage({ element: <ViewPort/>, name: 'viewport' })
+            onClick: () => setSelectedPage({ element: <ViewPort user={props.user} saveImage={() => saveImage}/>, name: 'viewport' })
         },
         {
             child: <p>Gallery</p>,
@@ -32,18 +34,35 @@ const EditEase = forwardRef(function EditEase(props, ref) {
             onClick: () => props.logout()
         }
     ];
-    const barOptions = [
-        {
-            child: <p>Open Tools</p>,
-            pageName: '',
-            onClick: () => setToolsOpen(toolsOpen === false)
+
+    function determineBarOptions(baseOpts, pageName) {
+        switch (pageName) {
+            case 'viewport':
+                return [
+                    ...baseOpts,
+                    {
+                        child: <p>Save Image</p>,
+                        onClick: () => setSaveImage(true)
+                    },
+                    {
+                        child: <p>Load Image</p>,
+                        onClick: () => console.log('this will do something someday!')
+                    }
+                ]
+
+            default:
+                return [...baseOpts];
         }
-    ];
+    }
+
+    useEffect(() => {
+        setBarOptions(determineBarOptions([{child: <p>Open Tools</p>, onClick: () => setToolsOpen(toolsOpen => !toolsOpen)}], selectedPage.name));
+    }, [selectedPage.name]);
 
     return (
         <div className={styles['layout']}>
             <>
-                <TopNav user={props.user} options={barOptions} dropOptions={dropOptions} current={selectedPage.name}/>
+                <TopNav username={props.user.username} options={barOptions} dropOptions={dropOptions} current={selectedPage.name}/>
                 {selectedPage.element}
                 {toolsOpen && <ToolBox/>}
             </>

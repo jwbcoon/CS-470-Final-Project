@@ -76,7 +76,7 @@ const insertImageWithFilename = (ctx) => {
                         `;
         dbConnection.query({
             sql: query,
-            values: [ctx.params.userID, ctx.params.fileName, ctx.params.filePath]
+            values: [ctx.request.body.userID, ctx.request.body.fileName, `../userImages/${ctx.request.body.fileName}`]
         }, (error, tuples) => {
             if (error) {
                 console.log("Connection error in imagesController::insertImageWithFilename", error);
@@ -127,9 +127,36 @@ const removeImageWithFilename = (ctx) => {
     });
 }
 
+function saveImageToLocal(ctx) {
+    console.log('saving image after successfully uploading to DB');
+    return new Promise((resolve, reject) => {
+        // Create an anchor to download the file
+        const htmlAnchor = document.createElement('a');
+
+        // Configure download location of the blob/file
+        htmlAnchor.download = `../userImages/${ctx.request.body.fileName}`;
+        htmlAnchor.href = ctx.request.body.file;
+
+        // Make anchor remove itself after 10 seconds following the contrived click action
+        htmlAnchor.addEventListener('click', e => {
+            setTimeout(() => document.remove(htmlAnchor), 10 * 1000);
+        });
+
+        // Click the anchor to start the download
+        htmlAnchor.click();
+    }, error => {
+        if (error) {
+            console.log('Error saving image after successful DB upload', error);
+            return reject(error);
+        }
+        return resolve();
+    });
+}
+
 module.exports = {
     allImages,
     imagesWithUserID,
     insertImageWithFilename,
-    removeImageWithFilename
+    removeImageWithFilename,
+    saveImageToLocal
 };

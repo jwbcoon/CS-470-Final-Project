@@ -38,17 +38,12 @@ export default class APIInterface {
         return axiosAgent.get(`login/${username}`);
     }
 
-    async postLogin(username, password) { // this should be a post request because we don't want to overwrite existing users, right?
-        axiosAgent = { ...axiosAgent,
-            url: '/create',
-            method: 'post',
-            data: {
-                username: username,
-                password: password
-            },
-            params: username
-        }
-        return axiosAgent;
+    async putLogin(username, password) {
+        return axiosAgent.put('users/create',
+        {
+            username: username,
+            password: password
+        });
     }
 
     async deleteUserFromUserName(username) {
@@ -62,23 +57,13 @@ export default class APIInterface {
         return axiosAgent.get(`users/${username}`);
     }
 
-    async postUserOriginalImage(filename) {
-        axiosAgent = { ...axiosAgent,
-            url: `/addImage/${filename}`,
-            method: 'post',
-            data: {
-                filename: filename,
-            },
-            params: filename,
-            headers: {
-                ...axiosAgent.headers,
-                post: {
-                    'Content-Type': 'image/jpeg' // MIME types have requirements for when we send image types,
-                                                 // but maybe we don't need this with how we store in DB?
-                }
-            }
-        }
-        return axiosAgent;
+    async putUserOriginalImage(userID, fileName, file) {
+        return axiosAgent.put('images/addImage',
+        {
+            userID: userID,
+            fileName: fileName,
+            file: file
+        });
     }
 
     async removeImageByFilename(filename) {
