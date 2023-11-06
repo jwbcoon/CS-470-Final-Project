@@ -24,7 +24,7 @@ export default function TopNav(props) {
                             <StartIcon/> 
                         </div>
                         <div>
-                            {props.user}
+                            {props.username}
                         </div>
                     </div>
                     <div className={styles['right']}>
@@ -32,7 +32,7 @@ export default function TopNav(props) {
                             {
                                 props.options.map((option, key) => (
                                     <>
-                                        <ListItem key={`${option.child.innerText}${key}`}
+                                        <ListItem key={key}
                                                   className={styles['nav-li']}
                                                   onClick={option.onClick}>
                                             {option.child}
