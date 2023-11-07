@@ -52,7 +52,8 @@ imagesRouter.get('/all-images', ImagesController.allImages,
 imagesRouter.get('/:userID/', ImagesController.imagesWithUserID,
     err => console.log(`imagesWithUserID ran into an error: ${err}`));
 imagesRouter.put('/addImage', ImagesController.insertImageWithFilename,
-    ImagesController.saveImageToLocal, err => console.log(`insertImageWithFilename ran into an error: ${err}`));
+    err => console.log(`insertImageWithFilename ran into an error: ${JSON.stringify(err)}`));
+imagesRouter.use(ImagesController.saveImageToLocal);
 imagesRouter.delete('/removeImage/:fileName/', ImagesController.removeImageWithFilename,
     err => console.log(`removeImageWithFilename ran into an error: ${err}`));
 
