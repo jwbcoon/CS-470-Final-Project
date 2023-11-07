@@ -18,7 +18,7 @@ const Login = forwardRef(function Login(props, ref) {
        globalStyle = ref.current;
     }, [ref.current])
 
-    const makeUserName = ({user_fName, user_mName, user_lName}) => {
+    function makeUserName({user_fName, user_mName, user_lName}) {
 
         console.log(`making user name with: ${user_fName} : ${user_mName} : ${user_lName}`);
         const middleName = () => user_mName !== undefined && user_mName !== null  
@@ -28,7 +28,7 @@ const Login = forwardRef(function Login(props, ref) {
         return `${user_fName} ${middleName()} ${user_lName}`;
     };
 
-    const handleInputChange = event => {
+    function handleInputChange(event) {
         console.log("handleInputChange called.");
 
         setUserInput(event.target.value);

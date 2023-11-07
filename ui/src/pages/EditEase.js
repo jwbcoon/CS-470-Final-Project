@@ -1,4 +1,4 @@
-import {useState, useEffect, forwardRef} from 'react';
+import {useState, useEffect, useRef, forwardRef} from 'react';
 import TopNav from '../components/TopNav';
 import ViewPort from './Viewport';
 import Gallery from './Gallery';
@@ -7,9 +7,15 @@ import ToolBox from '../components/ToolBox';
 import API from '../API_Interface/API_Interface.js';
 import styles from './EditEase.module.css';
 
+function handleToolBoxInputChange(ev, tbRefs, setRgbaInput) {
+    console.log('handling toolbox input change!');
+    setRgbaInput({...tbRefs});
+}
+
 const EditEase = forwardRef(function EditEase(props, ref) {
     const [selectedPage, setSelectedPage] = useState({ element: <ViewPort/>, name: 'viewport' });
     const [toolsOpen, setToolsOpen] = useState(false);
+    const [rgbaInput, setRgbaInput] = useState({ current: {red: 0, green: 0, blue: 0, alpha: 0} });
     const dropOptions = [
         {
             child: <p>Editor</p>,
@@ -39,13 +45,22 @@ const EditEase = forwardRef(function EditEase(props, ref) {
             onClick: () => setToolsOpen(toolsOpen === false)
         }
     ];
+    const tbRefs = useRef({red: 0, green: 0, blue: 0, alpha: 0});
+  
+    useEffect(() => {
+        console.log(`RGBA update!\n${JSON.stringify(rgbaInput)}`)
+    }, [rgbaInput.current.red, rgbaInput.current.green, rgbaInput.current.blue, rgbaInput.current.alpha])
 
     return (
         <div className={styles['layout']}>
             <>
                 <TopNav user={props.user} options={barOptions} dropOptions={dropOptions} current={selectedPage.name}/>
                 {selectedPage.element}
-                {toolsOpen && <ToolBox/>}
+                {
+                    toolsOpen &&
+                    <ToolBox type={'number'} onChange={ev => handleToolBoxInputChange(ev, tbRefs, setRgbaInput)} 
+                             rgbaMin={0} rgbaMax={255} ref={tbRefs}/>
+                }
             </>
         </div>
     );
