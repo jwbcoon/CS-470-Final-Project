@@ -129,21 +129,20 @@ const removeImageWithFilename = (ctx) => {
 
 function saveImageToLocal(ctx) {
     console.log('saving image after successfully uploading to DB');
-    return new Promise((resolve, reject) => {
-        // Create an anchor to download the file
-        const htmlAnchor = document.createElement('a');
+        return new Promise((resolve, reject) => {
+            const downloadLink = document.createElement('a');
+            document.body.appendChild(downloadLink);
 
-        // Configure download location of the blob/file
-        htmlAnchor.download = `../userImages/${ctx.request.body.fileName}`;
-        htmlAnchor.href = ctx.request.body.file;
+            downloadLink.href = ctx.request.body.file;
+            downloadLink.target = '_self';
+            downloadLink.download = `../userImages/${ctx.request.body.fileName}`;
 
-        // Make anchor remove itself after 10 seconds following the contrived click action
-        htmlAnchor.addEventListener('click', e => {
-            setTimeout(() => document.remove(htmlAnchor), 10 * 1000);
-        });
+            // Make downloadLink remove itself after 3 seconds following the contrived click action
+            downloadLink.addEventListener('click', e => {
+                setTimeout(() => document.remove(downloadLink), 3 * 1000);
+            });
 
-        // Click the anchor to start the download
-        htmlAnchor.click();
+            downloadLink.click();
     }, error => {
         if (error) {
             console.log('Error saving image after successful DB upload', error);

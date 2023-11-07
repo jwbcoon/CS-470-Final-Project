@@ -44,10 +44,10 @@ function handleFiles(data, setImage) {
 
 async function readFile(data) {
     return new Promise((resolve, reject) => {
-      const fr = new FileReader();
-      fr.onload = () => resolve(fr);
-      fr.onerror = (err) => reject(err);
-      fr.readAsDataURL(data);
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr);
+        fr.onerror = (err) => reject(err);
+        fr.readAsDataURL(data);
     });
 }
 
@@ -62,10 +62,10 @@ export default function Viewport(props) {
             if (image.blob && props.saveImage) {
                 console.log(`reading ${image.name} from a blob to a file before sending to DB`);
                 const file = await readFile(image.blob);
-                if (!file) return;
+                if (!file.result) { console.log('failed to read image file before sending from client to server'); return; }
 
                 console.log(`uploading this file: ${image.name} to DB.\n Image size: ${image.blob.size}\n Image type: ${image.blob.type}`);
-                api.putUserOriginalImage(props.user.userID, image.name, file)
+                api.putUserOriginalImage(props.user.userID, image.name, file.result)
                     .then(putImageInfo => {
                         console.log(`Response from put request to database::putUserOriginalImage: ${putImageInfo.config.data}`);
                         if (putImageInfo.status === 200)
