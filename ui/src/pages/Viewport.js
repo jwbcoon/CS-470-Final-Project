@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import DropZone from '../components/DropZone';
-import EditCanvas from '../components/EditCanvas.js';
-import API from '../API_Interface/API_Interface.js';
+import EditCanvas from '../components/EditCanvas';
+import API from '../interfaces/API_Interface';
 import styles from './Viewport.module.css';
 
 const ZOOM_BASE = 0.05;

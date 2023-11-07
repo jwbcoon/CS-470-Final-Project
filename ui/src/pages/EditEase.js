@@ -4,7 +4,7 @@ import ViewPort from './Viewport';
 import Gallery from './Gallery';
 import MyEdits from './MyEdits';
 import ToolBox from '../components/ToolBox';
-import API from '../API_Interface/API_Interface.js';
+import API from '../interfaces/API_Interface';
 import styles from './EditEase.module.css';
 
 function handleToolBoxInputChange(ev, tbRefs, setRgbaInput) {
