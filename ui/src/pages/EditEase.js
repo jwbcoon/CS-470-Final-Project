@@ -12,6 +12,21 @@ function handleToolBoxInputChange(ev, tbRefs, setRgbaInput) {
     setRgbaInput({...tbRefs});
 }
 
+function applyEditChanges(rgbaInput) {
+    console.log('applying changes!');
+    // Call python methods to edit image data, then send
+    // edited image to the Viewport to pass to the EditCanvas
+    // 
+    // Something like:
+    //
+    // const change = await pyMethod(...rgbaInput);
+    // setChange(change);
+    // 
+    // Perhaps a better implementation involves interacting
+    // with state of image from Viewport, but unsure how best
+    // to implement that, it makes sense for image to be in Viewport
+}
+
 const EditEase = forwardRef(function EditEase(props, ref) {
     const [selectedPage, setSelectedPage] = useState({ element: <ViewPort/>, name: 'viewport' });
     const [toolsOpen, setToolsOpen] = useState(false);
@@ -47,9 +62,9 @@ const EditEase = forwardRef(function EditEase(props, ref) {
     ];
     const tbRefs = useRef({red: 0, green: 0, blue: 0, alpha: 0});
   
-    useEffect(() => {
+    /*useEffect(() => {
         console.log(`RGBA update!\n${JSON.stringify(rgbaInput)}`)
-    }, [rgbaInput.current.red, rgbaInput.current.green, rgbaInput.current.blue, rgbaInput.current.alpha])
+    }, [rgbaInput.current.red, rgbaInput.current.green, rgbaInput.current.blue, rgbaInput.current.alpha]);*/
 
     return (
         <div className={styles['layout']}>
@@ -58,8 +73,8 @@ const EditEase = forwardRef(function EditEase(props, ref) {
                 {selectedPage.element}
                 {
                     toolsOpen &&
-                    <ToolBox type={'number'} onChange={ev => handleToolBoxInputChange(ev, tbRefs, setRgbaInput)} 
-                             rgbaMin={0} rgbaMax={255} ref={tbRefs}/>
+                    <ToolBox onChange={ev => handleToolBoxInputChange(ev, tbRefs, setRgbaInput)} 
+                             onApply={() => applyEditChanges()} rgbaMin={0} rgbaMax={255} ref={tbRefs}/>
                 }
             </>
         </div>

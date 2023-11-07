@@ -19,7 +19,7 @@ function resizeCanvasToDisplaySize(canvas, newDims={width: MAX_CANV_WIDTH, heigh
     return {deltaWidth: deltaWidth, deltaHeight: deltaHeight}; 
 }
 
-function drawGrid(ctx){
+function drawGrid(ctx) {
     const width = ctx.canvas.width, height = ctx.canvas.height;
     const widthSpacing = width / 100, heightSpacing = height / 100;
     for (var x = 0; x <= width; x += widthSpacing) {

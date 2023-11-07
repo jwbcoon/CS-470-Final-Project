@@ -26,24 +26,27 @@ const ToolBox = forwardRef(function ToolBox(props, ref) {
             <div className={styles['rgba-input']}>
                 <span className={styles['r']}>
                     <label>R:</label>
-                    <input type={props.type} onChange={props.onChange} ref={redRef}
+                    <input type={'number'} onChange={props.onChange} ref={redRef}
                            min={props.rgbaMin} max={props.rgbaMax} value={redRef.current.value}/>
                 </span>
                 <span className={styles['g']}>
                     <label>G:</label>
-                    <input type={props.type} onChange={props.onChange} ref={greenRef}
+                    <input type={'number'} onChange={props.onChange} ref={greenRef}
                            min={props.rgbaMin} max={props.rgbaMax} value={greenRef.current.value}/>
                 </span>
                 <span className={styles['b']}>
                     <label>B:</label>
-                    <input type={props.type} onChange={props.onChange} ref={blueRef}
+                    <input type={'number'} onChange={props.onChange} ref={blueRef}
                            min={props.rgbaMin} max={props.rgbaMax} value={blueRef.current.value}/>
                 </span>
                 <span className={styles['a']}>
                     <label>A:</label>
-                    <input type={props.type} onChange={props.onChange} ref={alphaRef}
+                    <input type={'number'} onChange={props.onChange} ref={alphaRef}
                            min={props.rgbaMin} max={props.rgbaMax} value={alphaRef.current.value}/>
                 </span>
+            </div>
+            <div className={styles['apply']}>
+                <button onClick={props.onApply}>Apply</button>
             </div>
         </menu>
     );
