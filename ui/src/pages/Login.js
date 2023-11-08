@@ -74,9 +74,9 @@ const Login = forwardRef(function Login(props, ref) {
                 ?
                 <>
                     <CredentialField type='text' placeholder={'username'} onChange={e => handleInputChange(e)}/>
-                    <div><span></span></div>
+                    <br/>
                     <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e)}/>
-                    <div><span></span></div>
+                    <br/>
                     <button style={{
                                 backgroundColor: '#888',
                                 color: '#fff',
@@ -90,9 +90,9 @@ const Login = forwardRef(function Login(props, ref) {
                 :
                 <>
                     <CredentialField type='text' placeholder={'username'} onChange={e => handleInputChange(e)}/>
-                    <div><span></span></div>
+                    <br/>
                     <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e)}/>
-                    <div><span></span></div>
+                    <br/>
                     <button style={{
                                 backgroundColor: '#888',
                                 color: '#fff',
