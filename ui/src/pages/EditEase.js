@@ -37,7 +37,7 @@ const EditEase = forwardRef(function EditEase(props, ref) {
         {
             child: <p>Editor</p>,
             pageName: 'viewport',
-            onClick: () => setSelectedPage({ element: <ViewPort user={props.user} saveImage={() => saveImage}/>, name: 'viewport' })
+            onClick: () => setSelectedPage({ element: <ViewPort user={props.user} saveImage={() => saveImage} setSaveImage={setSaveImage}/>, name: 'viewport' })
         },
         {
             child: <p>Gallery</p>,
@@ -89,10 +89,6 @@ const EditEase = forwardRef(function EditEase(props, ref) {
                 }
             ],
             selectedPage.name));
-    }
-
-    useEffect(() => {
-        setBarOptions(determineBarOptions([{child: <p>Open Tools</p>, onClick: () => setToolsOpen(toolsOpen => !toolsOpen)}], selectedPage.name));
     }, [selectedPage.name]);
 
     return (
