@@ -65,3 +65,15 @@
     cursor: pointer;
 }
 
+.form-btn {
+    box-sizing: border-box;
+    width: 80%;
+    height: 4vh;
+    outline: none;
+    cursor: default;
+    color: var(--accent-text);
+    background: var(--accent-dim);
+    border: var(--btn-border);
+    border-radius: 0.4rem;
+}
+

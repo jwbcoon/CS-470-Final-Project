@@ -9,6 +9,6 @@ async function readFile(data) {
     });
 }
 
-module.exports = {
+export {
     readFile
 };

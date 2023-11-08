@@ -1,21 +1,16 @@
-import {useState, useEffect, forwardRef} from 'react';
-import { APIInterface as API } from '../interfaces/API_Interface.js';
+import {useState, useEffect} from 'react';
+import API from '../interfaces/API_Interface.js';
 import styles from './Login.module.css';
 
 import { ReactComponent as EditEaseLogo } from '../icons/editease-logo.svg';
 import CredentialField from '../components/CredentialField.js';
 
-const Login = forwardRef(function Login(props, ref) {
+export default function Login(props) {
     const [userInput, setUserInput] = useState('');
     const [secretInput, setSecretInput] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
     const [authFailed, setAuthFailed] = useState(false);
     const [openSignUp, setOpenSignUp] = useState(false);
-    let globalStyle = ref.current;
-
-    useEffect(() => {
-       globalStyle = ref.current;
-    }, [ref.current])
 
     function handleInputChange(event, field) {
         console.log("handleInputChange called.");
@@ -35,6 +30,7 @@ const Login = forwardRef(function Login(props, ref) {
     useEffect(() => {
         if(!verifyUser || userInput.length === 0)
             return;
+        console.log('useEffect!', verifyUser, userInput, secretInput);
 
         const api = new API();
         async function getUserInfo() {
@@ -87,40 +83,29 @@ const Login = forwardRef(function Login(props, ref) {
                 !openSignUp
                 ?
                 <>
-                    <CredentialField type='text' placeholder={'username'} onChange={e => handleInputChange(e)}/>
+                    <CredentialField type='text' placeholder={'username'} onChange={e => handleInputChange(e, 'username')}/>
                     <br/>
-                    <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e)}/>
+                    <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e, 'password')}/>
                     <br/>
-                    <button style={{
-                                backgroundColor: '#888',
-                                color: '#fff',
-                                border: ' 1px solid #000'
-                            }}
-                            type={'button'}
-                            onClick={() => {setVerifyUser(true)}}
-                          >Proceed</button> 
+                    <button className={styles['form-btn']} onClick={e => {e.preventDefault(); setVerifyUser(true); console.log(verifyUser)}} tabIndex={0}>
+                        PROCEED
+                    </button> 
                     <span onClick={() => setOpenSignUp(openSignUp === false)}>New here? Click here to sign up</span>
                 </>
                 :
                 <>
-                    <CredentialField type='text' placeholder={'username'} onChange={e => handleInputChange(e)}/>
+                    <CredentialField type='text' placeholder={'username'} onChange={e => handleInputChange(e, 'username')}/>
                     <br/>
-                    <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e)}/>
+                    <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e, 'password')}/>
                     <br/>
-                    <button style={{
-                                backgroundColor: '#888',
-                                color: '#fff',
-                                border: ' 1px solid #000'
-                            }}
-                            type={'button'}
-                            onClick={() => {setVerifyUser(true)}}
-                          >Submit</button> 
+                    <button className={styles['form-btn']} onClick={e => {e.preventDefault(); setVerifyUser(true); console.log(verifyUser)}} tabIndex={0}>
+                        SUBMIT
+                    </button> 
                     <span onClick={() => setOpenSignUp(openSignUp === false)}>Click here to sign in</span>
                 </>
             }
             </main>
         </div>
     );
-});
+}
 
-export default Login;

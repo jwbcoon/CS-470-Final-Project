@@ -1,10 +1,10 @@
-import {useState, useEffect, useRef, forwardRef} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import TopNav from '../components/TopNav.js';
 import ViewPort from './Viewport.js';
 import Gallery from './Gallery.js';
 import MyEdits from './MyEdits.js';
 import ToolBox from '../components/ToolBox.js';
-import { APIInterface as API } from '../interfaces/API_Interface.js';
+import API from '../interfaces/API_Interface.js';
 import styles from './EditEase.module.css';
 
 function handleToolBoxInputChange(ev, tbRefs, setRgbaInput) {
@@ -27,7 +27,7 @@ function applyEditChanges(rgbaInput) {
     // to implement that, it makes sense for image to be in Viewport
 }
 
-const EditEase = forwardRef(function EditEase(props, ref) {
+export default function EditEase(props) {
     const [toolsOpen, setToolsOpen] = useState(false);
     const [rgbaInput, setRgbaInput] = useState({ current: {red: 0, green: 0, blue: 0, alpha: 0} });
     const [saveImage, setSaveImage] = useState(false);
@@ -104,6 +104,5 @@ const EditEase = forwardRef(function EditEase(props, ref) {
             </>
         </div>
     );
-});
+}
 
-export default EditEase;
