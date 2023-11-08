@@ -21,7 +21,7 @@ export default function TopNav(props) {
                             <span>SVG</span>
                         </div>
                         <div>
-                            {props.user}
+                            {props.username}
                         </div>
                     </div>
                     <div className={styles['right']}>

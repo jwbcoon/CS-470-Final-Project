@@ -18,6 +18,8 @@ const allImages = async (ctx) => {
         }, (error, tuples) => {
             if (error) {
                 console.log("Connection error in imagesController::allImages", error);
+                ctx.body = [];
+                ctx.status = 500;
                 return reject(error);
             }
             ctx.body = tuples;
@@ -33,7 +35,7 @@ const allImages = async (ctx) => {
     });
 }
 
-const imagesWithUserID = (ctx) => {
+const imagesWithUserID = async (ctx, next) => {
     console.log('images imagesWithUserName called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -50,7 +52,7 @@ const imagesWithUserID = (ctx) => {
             if (error) {
                 console.log("Connection error in imagesController::imagesWithUserName", error);
                 ctx.body = [];
-                ctx.status = 200;
+                ctx.status = 500;
                 return reject(error);
             }
             ctx.body = tuples;
@@ -66,7 +68,7 @@ const imagesWithUserID = (ctx) => {
     });
 }
 
-const insertImageWithFilename = (ctx) => {
+const insertImageWithFilename = async (ctx, next) => {
     console.log('images insertImageWithFilename called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -76,19 +78,18 @@ const insertImageWithFilename = (ctx) => {
                         `;
         dbConnection.query({
             sql: query,
-            values: [ctx.params.userID, ctx.params.fileName, ctx.params.filePath]
+            values: [ctx.request.body.userID, ctx.request.body.fileName, `../userImages/${ctx.request.body.fileName}`]
         }, (error, tuples) => {
             if (error) {
                 console.log("Connection error in imagesController::insertImageWithFilename", error);
                 ctx.body = [];
-                ctx.status = 200;
+                ctx.status = 500;
                 return reject(error);
             }
             ctx.body = tuples;
-            ctx.status = 200;
             return resolve();
         });
-    }).catch(err => {
+    }).then(next, err => { // Execute saveImageToLocal by invoking next or catch an error if dbConnection failed
         console.log("Database connection error in insertImageWithFilename.", err);
         // The UI side will have to look for the value of status and
         // if it is not 200, act appropriately.
@@ -111,7 +112,7 @@ const removeImageWithFilename = (ctx) => {
             if (error) {
                 console.log("Connection error in imagesController::removeImageWithFilename", error);
                 ctx.body = [];
-                ctx.status = 200;
+                ctx.status = 500;
                 return reject(error);
             }
             ctx.body = tuples;
@@ -127,9 +128,26 @@ const removeImageWithFilename = (ctx) => {
     });
 }
 
+const saveImageToLocal = (ctx) => {
+    console.log('saving image after successfully uploading to DB');
+    return new Promise((resolve, reject) => {
+        require('fs').promises.writeFile(`../userImages/${ctx.request.body.fileName}`, ctx.request.body.file,
+            error => {
+            if (error) {
+                console.log(`Error saving image after successful DB upload ${JSON.stringify(error)}`);
+                ctx.status = 500;
+                return reject(error);
+            }
+            ctx.status = 200;
+            return resolve();
+        });
+    });
+}
+
 module.exports = {
     allImages,
     imagesWithUserID,
     insertImageWithFilename,
-    removeImageWithFilename
+    removeImageWithFilename,
+    saveImageToLocal
 };

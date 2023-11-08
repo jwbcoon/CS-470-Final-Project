@@ -6,7 +6,7 @@ import styles from './Viewport.module.css';
 
 const ZOOM_BASE = 0.05;
 
-const handleZoom = (ev, element, zoom, setZoom) => {
+function handleZoom(ev, element, zoom, setZoom) {
     if (ev.ctrlKey) {
         console.log('in handleZoom!');
         ev.preventDefault();
@@ -37,31 +37,53 @@ const handleZoom = (ev, element, zoom, setZoom) => {
 // Note: console.log(JSON.stringify(data)) will always return empty even when data is there.
 // Specify a key name like "name" within a file object and the data will present itself.
 // https://stackoverflow.com/questions/11573710/event-datatransfer-files-is-empty-when-ondrop-is-fired
-const handleFiles = (data, setImage) => {
+function handleFiles(data, setImage) {
     console.log(`handling files! ${JSON.stringify(data[0].name)}`);
-    setImage({file: URL.createObjectURL(data[0])});
+    setImage({blobURL: URL.createObjectURL(data[0]), blob: data[0], name: data[0].name});
+}
+
+async function readFile(data) {
+    return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr);
+        fr.onerror = (err) => reject(err);
+        fr.readAsDataURL(data);
+    });
 }
 
 export default function Viewport(props) {
-    const [image, setImage] = useState({file: undefined});
+    const [image, setImage] = useState({blobURL: undefined, blob: undefined, name: undefined});
     const [zoom, setZoom] = useState(1);
 
-    /*useEffect(() => {
+    useEffect(() => {
         const api = new API();
 
-        async function postUserOriginalImage() {
-            const postJSONResponse = await api.postUserOriginalImage(1);
-            console.log(`Response from post to database::postUserOriginalImage: ${JSON.stringify(postJSONResponse)}`);
-            //setEdit(postJSONResponse.data[0]);
+        async function putUserOriginalImage() {
+            if (image.blob && props.saveImage) {
+                console.log(`reading ${image.name} from a blob to a file before sending to DB`);
+                const file = await readFile(image.blob);
+                if (!file.result) { console.log('failed to read image file before sending from client to server'); return; }
+
+                console.log(`uploading this file: ${image.name} to DB.\n Image size: ${image.blob.size}\n Image type: ${image.blob.type}`);
+                api.putUserOriginalImage(props.user.userID, image.name, file.result)
+                    .then(putImageInfo => {
+                        console.log(`Response from put request to database::putUserOriginalImage: ${putImageInfo.config.data}`);
+                        if (putImageInfo.status === 200)
+                            console.log('image save request sent!');
+                        else
+                            console.log('image save request failed :(');
+                        props.setSaveImage(false);
+                });
+            }
         }
 
-        postUserOriginalImage();
-    }, [edit])*/
+        putUserOriginalImage();
+    }, [props.saveImage, image.blob])
 
     return (
       <main className={styles['viewport']}>
           <DropZone setImage={setImage} handleFiles={handleFiles} handleZoom={handleZoom}
-                    zoom={zoom} setZoom={setZoom} mask={<EditCanvas src={image.file}/>}/>
+                    zoom={zoom} setZoom={setZoom} mask={<EditCanvas src={image.blobURL}/>}/>
       </main>
     );
 }

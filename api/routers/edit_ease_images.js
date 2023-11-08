@@ -50,11 +50,12 @@ imagesRouter.use(VerifyJWT);
 imagesRouter.get('/all-images', ImagesController.allImages,
     err => console.log(`allAccounts ran into an error: ${err}`));
 imagesRouter.get('/:userID/', ImagesController.imagesWithUserID,
-    err => console.log(`imagesWithUserName ran into an error: ${err}`));
-imagesRouter.put('/addImage/:fileName/', ImagesController.insertImageWithFilename,
-    err => console.log(`imagesWithUserName ran into an error: ${err}`));
+    err => console.log(`imagesWithUserID ran into an error: ${err}`));
+imagesRouter.put('/addImage', ImagesController.insertImageWithFilename,
+    err => console.log(`insertImageWithFilename ran into an error: ${JSON.stringify(err)}`));
+imagesRouter.use(ImagesController.saveImageToLocal);
 imagesRouter.delete('/removeImage/:fileName/', ImagesController.removeImageWithFilename,
-    err => console.log(`imagesWithUserName ran into an error: ${err}`));
+    err => console.log(`removeImageWithFilename ran into an error: ${err}`));
 
 /**
  * Register all of the controllers into the default controller.

@@ -7,6 +7,7 @@ import CredentialField from '../components/CredentialField.js';
 
 const Login = forwardRef(function Login(props, ref) {
     const [userInput, setUserInput] = useState('');
+    const [secretInput, setSecretInput] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
     const [authFailed, setAuthFailed] = useState(false);
     const [openSignUp, setOpenSignUp] = useState(false);
@@ -16,51 +17,64 @@ const Login = forwardRef(function Login(props, ref) {
        globalStyle = ref.current;
     }, [ref.current])
 
-    function makeUserName({user_fName, user_mName, user_lName}) {
-
-        console.log(`making user name with: ${user_fName} : ${user_mName} : ${user_lName}`);
-        const middleName = () => user_mName !== undefined && user_mName !== null  
-                            ? `${user_mName.length === 1 ? user_mName[0] + '.' : user_mName}` 
-                            : '';
-
-        return `${user_fName} ${middleName()} ${user_lName}`;
-    };
-
-    function handleInputChange(event) {
+    function handleInputChange(event, field) {
         console.log("handleInputChange called.");
 
-        setUserInput(event.target.value);
-        setAuthFailed(false);
-
-        if(event.key === "Enter") {
+        if(event.key === "Enter" && !authFailed) {
             console.log("handleKeyPress: Verify user input.");
             setVerifyUser(true);
         }
+        if (field === 'username')
+            setUserInput(event.target.value);
+        if (field === 'password') 
+            setSecretInput(event.target.value);
+
+        setAuthFailed(false);
     };
 
     useEffect(() => {
-
-        if( ! verifyUser || userInput.length === 0)
+        if(!verifyUser || userInput.length === 0)
             return;
 
         const api = new API();
         async function getUserInfo() {
-            console.log(`user input is: ${userInput}`);
+            console.log(`user input is: ${userInput} and secret input is: ${secretInput}`);
             api.getLoginFromUsername(userInput)
                 .then( userInfo => {
                     console.log(`api returns user info and it is: ${JSON.stringify(userInfo)}`);
-                    if( userInfo.data.status === "OK" ) {
-                        props.setUser(userInfo.data.user.username);
-                    } else  {
-                        setVerifyUser(false);
-                        setAuthFailed(true);
+                    if(userInfo.data.status === "OK") {
+                        const {password} = userInfo.data.user;
+                        if (password === secretInput) {
+                            props.setUser(userInfo.data.user);
+                            return;
+                        }
                     }
+                    setVerifyUser(false);
+                    setAuthFailed(true);
                 });
         }
 
-        getUserInfo();
-    }, [verifyUser, props.setUser, userInput]);
+        async function postUserInfo() {
+            console.log(`user input is: ${userInput} and secret input is: ${secretInput}`);
+            if (userInput.length + secretInput.length > 0) {
+                api.postLogin(userInput, secretInput)
+                    .then(postInfo => {
+                        console.log(`api returns user info and it is: ${JSON.stringify(postInfo)}`);
+                        if(postInfo.data.status === "OK")
+                            props.setOpenSignUp(false);
+                        else {
+                            setVerifyUser(false);
+                            setAuthFailed(true);
+                        }
+                    });
+            }
+        }
 
+        if (!openSignUp)
+            getUserInfo();
+        else
+            postUserInfo();
+    }, [verifyUser, userInput, secretInput]);
 
     return (
         <div className={styles['container']}>

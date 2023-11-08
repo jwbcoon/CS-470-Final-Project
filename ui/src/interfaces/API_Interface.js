@@ -38,8 +38,12 @@ class APIInterface {
         return axiosAgent.get(`login/${username}`);
     }
 
-    async createLoginFromUserName(username) {
-        return axiosAgent.put(`create/${username}`);
+    async putLogin(username, password) {
+        return axiosAgent.put('users/create',
+        {
+            username: username,
+            password: password
+        });
     }
 
     async deleteUserFromUserName(username) {
@@ -53,10 +57,15 @@ class APIInterface {
         return axiosAgent.get(`users/${username}`);
     }
 
-    // Images Routes
-    async addImageByFilename(filename) {
-        return axiosAgent.post(`addImage/${filename}`);
+    async putUserOriginalImage(userID, fileName, file) {
+        return axiosAgent.put('images/addImage',
+        {
+            userID: userID,
+            fileName: fileName,
+            file: file
+        });
     }
+
     async removeImageByFilename(filename) {
         return axiosAgent.delete(`removeImage/${filename}`);
     }
