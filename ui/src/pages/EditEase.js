@@ -89,6 +89,10 @@ const EditEase = forwardRef(function EditEase(props, ref) {
                 }
             ],
             selectedPage.name));
+    }
+
+    useEffect(() => {
+        setBarOptions(determineBarOptions([{child: <p>Open Tools</p>, onClick: () => setToolsOpen(toolsOpen => !toolsOpen)}], selectedPage.name));
     }, [selectedPage.name]);
 
     return (
