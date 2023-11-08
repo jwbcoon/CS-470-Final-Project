@@ -1,4 +1,4 @@
-import py from ('pythonia');
+//import python from 'pythonia';
 
 async function readFile(data) {
     return new Promise((resolve, reject) => {

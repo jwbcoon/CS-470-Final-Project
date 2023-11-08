@@ -1,4 +1,5 @@
 import {useState, useEffect, useRef} from 'react';
+import {readFile} from '../interfaces/py_interface.js';
 import TopNav from '../components/TopNav.js';
 import ViewPort from './Viewport.js';
 import Gallery from './Gallery.js';
@@ -31,13 +32,21 @@ export default function EditEase(props) {
     const [toolsOpen, setToolsOpen] = useState(false);
     const [rgbaInput, setRgbaInput] = useState({ current: {red: 0, green: 0, blue: 0, alpha: 0} });
     const [saveImage, setSaveImage] = useState(false);
-    const [selectedPage, setSelectedPage] = useState({ element: <ViewPort user={props.user} saveImage={saveImage => saveImage} setSaveImage={setSaveImage}/>, name: 'viewport' });
+    const [image, setImage] = useState({blobURL: undefined, blob: undefined, name: undefined});
+    const [selectedPage, setSelectedPage] = useState({ element: <ViewPort image={image} setImage={setImage}/>, name: 'viewport' });
     const [barOptions, setBarOptions] = useState([{child: <p>Open Tools</p>, onClick: () => setToolsOpen(toolsOpen => !toolsOpen)}]);
+    const tbRefs = useRef({red: 0, green: 0, blue: 0, alpha: 0});
+
+    /*
+     *
+     *  Menu options for DropNav
+     *
+     * **************/
     const dropOptions = [
         {
             child: <p>Editor</p>,
             pageName: 'viewport',
-            onClick: () => setSelectedPage({ element: <ViewPort user={props.user} saveImage={() => saveImage} setSaveImage={setSaveImage}/>, name: 'viewport' })
+            onClick: () => setSelectedPage({ element: <ViewPort image={image} setImage={setImage}/>, name: 'viewport' })
         },
         {
             child: <p>Gallery</p>,
@@ -56,6 +65,12 @@ export default function EditEase(props) {
         }
     ];
 
+    /*
+     *
+     *  Return the TopNav menu associated with 
+     *  each selectedPage option
+     *
+     * ******************/
     function determineBarOptions(baseOpts, pageName) {
         switch (pageName) {
             case 'viewport':
@@ -75,12 +90,14 @@ export default function EditEase(props) {
                 return [...baseOpts];
         }
     };
-    const tbRefs = useRef({red: 0, green: 0, blue: 0, alpha: 0});
   
-    /*useEffect(() => {
-        console.log(`RGBA update!\n${JSON.stringify(rgbaInput)}`)
-    }, [rgbaInput.current.red, rgbaInput.current.green, rgbaInput.current.blue, rgbaInput.current.alpha]);*/
 
+    /*
+     *
+     *  useEffect for updating dynamic TopNav
+     *  menu according to selectedPage state
+     *
+     * ******************/
     useEffect(() => {
         setBarOptions(determineBarOptions([
                 {
@@ -90,6 +107,44 @@ export default function EditEase(props) {
             ],
             selectedPage.name));
     }, [selectedPage.name]);
+
+    
+    useEffect(() => {
+        setSelectedPage({ element: <ViewPort image={image} setImage={setImage}/>, name: 'viewport' });
+    }, [image]);
+
+
+    /*
+    *
+    * useEffect for sending requests to 
+    * ImageController.js query methods in the 
+    * API
+    *
+    * ******************/
+    useEffect(() => {
+        const api = new API();
+
+        async function putUserOriginalImage() {
+            if (image.blob && saveImage) {
+                console.log(`reading ${image.name} from a blob to a file before sending to DB`);
+                const file = await readFile(image.blob);
+                if (!file) { console.log('failed to read image file before sending from client to server'); return; }
+
+                console.log(`uploading this file: ${image.name} to DB.\n Image size: ${image.blob.size}\n Image type: ${image.blob.type}`);
+                api.putUserOriginalImage(props.user.userID, image.name, file)
+                    .then(putImageInfo => {
+                        console.log(`Response from put request to database::putUserOriginalImage: ${putImageInfo.config.data}`);
+                        if (putImageInfo.status === 200)
+                            console.log('image save request sent!');
+                        else
+                            console.log('image save request failed :(');
+                        setSaveImage(false);
+                });
+            }
+        }
+
+        putUserOriginalImage();
+    }, [saveImage, image.blob])
 
     return (
         <div className={styles['layout']}>

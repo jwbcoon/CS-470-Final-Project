@@ -67,13 +67,23 @@
 
 .form-btn {
     box-sizing: border-box;
+    min-width: 30px;
     width: 80%;
+    min-height: 40px;
     height: 4vh;
-    outline: none;
+    outline: var(--btn-border);
     cursor: default;
+
+    font-size: 0.9em;
     color: var(--accent-text);
     background: var(--accent-dim);
-    border: var(--btn-border);
+    border: transparent;
     border-radius: 0.4rem;
+    transition: 0.3s;
+}
+
+.form-btn:focus, .form-btn:hover {
+    border: 1px solid var(--accent-bright);
+    font-size: 0.95em;
 }
 

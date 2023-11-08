@@ -42,48 +42,13 @@ function handleFiles(data, setImage) {
     setImage({blobURL: URL.createObjectURL(data[0]), blob: data[0], name: data[0].name});
 }
 
-async function readFile(data) {
-    return new Promise((resolve, reject) => {
-        const fr = new FileReader();
-        fr.onload = () => resolve(fr);
-        fr.onerror = (err) => reject(err);
-        fr.readAsDataURL(data);
-    });
-}
-
 export default function Viewport(props) {
-    const [image, setImage] = useState({blobURL: undefined, blob: undefined, name: undefined});
     const [zoom, setZoom] = useState(1);
-
-    useEffect(() => {
-        const api = new API();
-
-        async function putUserOriginalImage() {
-            if (image.blob && props.saveImage) {
-                console.log(`reading ${image.name} from a blob to a file before sending to DB`);
-                const file = await readFile(image.blob);
-                if (!file.result) { console.log('failed to read image file before sending from client to server'); return; }
-
-                console.log(`uploading this file: ${image.name} to DB.\n Image size: ${image.blob.size}\n Image type: ${image.blob.type}`);
-                api.putUserOriginalImage(props.user.userID, image.name, file.result)
-                    .then(putImageInfo => {
-                        console.log(`Response from put request to database::putUserOriginalImage: ${putImageInfo.config.data}`);
-                        if (putImageInfo.status === 200)
-                            console.log('image save request sent!');
-                        else
-                            console.log('image save request failed :(');
-                        props.setSaveImage(false);
-                });
-            }
-        }
-
-        putUserOriginalImage();
-    }, [props.saveImage, image.blob])
 
     return (
       <main className={styles['viewport']}>
-          <DropZone setImage={setImage} handleFiles={handleFiles} handleZoom={handleZoom}
-                    zoom={zoom} setZoom={setZoom} mask={<EditCanvas src={image.blobURL}/>}/>
+          <DropZone setImage={props.setImage} handleFiles={handleFiles} handleZoom={handleZoom}
+                    zoom={zoom} setZoom={setZoom} mask={<EditCanvas src={props.image.blobURL}/>}/>
       </main>
     );
 }
