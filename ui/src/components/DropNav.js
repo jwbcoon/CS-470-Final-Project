@@ -18,7 +18,7 @@ export default function DropNav(props) {
                             props.options.map((option, key) => 
                                 <>
                                     <li onClick={option.onClick}
-                                        className={option.pageName === props.current ? styles[`selected${key}`] : styles[`dmli${key}`]}>
+                                        className={option.name === props.current ? styles[`selected${key}`] : styles[`dmli${key}`]}>
                                         {option.child}
                                     </li>
                                 </>
@@ -34,7 +34,7 @@ export default function DropNav(props) {
                             props.options.map((option, key) => 
                                 <>
                                     <li onClick={option.onClick}
-                                        className={option.pageName === props.current ? styles[`selected${key}`] : styles[`dmli${key}`]}>
+                                        className={option.name === props.current ? styles[`selected${key}`] : styles[`dmli${key}`]}>
                                         {option.child}
                                     </li>
                                 </>

@@ -8,32 +8,42 @@ import ToolBox from '../components/ToolBox.js';
 import API from '../interfaces/API_Interface.js';
 import styles from './EditEase.module.css';
 
-function handleToolBoxInputChange(ev, tbRefs, setRgbaInput) {
-    console.log('handling toolbox input change!');
-    setRgbaInput({...tbRefs});
-}
-
-function applyEditChanges(rgbaInput) {
-    console.log('applying changes!');
-    // Call python methods to edit image data, then send
-    // edited image to the Viewport to pass to the EditCanvas
-    // 
-    // Something like:
-    //
-    // const change = await pyMethod(...rgbaInput);
-    // setChange(change);
-    // 
-    // Perhaps a better implementation involves interacting
-    // with state of image from Viewport, but unsure how best
-    // to implement that, it makes sense for image to be in Viewport
-}
-
 export default function EditEase(props) {
+
+    function handleToolBoxInputChange(ev, tbRefs, setRgbaInput) {
+        console.log('handling toolbox input change!');
+        setRgbaInput({...tbRefs});
+    }
+
+    function applyEditChanges(rgbaInput) {
+        console.log('applying changes!');
+        // Call python methods to edit image data, then send
+        // edited image to the Viewport to pass to the EditCanvas
+        // 
+        // Something like:
+        //
+        // const change = await pyMethod(...rgbaInput);
+        // setChange(change);
+        // 
+        // Perhaps a better implementation involves interacting
+        // with state of image from Viewport, but unsure how best
+        // to implement that, it makes sense for image to be in Viewport
+    }
+
+    function initPages() {
+        return {
+            'viewport': { element: <ViewPort image={image} setImage={setImage}/>, name: 'viewport' },
+            'gallery': { element: <Gallery user={props.user}/>, name: 'gallery' },
+            'my-edits': { element: <MyEdits user={props.user}/>, name: 'my_edits' }
+        };
+    }
+
     const [toolsOpen, setToolsOpen] = useState(false);
     const [rgbaInput, setRgbaInput] = useState({ current: {red: 0, green: 0, blue: 0, alpha: 0} });
     const [saveImage, setSaveImage] = useState(false);
     const [image, setImage] = useState({blobURL: undefined, blob: undefined, name: undefined});
-    const [selectedPage, setSelectedPage] = useState({ element: <ViewPort image={image} setImage={setImage}/>, name: 'viewport' });
+    const [pages, setPages] = useState(initPages);
+    const [selectedPage, setSelectedPage] = useState(pages['viewport']);
     const [barOptions, setBarOptions] = useState([{child: <p>Open Tools</p>, onClick: () => setToolsOpen(toolsOpen => !toolsOpen)}]);
     const tbRefs = useRef({red: 0, green: 0, blue: 0, alpha: 0});
 
@@ -45,22 +55,22 @@ export default function EditEase(props) {
     const dropOptions = [
         {
             child: <p>Editor</p>,
-            pageName: 'viewport',
-            onClick: () => setSelectedPage({ element: <ViewPort image={image} setImage={setImage}/>, name: 'viewport' })
+            name: 'viewport',
+            onClick: () => setSelectedPage(pages['viewport'])
         },
         {
             child: <p>Gallery</p>,
-            pageName: 'gallery',
-            onClick: () => setSelectedPage({ element: <Gallery user={props.user}/>, name: 'gallery' })
+            name: 'gallery',
+            onClick: () => setSelectedPage(pages['gallery'])
         },
         {
             child: <p>My Edits</p>,
-            pageName: 'my_edits',
-            onClick: () => setSelectedPage({ element: <MyEdits user={props.user}/>, name: 'my_edits' })
+            name: 'my-edits',
+            onClick: () => setSelectedPage(pages['my-edits'])
         },
         {
             child: <p>Logout</p>,
-            pageName: 'logout',
+            name: 'logout',
             onClick: () => props.logout()
         }
     ];
@@ -109,9 +119,9 @@ export default function EditEase(props) {
     }, [selectedPage.name]);
 
     
-    useEffect(() => {
-        setSelectedPage({ element: <ViewPort image={image} setImage={setImage}/>, name: 'viewport' });
-    }, [image]);
+    /*useEffect(() => {
+        setPages({ ...pages, pages: {viewport: {element: {props: {image: image}}}} });
+    }, [image]);*/
 
 
     /*
