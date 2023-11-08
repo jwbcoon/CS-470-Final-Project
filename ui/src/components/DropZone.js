@@ -11,14 +11,14 @@ function dragOver(e) {
     e.preventDefault();
 }
 
-function drop(e, handleFiles, setImage) {
+function drop(e, handleFiles) {
     e.stopPropagation();
     e.preventDefault();
 
     const dt = e.dataTransfer;
     const files = dt.files;
 
-    handleFiles(files, setImage);
+    handleFiles(files);
 }
 
 
@@ -36,7 +36,7 @@ export default function DropZone(props) {
     return <div className={styles['dropzone']}
                 onDragEnter={e => dragEnter(e)}
                 onDragOver={e => dragOver(e)}
-                onDrop={e => drop(e, props.handleFiles, props.setImage)}>
+                onDrop={e => drop(e, props.handleFiles)}>
               <input type='file' style={{ display: 'none' }}/>
               <div className={styles['mask']} ref={ref}>
                   { props.mask }

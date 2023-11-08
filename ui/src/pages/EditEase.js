@@ -6,6 +6,7 @@ import Gallery from './Gallery.js';
 import MyEdits from './MyEdits.js';
 import ToolBox from '../components/ToolBox.js';
 import API from '../interfaces/API_Interface.js';
+import {useImageData} from '../components/ImageDataContext.js';
 import styles from './EditEase.module.css';
 
 export default function EditEase(props) {
@@ -32,7 +33,7 @@ export default function EditEase(props) {
 
     function initPages() {
         return {
-            'viewport': { element: <ViewPort image={image} setImage={setImage}/>, name: 'viewport' },
+            'viewport': { element: <ViewPort/>, name: 'viewport' },
             'gallery': { element: <Gallery user={props.user}/>, name: 'gallery' },
             'my-edits': { element: <MyEdits user={props.user}/>, name: 'my_edits' }
         };
@@ -41,11 +42,12 @@ export default function EditEase(props) {
     const [toolsOpen, setToolsOpen] = useState(false);
     const [rgbaInput, setRgbaInput] = useState({ current: {red: 0, green: 0, blue: 0, alpha: 0} });
     const [saveImage, setSaveImage] = useState(false);
-    const [image, setImage] = useState({blobURL: undefined, blob: undefined, name: undefined});
     const [pages, setPages] = useState(initPages);
     const [selectedPage, setSelectedPage] = useState(pages['viewport']);
     const [barOptions, setBarOptions] = useState([{child: <p>Open Tools</p>, onClick: () => setToolsOpen(toolsOpen => !toolsOpen)}]);
+
     const tbRefs = useRef({red: 0, green: 0, blue: 0, alpha: 0});
+    const image = useImageData();
 
     /*
      *
@@ -164,7 +166,7 @@ export default function EditEase(props) {
                 {
                     toolsOpen &&
                     <ToolBox onChange={ev => handleToolBoxInputChange(ev, tbRefs, setRgbaInput)} 
-                             onApply={() => applyEditChanges()} rgbaMin={0} rgbaMax={255} ref={tbRefs}/>
+                            onApply={() => applyEditChanges()} rgbaMin={0} rgbaMax={255} ref={tbRefs}/>
                 }
             </>
         </div>
