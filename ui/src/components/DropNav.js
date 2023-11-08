@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import {Divider} from '@mui/material';
 import styles from './DropNav.module.css';
 
 export default function DropNav(props) {
@@ -14,7 +13,7 @@ export default function DropNav(props) {
                 open 
                 ? (
                 <div className={styles['drop-menu']}>
-                    <ul className={styles['dmul']}>
+                    <menu className={styles['dmul']}>
                         {
                             props.options.map((option, key) => 
                                 <>
@@ -25,7 +24,7 @@ export default function DropNav(props) {
                                 </>
                             )
                         }
-                    </ul>
+                    </menu>
                 </div>
                 )
                 : (

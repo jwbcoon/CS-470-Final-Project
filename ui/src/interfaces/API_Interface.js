@@ -21,7 +21,7 @@ const AxiosConfigured = () => {
 
 const axiosAgent = AxiosConfigured();
 
-export default class APIInterface {
+class APIInterface {
 
     async getUserInfo(user_id) {
         return axiosAgent.get(`login/${user_id}`)
@@ -62,3 +62,5 @@ export default class APIInterface {
     }
 
 }
+
+export { APIInterface };

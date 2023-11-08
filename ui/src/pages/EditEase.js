@@ -1,10 +1,10 @@
 import {useState, useEffect, useRef, forwardRef} from 'react';
-import TopNav from '../components/TopNav';
-import ViewPort from './Viewport';
-import Gallery from './Gallery';
-import MyEdits from './MyEdits';
-import ToolBox from '../components/ToolBox';
-import API from '../interfaces/API_Interface';
+import TopNav from '../components/TopNav.js';
+import ViewPort from './Viewport.js';
+import Gallery from './Gallery.js';
+import MyEdits from './MyEdits.js';
+import ToolBox from '../components/ToolBox.js';
+import { APIInterface as API } from '../interfaces/API_Interface.js';
 import styles from './EditEase.module.css';
 
 function handleToolBoxInputChange(ev, tbRefs, setRgbaInput) {

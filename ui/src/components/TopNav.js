@@ -1,8 +1,5 @@
 import {useState} from 'react';
-import {List, ListItem} from '@mui/material';
-import StartIcon from '@mui/icons-material/Start';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import DropNav from './DropNav';
+import DropNav from './DropNav.js';
 import styles from './TopNav.module.css';
 
 export default function TopNav(props) {
@@ -14,34 +11,32 @@ export default function TopNav(props) {
                 !open
                 ? ( 
                 <div className={styles['preview']} onClick={() => setOpen(open === false)}>
-                    <StartIcon/>
+                    <span>SVG</span>
                 </div>
                 )
                 : (
                 <div className={styles['nav']}>
                     <div className={styles['left']} onClick={() => setOpen(open === false)}>
                         <div>
-                            <StartIcon/> 
+                            <span>SVG</span>
                         </div>
                         <div>
                             {props.user}
                         </div>
                     </div>
                     <div className={styles['right']}>
-                        <List className={styles['nav-ul']}>
+                        <menu className={styles['nav-ul']}>
                             {
                                 props.options.map((option, key) => (
-                                    <>
-                                        <ListItem key={`${option.child.innerText}${key}`}
-                                                  className={styles['nav-li']}
-                                                  onClick={option.onClick}>
-                                            {option.child}
-                                        </ListItem>
-                                    </>
+                                    <li key={`${option.child.innerText}${key}`}
+                                              className={styles['nav-li']}
+                                              onClick={option.onClick}>
+                                        {option.child}
+                                    </li>
                                 ))
                             }
-                        </List>
-                        <DropNav mask={<AccountCircleIcon/>} options={props.dropOptions} current={props.current}/>
+                        </menu>
+                        <DropNav mask={<span>SVG</span>} options={props.dropOptions} current={props.current}/>
                     </div>
                 </div>
                 )

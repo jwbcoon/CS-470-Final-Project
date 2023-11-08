@@ -1,4 +1,3 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import styles from './Gallery.module.css';
 
 export default function Gallery(props) {
@@ -7,7 +6,7 @@ export default function Gallery(props) {
             <header className={styles['head']}>
                 <div className={styles['user-info']}>
                     <div>
-                        <AccountCircleIcon/>
+                        <span>SVG</span>
                     </div>
                     <p>Info about uploaded photos!</p>
                 </div>

@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
-import EditEase from './pages/EditEase';
-import Login from './pages/Login';
+import EditEase from './pages/EditEase.js';
+import Login from './pages/Login.js';
 
-export default function Main() {
+export default function App() {
 
     const [user, setUser] = useState(undefined);
     const [theme, setTheme] = useState('dark');

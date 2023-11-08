@@ -1,11 +1,9 @@
 import {useState, useEffect, forwardRef} from 'react';
-import API from '../interfaces/API_Interface';
+import { APIInterface as API } from '../interfaces/API_Interface.js';
 import styles from './Login.module.css';
 
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import { ReactComponent as EditEaseLogo } from '../icons/editease-logo.svg';
-import CredentialField from '../components/CredentialField';
+import CredentialField from '../components/CredentialField.js';
 
 const Login = forwardRef(function Login(props, ref) {
     const [userInput, setUserInput] = useState('');
@@ -76,33 +74,33 @@ const Login = forwardRef(function Login(props, ref) {
                 ?
                 <>
                     <CredentialField type='text' placeholder={'username'} onChange={e => handleInputChange(e)}/>
-                    <Divider/>
+                    <div><span></span></div>
                     <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e)}/>
-                    <Divider/>
-                    <Button style={{
+                    <div><span></span></div>
+                    <button style={{
                                 backgroundColor: '#888',
                                 color: '#fff',
-                                border: '1px solid #000'
+                                border: ' 1px solid #000'
                             }}
-                            variant="contained"
+                            type={'button'}
                             onClick={() => {setVerifyUser(true)}}
-                          >Proceed</Button> 
+                          >Proceed</button> 
                     <span onClick={() => setOpenSignUp(openSignUp === false)}>New here? Click here to sign up</span>
                 </>
                 :
                 <>
                     <CredentialField type='text' placeholder={'username'} onChange={e => handleInputChange(e)}/>
-                    <Divider/>
+                    <div><span></span></div>
                     <CredentialField type='password' placeholder={'password'} onChange={e => handleInputChange(e)}/>
-                    <Divider/>
-                    <Button style={{
+                    <div><span></span></div>
+                    <button style={{
                                 backgroundColor: '#888',
                                 color: '#fff',
                                 border: ' 1px solid #000'
                             }}
-                            variant="contained"
+                            type={'button'}
                             onClick={() => {setVerifyUser(true)}}
-                          >Submit</Button> 
+                          >Submit</button> 
                     <span onClick={() => setOpenSignUp(openSignUp === false)}>Click here to sign in</span>
                 </>
             }
