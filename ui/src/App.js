@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import EditEase from './pages/EditEase.js';
 import Login from './pages/Login.js';
-import {ImageDataProvider} from './components/ImageDataContext.js';
+import MasterDataProvider from './util/DataContexts.js';
 
 export default function App() {
 
@@ -12,10 +12,10 @@ export default function App() {
         <div id={theme}>
             {
                 user !== undefined ? (
-                    <ImageDataProvider>
+                    <MasterDataProvider>
                         <EditEase user={user} updateColorTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} 
                                   logout={() => setUser(undefined)}/>
-                    </ImageDataProvider>
+                    </MasterDataProvider>
                 ) : (
                     <Login user={user} updateColorTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} setUser={setUser}/>
                 )

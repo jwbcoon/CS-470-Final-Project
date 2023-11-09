@@ -1,12 +1,9 @@
 import {useState, useEffect, useRef} from 'react';
 import {readFile} from '../interfaces/py_interface.js';
 import TopNav from '../components/TopNav.js';
-import ViewPort from './Viewport.js';
-import Gallery from './Gallery.js';
-import MyEdits from './MyEdits.js';
 import ToolBox from '../components/ToolBox.js';
 import API from '../interfaces/API_Interface.js';
-import {useImageData} from '../components/ImageDataContext.js';
+import {useImageData, usePageData} from '../util/DataContexts.js';
 import styles from './EditEase.module.css';
 
 export default function EditEase(props) {
@@ -31,23 +28,15 @@ export default function EditEase(props) {
         // to implement that, it makes sense for image to be in Viewport
     }
 
-    function initPages() {
-        return {
-            'viewport': { element: <ViewPort/>, name: 'viewport' },
-            'gallery': { element: <Gallery user={props.user}/>, name: 'gallery' },
-            'my-edits': { element: <MyEdits user={props.user}/>, name: 'my_edits' }
-        };
-    }
-
-    const [toolsOpen, setToolsOpen] = useState(false);
-    const [rgbaInput, setRgbaInput] = useState({ current: {red: 0, green: 0, blue: 0, alpha: 0} });
-    const [saveImage, setSaveImage] = useState(false);
-    const [pages, setPages] = useState(initPages);
-    const [selectedPage, setSelectedPage] = useState(pages['viewport']);
-    const [barOptions, setBarOptions] = useState([{child: <p>Open Tools</p>, onClick: () => setToolsOpen(toolsOpen => !toolsOpen)}]);
-
     const tbRefs = useRef({red: 0, green: 0, blue: 0, alpha: 0});
     const image = useImageData();
+    const pages = usePageData();
+
+    const [toolsOpen, setToolsOpen] = useState(false);
+    const [saveImage, setSaveImage] = useState(false);
+    const [rgbaInput, setRgbaInput] = useState({ current: {red: 0, green: 0, blue: 0, alpha: 0} });
+    const [selectedPage, setSelectedPage] = useState(pages['viewport']);
+    const [barOptions, setBarOptions] = useState([{child: <p>Open Tools</p>, onClick: () => setToolsOpen(toolsOpen => !toolsOpen)}]);
 
     /*
      *
@@ -79,8 +68,8 @@ export default function EditEase(props) {
 
     /*
      *
-     *  Return the TopNav menu associated with 
-     *  each selectedPage option
+     *  Return the TopNav menu options associated with 
+     *  each selectedPage option from pages
      *
      * ******************/
     function determineBarOptions(baseOpts, pageName) {
@@ -111,19 +100,16 @@ export default function EditEase(props) {
      *
      * ******************/
     useEffect(() => {
-        setBarOptions(determineBarOptions([
+        setBarOptions(
+            determineBarOptions([
                 {
                     child: <p>Open Tools</p>,
                     onClick: () => setToolsOpen(toolsOpen => !toolsOpen)
                 }
             ],
-            selectedPage.name));
+            selectedPage.name)
+        );
     }, [selectedPage.name]);
-
-    
-    /*useEffect(() => {
-        setPages({ ...pages, pages: {viewport: {element: {props: {image: image}}}} });
-    }, [image]);*/
 
 
     /*

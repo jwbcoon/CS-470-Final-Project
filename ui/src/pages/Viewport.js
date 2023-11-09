@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import DropZone from '../components/DropZone.js';
 import EditCanvas from '../components/EditCanvas.js';
 import API from '../interfaces/API_Interface.js';
-import {useImageData, useImageDataUpdate} from '../components/ImageDataContext.js';
+import {useImageData, useImageDataUpdate} from '../util/DataContexts.js';
 import styles from './Viewport.module.css';
 
 const ZOOM_BASE = 0.05;
@@ -40,14 +40,14 @@ export default function Viewport(props) {
 
     const [zoom, setZoom] = useState(1);
     const image = useImageData();
-    const setImage = useImageDataUpdate();
+    const updateImage = useImageDataUpdate();
 
     // Note: console.log(JSON.stringify(data)) will always return empty even when data is there.
     // Specify a key name like "name" within a file object and the data will present itself.
     // https://stackoverflow.com/questions/11573710/event-datatransfer-files-is-empty-when-ondrop-is-fired
     function handleFiles(data) {
         console.log(`handling files! ${JSON.stringify(data[0].name)}`);
-        setImage({blobURL: URL.createObjectURL(data[0]), blob: data[0], name: data[0].name});
+        updateImage({blobURL: URL.createObjectURL(data[0]), blob: data[0], name: data[0].name});
     }
 
     return (
