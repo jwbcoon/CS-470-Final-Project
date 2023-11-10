@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import EditEase from './pages/EditEase.js';
 import Login from './pages/Login.js';
 import MasterDataProvider from './util/DataContexts.js';
@@ -22,5 +22,4 @@ export default function App() {
             }
         </div>
     )
-
 }
