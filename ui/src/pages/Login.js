@@ -50,12 +50,12 @@ export default function Login(props) {
                 });
         }
 
-        async function postUserInfo() {
+        async function putUserInfo() {
             console.log(`user input is: ${userInput} and secret input is: ${secretInput}`);
             if (userInput.length + secretInput.length > 0) {
-                api.postLogin(userInput, secretInput)
-                    .then(postInfo => {
-                        console.log(`api returns user info and it is: ${JSON.stringify(postInfo)}`);
+                api.putLogin(userInput, secretInput)
+                    .then(putLoginInfo => {
+                        console.log(`api returns login info and it is: ${JSON.stringify(putLoginInfo)}`);
                         if(postInfo.data.status === "OK")
                             props.setOpenSignUp(false);
                         else {
@@ -69,7 +69,7 @@ export default function Login(props) {
         if (!openSignUp)
             getUserInfo();
         else
-            postUserInfo();
+            putUserInfo();
     }, [verifyUser, userInput, secretInput]);
 
     return (

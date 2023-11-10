@@ -1,3 +1,4 @@
+import { ReactComponent as ProfileIcon } from '../icons/profile-user-svgrepo-com.svg';
 import styles from './Gallery.module.css';
 
 export default function Gallery(props) {
@@ -6,7 +7,7 @@ export default function Gallery(props) {
             <header className={styles['head']}>
                 <div className={styles['user-info']}>
                     <div>
-                        <span>SVG</span>
+                        <ProfileIcon/>
                     </div>
                     <p>Info about uploaded photos!</p>
                 </div>

@@ -73,8 +73,8 @@
 }
 
 .left svg {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     color: var(--primary-text);
     transform: rotate(-90deg);
     transition: 0.3s;
@@ -86,7 +86,7 @@
 
 .left div:first-of-type:hover svg {
     color: #000;
-    transform: translateY(-20%) rotate(-90deg);
+    transform: translateY(-35%) rotate(-90deg);
 }
 
 .right {
