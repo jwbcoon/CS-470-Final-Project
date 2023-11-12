@@ -18,7 +18,7 @@ async function readFile(data, format='url') {
             fr.readAsText(data);
         break;
         default:
-            reject('An invalid format was passed to readFile method of py_interface.js');
+            reject('An invalid format was passed to readFile method of filel_processing.js');
         }
     });
 }
@@ -31,13 +31,16 @@ async function arrayBufferToFormData(arrayBuffer, sliceSize, formData=null) {
 
     const subdivision = Number(sliceSize.replace(/mb/, '')) * 1024 * 1024;
 
+    let count = 0;
     let start = 0;
     let end = subdivision;
     while (end < arrayBuffer.byteLength) {
         let readBuffer = arrayBuffer.slice(start, subdivision);
+        formData.append(`imgchunk${count}`, new Blob([readBuffer], { type: 'application/octet-stream' }));
+
+        count += 1;
         start = end;
         end = Math.min(end + subdivision, arrayBuffer.byteLength);
-        formData.append(`imgchunk${count}`, new Blob([readBuffer], { type: 'application/octet-stream' }))
     }
     return formData;
 }

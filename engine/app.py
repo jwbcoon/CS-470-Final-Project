@@ -18,7 +18,7 @@ def entry():
 def uploads():
     try:
         imgBytes = bytearray()
-        formkeys = request.form.keys() # request.form is a dict of k:v pairs pointing to 4mb chunks of image data, then the filename and filetype
+        formkeys = request.form.keys() # request.form is a dict whose values are 4mb chunks of image data, then the filename and filetype
         if len(formkeys) > 2: # The min length is 2 for the filename and type parameters in the form
             for byte_array_index, key in enumerate(formkeys):
                 if (key != 'filename' and key != 'filetype'):
@@ -35,7 +35,7 @@ def uploads():
             response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
             response.headers.add('Access-Control-Allow-Credentials', 'true')
 
-            return response;
+            return response
         else:
             return jsonify({'error': 'Error reading form data to image'}), 400
     except Exception as e:
@@ -43,7 +43,7 @@ def uploads():
 
 @app.get('/downloads')
 def download():
-    print('request to return an edited file received')
+    pass
 
 
 
