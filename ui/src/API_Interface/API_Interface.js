@@ -70,5 +70,19 @@ export default class APIInterface {
         return axiosAgent.delete(`removeImage/${filename}`);
     }
 
+    // Flask server routes
+    async putImageToEditEngine(formData) {
+        return axios.put('http://localhost:5000/uploads', {
+            data: formData,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Access-Control-Allow-Origin': '*', // Allow requests from any origin
+              'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE', // Allow the specified methods
+              'Access-Control-Allow-Headers': 'Content-Type', // Allow the specified headers
+            },
+            withCredentials: true
+        });
+    }
+
 }
 

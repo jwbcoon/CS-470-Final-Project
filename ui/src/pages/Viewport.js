@@ -1,7 +1,8 @@
 import {useState, useEffect} from 'react';
 import DropZone from '../components/DropZone.js';
 import EditCanvas from '../components/EditCanvas.js';
-import API from '../interfaces/API_Interface.js';
+import {readFile, arrayBufferToFormData} from '../util/file_processing.js';
+import API from '../API_Interface/API_Interface.js';
 import {useImageData, useImageDataUpdate} from '../util/DataContexts.js';
 import styles from './Viewport.module.css';
 
@@ -49,6 +50,34 @@ export default function Viewport(props) {
         console.log(`handling files! ${JSON.stringify(data[0].name)}`);
         updateImage({blobURL: URL.createObjectURL(data[0]), blob: data[0], name: data[0].name});
     }
+
+    useEffect(() => {
+        const api = new API();
+
+        async function uploadImage() {
+            if (image.blob) {
+                console.log(`reading ${image.name} from a blob to a file before sending to DB`);
+                const fileArrayBuffer = await readFile(image.blob, 'buffer'); // Convert file to arrayBuffer
+                if (!fileArrayBuffer) { console.log('failed to read image file before sending from client to server'); return; }
+                const formData = await arrayBufferToFormData(fileArrayBuffer, '4mb'); // Convert arrayBuffer to formData to accomodate size caps
+                if (!formData) { console.log('failed to convert file binary into form data'); return; }
+                formData.append('filename', image.name);
+                formData.append('filetype', image.blob.type.replace(/.*\/(.*)$/, '$1')); // Remove the 'image/' portion of MIMEtype string
+
+                console.log('uploading an image to Flask server engine');
+                api.putImageToEditEngine(formData)
+                .then(putImageInfo => {
+                    console.log(`Response from put request to engine::putImageToEditEngine: ${putImageInfo.config.data}`);
+                    if (putImageInfo.status === 200)
+                        console.log('image receive by Flask server!');
+                    else
+                        console.log('request to Flask server failed :(');
+                });
+            }
+        }
+
+        uploadImage();
+    }, [image])
 
     return (
       <main className={styles['viewport']}>

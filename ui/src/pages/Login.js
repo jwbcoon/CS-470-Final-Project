@@ -1,5 +1,10 @@
+<<<<<<< Updated upstream
 import React, {useState, useEffect} from 'react';
 import API from '../interfaces/API_Interface.js';
+=======
+import {useState, useEffect} from 'react';
+import API from '../API_Interface/API_Interface.js';
+>>>>>>> Stashed changes
 import styles from './Login.module.css';
 
 import { ReactComponent as EditEaseLogo } from '../icons/editease-logo.svg';

@@ -1,8 +1,7 @@
 import {useState, useEffect, useRef} from 'react';
-import {readFile} from '../interfaces/py_interface.js';
 import TopNav from '../components/TopNav.js';
 import ToolBox from '../components/ToolBox.js';
-import API from '../interfaces/API_Interface.js';
+import API from '../API_Interface/API_Interface.js';
 import {useImageData, usePageData} from '../util/DataContexts.js';
 import styles from './EditEase.module.css';
 
@@ -124,12 +123,8 @@ export default function EditEase(props) {
 
         async function putUserOriginalImage() {
             if (image.blob && saveImage) {
-                console.log(`reading ${image.name} from a blob to a file before sending to DB`);
-                const file = await readFile(image.blob);
-                if (!file) { console.log('failed to read image file before sending from client to server'); return; }
-
                 console.log(`uploading this file: ${image.name} to DB.\n Image size: ${image.blob.size}\n Image type: ${image.blob.type}`);
-                api.putUserOriginalImage(props.user.userID, image.name, file)
+                api.putUserOriginalImage(props.user.userID, image.name)
                     .then(putImageInfo => {
                         console.log(`Response from put request to database::putUserOriginalImage: ${putImageInfo.config.data}`);
                         if (putImageInfo.status === 200)

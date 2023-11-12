@@ -95,7 +95,7 @@ export function PageDataProvider({children}) {
         return {
             'viewport': { element: <ViewPort/>, name: 'viewport' },
             'gallery': { element: <Gallery/>, name: 'gallery' },
-            'my-edits': { element: <MyEdits/>, name: 'my_edits' }
+            'my-edits': { element: <MyEdits/>, name: 'my-edits' }
         };
     }
 
