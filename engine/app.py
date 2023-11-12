@@ -1,12 +1,3 @@
-<<<<<<< Updated upstream
-from flask import Flask 
-
-app = Flask(__name__) 
-
-@app.route('/')
-def hello_world():
-    return '<p>Hello World!</p>'
-=======
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -61,4 +52,3 @@ def download():
     data received in the uploads method above, since that method saves the images to the file system.
     Then we can implement a downloads() method for the client to receive edits from
     '''
->>>>>>> Stashed changes
