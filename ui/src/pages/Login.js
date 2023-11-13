@@ -4,8 +4,12 @@ import styles from './Login.module.css';
 
 import { ReactComponent as EditEaseLogo } from '../icons/editease-logo.svg';
 import CredentialField from '../components/CredentialField.js';
+import { useUserDataUpdate } from '../util/DataContexts.js';
 
 export default function Login(props) {
+
+    const setUser = useUserDataUpdate();
+
     const [userInput, setUserInput] = useState('');
     const [secretInput, setSecretInput] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
@@ -36,12 +40,12 @@ export default function Login(props) {
         async function getUserInfo() {
             console.log(`user input is: ${userInput} and secret input is: ${secretInput}`);
             api.getLoginFromUsername(userInput)
-                .then( userInfo => {
+                .then(userInfo => {
                     console.log(`api returns user info and it is: ${JSON.stringify(userInfo)}`);
                     if(userInfo.data.status === "OK") {
                         const {password} = userInfo.data.user;
                         if (password === secretInput) {
-                            props.setUser(userInfo.data.user);
+                            setUser(userInfo.data.user);
                             return;
                         }
                     }

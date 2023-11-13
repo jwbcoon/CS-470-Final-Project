@@ -1,9 +1,9 @@
 import {useState, useEffect} from 'react';
 import DropZone from '../components/DropZone.js';
 import EditCanvas from '../components/EditCanvas.js';
-import {readFile, arrayBufferToFormData} from '../util/file_processing.js';
+import {readFile, arrayBufferToFormData, jsonBinaryToBlob} from '../util/file_processing.js';
 import API from '../API_Interface/API_Interface.js';
-import {useImageData, useImageDataUpdate} from '../util/DataContexts.js';
+import {useEditData, useEditDataUpdate, useImageData, useImageDataUpdate, useUserData} from '../util/DataContexts.js';
 import styles from './Viewport.module.css';
 
 const ZOOM_BASE = 0.05;
@@ -40,8 +40,9 @@ function handleZoom(ev, element, zoom, setZoom) {
 export default function Viewport(props) {
 
     const [zoom, setZoom] = useState(1);
-    const image = useImageData();
-    const updateImage = useImageDataUpdate();
+    const [image, editState] = [useImageData(), useEditData()];
+    const [updateImage, updateEditState] = [useImageDataUpdate(), useEditDataUpdate()];
+    const user = useUserData();
 
     // Note: console.log(JSON.stringify(data)) will always return empty even when data is there.
     // Specify a key name like "name" within a file object and the data will present itself.
@@ -51,6 +52,13 @@ export default function Viewport(props) {
         updateImage({blobURL: URL.createObjectURL(data[0]), blob: data[0], name: data[0].name});
     }
 
+
+    /*
+     *
+     * useEffect for downloading and uploading 
+     * image data to the flask image processing server
+     *
+     * **********************/
     useEffect(() => {
         const api = new API();
 
@@ -70,7 +78,7 @@ export default function Viewport(props) {
                 console.log('uploading an image to Flask server engine');
                 api.putImageToEditEngine(formData)
                 .then(putImageInfo => {
-                    console.log(`Response from put request to engine::putImageToEditEngine: ${putImageInfo.data}`);
+                    console.log(`Response from put request to engine::putImageToEditEngine: ${JSON.stringify(putImageInfo.data)}`);
                     if (putImageInfo.status === 200)
                         console.log('image received by Flask server!');
                     else
@@ -80,21 +88,57 @@ export default function Viewport(props) {
         }
 
         async function downloadImage() {
-            if (image.blob) {
+            if (image.blob && editState.actions.applyChanges) {
                 console.log(`sending request to download image edits from the flask server`);
                 api.getImageFromEditEngine(image.name)
-                .then(getImageInfo => {
-                    console.log(`Response from get request to engine::getImageFromEditEngine: ${getImageInfo.data}`);
-                    if (getImageInfo.status === 200)
-                        console.log('image received from Flask server!');
+                .then(async getImageInfo => {
+                    console.log(`Response from get request to engine::getImageFromEditEngine: ${JSON.stringify(getImageInfo.data)}`);
+                    if (getImageInfo.status === 200) {
+                        console.log('image received from Flask server!\nRendering new changes');
+                        handleFiles(await jsonBinaryToBlob(getImageInfo.data));
+                        updateEditState({actions: { applyChanges: false }});
+                    }
                     else
                         console.log('request to Flask server failed :(');
                 }).catch(err => console.log(err));
             }
         }
 
-        uploadImage();
-    }, [image])
+        if (editState.actions.applyChanges)
+            downloadImage();
+        else
+            uploadImage();
+    }, [editState]);
+
+
+    /*
+    *
+    * useEffect for sending requests to 
+    * ImageController.js query methods in the 
+    * API
+    *
+    * ******************/
+    useEffect(() => {
+        const api = new API();
+
+        async function putUserOriginalImage() {
+            if (image.blob && editState.actions.saveImage) {
+                console.log(`uploading this file: ${image.name} to DB.\n Image size: ${image.blob.size}\n Image type: ${image.blob.type}`);
+                api.putUserOriginalImage(user.userID, image.name)
+                    .then(putImageInfo => {
+                        console.log(`Response from put request to database::putUserOriginalImage: ${putImageInfo.config.data}`);
+                        if (putImageInfo.status === 200)
+                            console.log('image save request sent!');
+                        else
+                            console.log('image save request failed :(');
+                        updateEditState({actions: { saveImage: false }});
+                });
+            }
+        }
+
+        putUserOriginalImage();
+    }, [editState, image.blob])
+
 
     return (
       <main className={styles['viewport']}>

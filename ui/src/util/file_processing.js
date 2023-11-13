@@ -18,7 +18,7 @@ async function readFile(data, format='url') {
             fr.readAsText(data);
         break;
         default:
-            reject('An invalid format was passed to readFile method of filel_processing.js');
+            reject('An invalid format was passed to readFile method of file_processing.js');
         }
     });
 }
@@ -42,7 +42,18 @@ async function arrayBufferToFormData(arrayBuffer, sliceSize, formData=null) {
     return formData;
 }
 
+async function jsonBinaryToBlob(json) {
+    const jsonKeys = Object.keys(json);
+    const bytes = new Uint8ClampedArray(jsonKeys.length)
+    let index = 0;
+    for (var key in jsonKeys) {
+        bytes[index] = json[key];
+    }
+    return new Blob([bytes], { type: 'image/jpeg' });
+}
+
 export {
     readFile,
-    arrayBufferToFormData
+    arrayBufferToFormData,
+    jsonBinaryToBlob
 };
