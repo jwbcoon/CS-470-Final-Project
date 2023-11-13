@@ -1,11 +1,15 @@
 import {useState, useEffect} from 'react';
-import API from '../interfaces/API_Interface.js';
+import API from '../API_Interface/API_Interface.js';
 import styles from './Login.module.css';
 
 import { ReactComponent as EditEaseLogo } from '../icons/editease-logo.svg';
 import CredentialField from '../components/CredentialField.js';
+import { useUserDataUpdate } from '../util/DataContexts.js';
 
 export default function Login(props) {
+
+    const setUser = useUserDataUpdate();
+
     const [userInput, setUserInput] = useState('');
     const [secretInput, setSecretInput] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
@@ -36,12 +40,12 @@ export default function Login(props) {
         async function getUserInfo() {
             console.log(`user input is: ${userInput} and secret input is: ${secretInput}`);
             api.getLoginFromUsername(userInput)
-                .then( userInfo => {
+                .then(userInfo => {
                     console.log(`api returns user info and it is: ${JSON.stringify(userInfo)}`);
                     if(userInfo.data.status === "OK") {
                         const {password} = userInfo.data.user;
                         if (password === secretInput) {
-                            props.setUser(userInfo.data.user);
+                            setUser(userInfo.data.user);
                             return;
                         }
                     }
@@ -50,12 +54,12 @@ export default function Login(props) {
                 });
         }
 
-        async function postUserInfo() {
+        async function putUserInfo() {
             console.log(`user input is: ${userInput} and secret input is: ${secretInput}`);
             if (userInput.length + secretInput.length > 0) {
-                api.postLogin(userInput, secretInput)
-                    .then(postInfo => {
-                        console.log(`api returns user info and it is: ${JSON.stringify(postInfo)}`);
+                api.putLogin(userInput, secretInput)
+                    .then(putLoginInfo => {
+                        console.log(`api returns login info and it is: ${JSON.stringify(putLoginInfo)}`);
                         if(postInfo.data.status === "OK")
                             props.setOpenSignUp(false);
                         else {
@@ -69,7 +73,7 @@ export default function Login(props) {
         if (!openSignUp)
             getUserInfo();
         else
-            postUserInfo();
+            putUserInfo();
     }, [verifyUser, userInput, secretInput]);
 
     return (

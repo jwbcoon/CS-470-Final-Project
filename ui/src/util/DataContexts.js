@@ -44,7 +44,7 @@ export function EditDataProvider({children}) {
 
     function initEditData() {
         return {
-            filters: {
+            /*filters: {
                 rgba: {
                     red: undefined,
                     blue: undefined,
@@ -52,29 +52,24 @@ export function EditDataProvider({children}) {
                     alpha: undefined
                 }
             },
-            dims: undefined, // Add info for cropping and resizing in future?
+            dims: undefined, // Add info for cropping and resizing in future?*/
             actions: {
                 saveImage: false,
-                loadImage: false
+                loadImage: false,
+                applyChanges: false
             }
         };
     }
 
-    function updateEditData(editData, setEditData) {
-        //
-        //
-        //    Apply edit data into a neat package. Could be difficult
-        //    with implementation of refs and useImperativeHandle in
-        //    ToolBox.js
-        //
-        //
+    function updateEditData(editData, setEditData, change) {
+        setEditData({...editData, ...change});
     }
 
     const [editData, setEditData] = useState(initEditData);
 
     return (
         <EditDataContext.Provider value={editData}>
-            <EditDataUpdateContext.Provider value={() => updateEditData(editData, setEditData)}>
+            <EditDataUpdateContext.Provider value={change => updateEditData(editData, setEditData, change)}>
                 {children}
             </EditDataUpdateContext.Provider>
         </EditDataContext.Provider>
@@ -95,7 +90,7 @@ export function PageDataProvider({children}) {
         return {
             'viewport': { element: <ViewPort/>, name: 'viewport' },
             'gallery': { element: <Gallery/>, name: 'gallery' },
-            'my-edits': { element: <MyEdits/>, name: 'my_edits' }
+            'my-edits': { element: <MyEdits/>, name: 'my-edits' }
         };
     }
 
@@ -110,16 +105,38 @@ export function PageDataProvider({children}) {
     )
 }
 
+/*------------------------------------- USER DATA ---------------------------------------------*/ 
+
+const UserDataContext = React.createContext();
+const UserDataUpdateContext = React.createContext();
+
+export function useUserData() { return useContext(UserDataContext); }
+export function useUserDataUpdate() { return useContext(UserDataUpdateContext); }
+
+export function UserDataProvider({children}) {
+    const [user, setUser] = useState(undefined);
+
+    return (
+        <UserDataContext.Provider value={user}>
+            <UserDataUpdateContext.Provider value={setUser}>
+                {children}
+            </UserDataUpdateContext.Provider>
+        </UserDataContext.Provider>
+    )
+}
+
 /*------------------------------------- MAIN DATA ---------------------------------------------*/ 
 
 export default function MasterDataProvider({children}) {
     return (
         <PageDataProvider>
-            <EditDataProvider>
-                <ImageDataProvider>
-                    {children}
-                </ImageDataProvider>
-            </EditDataProvider>
+            <UserDataProvider>
+                <EditDataProvider>
+                    <ImageDataProvider>
+                        {children}
+                    </ImageDataProvider>
+                </EditDataProvider>
+            </UserDataProvider>
         </PageDataProvider>
     )
 }

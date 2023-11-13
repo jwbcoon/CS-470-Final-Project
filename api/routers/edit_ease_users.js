@@ -51,7 +51,6 @@ usersRouter.get('/all-users', UsersController.allUsers,
     err => console.log(`allUsers ran into an error: ${err}`));
 usersRouter.get('/:userID', UsersController.usersWithUserID,
     err => console.log(`usersWithUserID ran into an error: ${err}`));
-
 usersRouter.get('/:username', UsersController.usersWithUserName,
     err => console.log(`usersWithUserName ran into an error: ${err}`));
 
