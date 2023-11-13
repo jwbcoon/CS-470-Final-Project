@@ -1,25 +1,28 @@
 import axios from 'axios';
 
-const AxiosConfigured = () => {
+const AxiosConfigured = baseURL => {
+    const agent = axios.create({...axios});
+
     // Indicate to the API that all requests for this app are AJAX
-    axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    agent.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
     // Set the baseURL for all requests to the API domain instead of the current domain
     // axios.defaults.baseURL = `http://localhost:8443/api/v1`;
-    axios.defaults.baseURL = `http://localhost:8443/api/v1`;
+    agent.defaults.baseURL = baseURL;
 
 
     // Allow the browser to send cookies to the API domain (which include auth_token)
-    axios.defaults.withCredentials = true;
+    agent.defaults.withCredentials = true;
 
 
-//    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf_token;
+    // axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf_token;
 
-    return axios;
+    return agent;
 };
 
 
-const axiosAgent = AxiosConfigured();
+const axiosAgent = AxiosConfigured(`http://localhost:8443/api/v1`);
+const flaskAgent = AxiosConfigured(`http://localhost:5000`);
 
 export default class APIInterface {
 
@@ -72,15 +75,10 @@ export default class APIInterface {
 
     // Flask server routes
     async putImageToEditEngine(formData) {
-        return axios.put('http://localhost:5000/uploads', {
-            data: formData,
+        return flaskAgent.put('uploads', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
-              'Access-Control-Allow-Origin': '*', // Allow requests from any origin
-              'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE', // Allow the specified methods
-              'Access-Control-Allow-Headers': 'Content-Type', // Allow the specified headers
-            },
-            withCredentials: true
+            }
         });
     }
 

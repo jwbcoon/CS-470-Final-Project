@@ -1,13 +1,14 @@
 import os
+import io
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import PIL.Image as Image
 
-UPLOAD_FOLDER = os.path.dirname(__file__)
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
 
 app = Flask(__name__) 
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, origins='http://localhost:3000')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
@@ -17,27 +18,22 @@ def entry():
 @app.put('/uploads')
 def uploads():
     try:
-        imgBytes = bytearray()
-        formkeys = request.form.keys() # request.form is a dict whose values are 4mb chunks of image data, then the filename and filetype
-        if len(formkeys) > 2: # The min length is 2 for the filename and type parameters in the form
-            for byte_array_index, key in enumerate(formkeys):
+        print(request.form) # print to console in debug mode
+        print(request.files) # print to console in debug mode
+
+        if request.files: 
+            img_bytes = bytearray()
+
+            for key, byte in request.files.items(): # request.files is a dict whose values are bytes of image data
                 if (key != 'filename' and key != 'filetype'):
-                    imgBytes.append(request.form[key])
-            image = Image.open(io.BytesIO(imgBytes))
-            Image.save(request.form['filename'], request.form['filetype']) # Save the image
+                    img_bytes.extend(byte.read())
 
-            # Example: Create a response with adequate headers
-            response = jsonify({'message': 'Upload successful!'})
+            image = Image.open(io.BytesIO(img_bytes))
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], request.form['filename']))
 
-            # Set CORS headers
-            response.headers.add('Access-Control-Allow-Origin', '*')  # Set to your specific origins in production
-            response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
-            response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-            response.headers.add('Access-Control-Allow-Credentials', 'true')
-
-            return response
+            return jsonify({'message': 'Upload successful!', 'headers': { 'Access-Control-Allow-Methods': 'PUT' }})
         else:
-            return jsonify({'error': 'Error reading form data to image'}), 400
+            return jsonify({'error': 'Image data missing from request body'}), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

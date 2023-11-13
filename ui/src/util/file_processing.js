@@ -29,19 +29,16 @@ async function arrayBufferToFormData(arrayBuffer, sliceSize, formData=null) {
         formData = new FormData();
     }
 
-    const subdivision = Number(sliceSize.replace(/mb/, '')) * 1024 * 1024;
-
-    let count = 0;
-    let start = 0;
-    let end = subdivision;
-    while (end < arrayBuffer.byteLength) {
-        let readBuffer = arrayBuffer.slice(start, subdivision);
+    const subdivision = Math.min(Number(sliceSize.replace(/mb/, '')) * 1024 * 1024, arrayBuffer.byteLength);
+    let count = 0, start = 0, end = subdivision;
+    do {
+        let readBuffer = arrayBuffer.slice(start, end);
         formData.append(`imgchunk${count}`, new Blob([readBuffer], { type: 'application/octet-stream' }));
 
         count += 1;
         start = end;
-        end = Math.min(end + subdivision, arrayBuffer.byteLength);
-    }
+        end += Math.min(subdivision, arrayBuffer.byteLength - end);
+    } while (end < arrayBuffer.byteLength);
     return formData;
 }
 
