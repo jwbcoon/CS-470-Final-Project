@@ -1,6 +1,6 @@
 import os
 import io
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort, Response
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import PIL.Image as Image
@@ -37,11 +37,25 @@ def uploads():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.get('/downloads')
-def download():
-    pass
+@app.get('/downloads/<filename>')
+def download(filename):
+    try:
+        # 1mb at a time
+        chunk_generator = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], filename), 1024 * 1024)
+        # compose generator of key:value pairs like 'chunk0: <data>'
+        img_bytes = (('chunk{}'.format(index), chunk) for index, chunk in enumerate(chunk_generator))
+        return Response(img_bytes, content_type='application/octet-stream')
+    except:
+        abort(404) # The image wasn't found in upload folder
 
 
+
+
+def read_file_in_chunks(file_path, chunk_size):
+    with open(file_path, 'rb') as file:
+        while chunk:
+            chunk = file.read(chunk_size)
+            yield chunk
 
     '''
     Down here, Matthew can write all the code for performing edits on the application using the image 

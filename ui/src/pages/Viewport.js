@@ -57,17 +57,15 @@ export default function Viewport(props) {
         async function uploadImage() {
             if (image.blob) {
                 console.log(`reading ${image.name} from a blob to a file before sending to DB\nsize: ${image.blob.size}`);
+
                 const fileArrayBuffer = await readFile(image.blob, 'buffer'); // Convert file to arrayBuffer
                 if (!fileArrayBuffer) { console.log('failed to read image file before sending from client to server'); return; }
+
                 const formData = await arrayBufferToFormData(fileArrayBuffer, '1mb'); // Convert arrayBuffer to formData to accomodate size caps
                 if (!formData) { console.log('failed to convert file binary into form data'); return; }
-                console.log(`appending filename as ${image.name} and filetype as ${image.blob.type.replace(/.*\/(.*)$/, '$1')}`);
+
                 formData.append('filename', image.name);
                 formData.append('filetype', image.blob.type.replace(/.*\/(.*)$/, '$1')); // Remove the 'image/' portion of MIMEtype string
-                console.log('formdata is ');
-                for (var pair of formData.entries()) {
-                    console.log(pair[0]+ ', ' + (typeof pair[1] === 'object' ? `${pair[1].size} bytes` : pair[1])); 
-                }
 
                 console.log('uploading an image to Flask server engine');
                 api.putImageToEditEngine(formData)
@@ -75,6 +73,20 @@ export default function Viewport(props) {
                     console.log(`Response from put request to engine::putImageToEditEngine: ${putImageInfo.data}`);
                     if (putImageInfo.status === 200)
                         console.log('image received by Flask server!');
+                    else
+                        console.log('request to Flask server failed :(');
+                }).catch(err => console.log(err));
+            }
+        }
+
+        async function downloadImage() {
+            if (image.blob) {
+                console.log(`sending request to download image edits from the flask server`);
+                api.getImageFromEditEngine(image.name)
+                .then(getImageInfo => {
+                    console.log(`Response from get request to engine::getImageFromEditEngine: ${getImageInfo.data}`);
+                    if (getImageInfo.status === 200)
+                        console.log('image received from Flask server!');
                     else
                         console.log('request to Flask server failed :(');
                 }).catch(err => console.log(err));

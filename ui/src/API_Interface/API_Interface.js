@@ -21,13 +21,13 @@ const AxiosConfigured = baseURL => {
 };
 
 
-const axiosAgent = AxiosConfigured(`http://localhost:8443/api/v1`);
+const koaAgent = AxiosConfigured(`http://localhost:8443/api/v1`);
 const flaskAgent = AxiosConfigured(`http://localhost:5000`);
 
 export default class APIInterface {
 
     async getUserInfo(user_id) {
-        return axiosAgent.get(`login/${user_id}`)
+        return koaAgent.get(`login/${user_id}`)
             .then(userInfo => userInfo.data)
             .catch(error => (
                 {
@@ -38,11 +38,11 @@ export default class APIInterface {
 
     // Users routes
     async getLoginFromUsername(username) {
-        return axiosAgent.get(`login/${username}`);
+        return koaAgent.get(`login/${username}`);
     }
 
     async putLogin(username, password) {
-        return axiosAgent.put('users/create',
+        return koaAgent.put('users/create',
         {
             username: username,
             password: password
@@ -50,18 +50,18 @@ export default class APIInterface {
     }
 
     async deleteUserFromUserName(username) {
-        return axiosAgent.put(`delete/${username}`);
+        return koaAgent.put(`delete/${username}`);
     }
 
     async getUserFromID(userID) {
-        return axiosAgent.get(`users/${userID}`);
+        return koaAgent.get(`users/${userID}`);
     }
     async getUserFromUsername(username) {
-        return axiosAgent.get(`users/${username}`);
+        return koaAgent.get(`users/${username}`);
     }
 
     async putUserOriginalImage(userID, fileName, file) {
-        return axiosAgent.put('images/addImage',
+        return koaAgent.put('images/addImage',
         {
             userID: userID,
             fileName: fileName,
@@ -70,7 +70,7 @@ export default class APIInterface {
     }
 
     async removeImageByFilename(filename) {
-        return axiosAgent.delete(`removeImage/${filename}`);
+        return koaAgent.delete(`removeImage/${filename}`);
     }
 
     // Flask server routes
@@ -80,6 +80,10 @@ export default class APIInterface {
               'Content-Type': 'multipart/form-data',
             }
         });
+    }
+
+    async getImageFromEditEngine(filename) {
+        return flaskAgent.get(`downloads/${filename}`);
     }
 
 }
