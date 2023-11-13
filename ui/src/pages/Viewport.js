@@ -47,9 +47,16 @@ export default function Viewport(props) {
     // Note: console.log(JSON.stringify(data)) will always return empty even when data is there.
     // Specify a key name like "name" within a file object and the data will present itself.
     // https://stackoverflow.com/questions/11573710/event-datatransfer-files-is-empty-when-ondrop-is-fired
-    function handleFiles(data) {
-        console.log(`handling files! ${JSON.stringify(data[0].name)}`);
-        updateImage({blobURL: URL.createObjectURL(data[0]), blob: data[0], name: data[0].name});
+    function handleFiles(data, isServerDownload=false) {
+
+        const resolveName = filename => {
+            if (!filename && isServerDownload)
+                return 'editfile.tmp';
+            return filename;
+        }
+
+        console.log(`handling files! ${JSON.stringify(resolveName(data[0].name))}`);
+        updateImage({blobURL: URL.createObjectURL(data[0]), blob: data[0], name: resolveName(data[0].name)});
     }
 
 
@@ -95,7 +102,7 @@ export default function Viewport(props) {
                     console.log(`Response from get request to engine::getImageFromEditEngine: ${JSON.stringify(getImageInfo.data)}`);
                     if (getImageInfo.status === 200) {
                         console.log('image received from Flask server!\nRendering new changes');
-                        handleFiles(await jsonBinaryToBlob(getImageInfo.data));
+                        handleFiles(new Blob([getImageInfo.data]), true);
                         updateEditState({actions: { applyChanges: false }});
                     }
                     else

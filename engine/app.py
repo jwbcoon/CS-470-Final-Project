@@ -40,11 +40,9 @@ def uploads():
 @app.get('/downloads/<filename>')
 def download(filename):
     try:
-        # 1mb at a time
-        chunk_generator = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], filename), 1024 * 1024)
-        # compose generator of key:value pairs like 'chunk0: <data>'
-        img_bytes = (('chunk{}'.format(index), chunk) for index, chunk in enumerate(chunk_generator))
-        return Response(img_bytes, content_type='application/octet-stream')
+        # generate bytes of image file 1mb at a time
+        img_bytes_stream = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], filename), 1024 * 1024)
+        return Response(img_bytes_stream, content_type='application/octet-stream')
     except:
         abort(404) # The image wasn't found in upload folder
 
@@ -53,8 +51,7 @@ def download(filename):
 
 def read_file_in_chunks(file_path, chunk_size):
     with open(file_path, 'rb') as file:
-        while chunk:
-            chunk = file.read(chunk_size)
+        while chunk := file.read(chunk_size):
             yield chunk
 
     '''
