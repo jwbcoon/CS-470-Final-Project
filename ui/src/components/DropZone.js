@@ -18,7 +18,7 @@ function drop(e, handleFiles) {
     const dt = e.dataTransfer;
     const files = dt.files;
 
-    handleFiles(files);
+    handleFiles(files[0]);
 }
 
 

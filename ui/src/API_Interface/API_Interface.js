@@ -77,13 +77,17 @@ export default class APIInterface {
     async putImageToEditEngine(formData) {
         return flaskAgent.put('uploads', formData, {
             headers: {
-              'Content-Type': 'multipart/form-data',
+              'Content-Type': 'multipart/form-data'
             }
         });
     }
 
     async getImageFromEditEngine(filename) {
-        return flaskAgent.get(`downloads/${filename}`);
+        return flaskAgent.get(`downloads/${filename}`, {
+            headers: {
+                'Content-Type': 'text/plain'
+            }
+        });
     }
 
 }

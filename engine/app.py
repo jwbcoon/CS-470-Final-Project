@@ -1,5 +1,6 @@
 import os
 import io
+import base64
 from flask import Flask, request, jsonify, abort, Response
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
@@ -41,8 +42,8 @@ def uploads():
 def download(filename, chunk_size=1024 * 1024):
     try:
         # generate bytes of image file 1mb at a time
-        img_bytes_stream = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], filename), chunk_size)
-        return Response(img_bytes_stream, content_type='application/octet-stream')
+        img_b64_stream = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], filename), chunk_size)
+        return Response(img_b64_stream, content_type='image/jpeg')
     except:
         abort(404) # The image wasn't found in upload folder
 
@@ -52,7 +53,7 @@ def download(filename, chunk_size=1024 * 1024):
 def read_file_in_chunks(file_path, chunk_size):
     with open(file_path, 'rb') as file:
         while chunk := file.read(chunk_size):
-            yield chunk
+            yield base64.b64encode(chunk).decode('utf-8')
 
     '''
     Down here, Matthew can write all the code for performing edits on the application using the image 

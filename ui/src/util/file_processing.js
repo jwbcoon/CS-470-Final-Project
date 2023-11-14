@@ -42,15 +42,7 @@ async function arrayBufferToFormData(arrayBuffer, sliceSize, formData=null) {
     return formData;
 }
 
-async function binaryStringToBlob(bstr) {
-    const bytes = new Uint8Array(bstr.length)
-    for (let i = 0; i < bstr.length; i += 1)
-        bytes[i] = bstr.charCodeAt(i);
-    return new Blob([bytes], { type: 'image/jpeg' });
-}
-
 export {
     readFile,
-    arrayBufferToFormData,
-    binaryStringToBlob
+    arrayBufferToFormData
 };

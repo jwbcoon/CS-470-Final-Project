@@ -44,9 +44,9 @@ export default function Viewport(props) {
     // Note: console.log(JSON.stringify(data)) will always return empty even when data is there.
     // Specify a key name like "name" within a file object and the data will present itself.
     // https://stackoverflow.com/questions/11573710/event-datatransfer-files-is-empty-when-ondrop-is-fired
-    function handleFiles(data) {
-        console.log(`handling files! ${JSON.stringify(data[0].name)}`);
-        updateImage({ blobURL: URL.createObjectURL(data[0]), blob: data[0], name: data[0].name });
+    async function handleFiles(data, filename=data.name) {
+        console.log(`handling files! ${JSON.stringify(filename)}`);
+        updateImage({ name: filename, blob: data, blobURL: await readFile(data, 'url') });
     }
 
 
@@ -102,14 +102,14 @@ export default function Viewport(props) {
         async function downloadImageFromEngine() {
             console.log(`sending request to download image edits from the flask server`);
             api.getImageFromEditEngine(image.name)
-            .then(async getImageInfo => {
+            .then(getImageInfo => {
 
                 console.log(`Response from get request to engine::getImageFromEditEngine:
                            ${JSON.stringify(getImageInfo.data)}`);
                 if (getImageInfo.status === 200) {
                     console.log('image received from Flask server!\nRendering new changes');
-                    const imgBlob = binaryStringToBlob(getImageInfo.data);
-                    updateImage({name: 'temp.jpg', blob: imgBlob, blobURL: URL.createObjectURL(imgBlob)})
+                    // atob (ascii to binary) is an oldschool browser env method using utf-8 representation of b64
+                    handleFiles(new Blob([atob(getImageInfo.data)]), `tmpedit_${image.name}`);
                 }
                 else
                     console.log('request to Flask server failed :(');

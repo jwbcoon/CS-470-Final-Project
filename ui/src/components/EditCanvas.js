@@ -69,8 +69,10 @@ export default function EditCanvas(props) {
     const {canvas, ctx} = useMemo(() => init(canvasRef), [canvasRef.current]);
 
     useEffect(() => {
-        if (props.src)
+        if (props.src) {
+            console.log(props.src);
             draw(ctx, props.src);
+        }
     }, [canvas])
 
     return canvas ? <canvas ref={canvasRef} {...props}/> : (<><h1>Drag an Image here to begin editing!</h1><canvas ref={canvasRef} {...props}/></>);
