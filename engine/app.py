@@ -25,7 +25,7 @@ def uploads():
             img_bytes = bytearray()
 
             for key, byte in request.files.items(): # request.files is a dict whose values are bytes of image data
-                if (key != 'filename' and key != 'filetype'):
+                if (key != 'filename'):
                     img_bytes.extend(byte.read())
 
             image = Image.open(io.BytesIO(img_bytes))
@@ -38,10 +38,10 @@ def uploads():
         return jsonify({'error': str(e)}), 500
 
 @app.get('/downloads/<filename>')
-def download(filename):
+def download(filename, chunk_size=1024 * 1024):
     try:
         # generate bytes of image file 1mb at a time
-        img_bytes_stream = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], filename), 1024 * 1024)
+        img_bytes_stream = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], filename), chunk_size)
         return Response(img_bytes_stream, content_type='application/octet-stream')
     except:
         abort(404) # The image wasn't found in upload folder

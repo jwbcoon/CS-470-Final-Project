@@ -54,7 +54,7 @@ export function EditDataProvider({children}) {
             },
             dims: undefined, // Add info for cropping and resizing in future?*/
             actions: {
-                saveImage: false,
+                saveImage: true, // initially true to save new images when dropped in
                 loadImage: false,
                 applyChanges: false
             }

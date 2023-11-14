@@ -42,18 +42,15 @@ async function arrayBufferToFormData(arrayBuffer, sliceSize, formData=null) {
     return formData;
 }
 
-async function jsonBinaryToBlob(json) {
-    const jsonKeys = Object.keys(json);
-    const bytes = new Uint8ClampedArray(jsonKeys.length)
-    let index = 0;
-    for (var key in jsonKeys) {
-        bytes[index] = json[key];
-    }
+async function binaryStringToBlob(bstr) {
+    const bytes = new Uint8Array(bstr.length)
+    for (let i = 0; i < bstr.length; i += 1)
+        bytes[i] = bstr.charCodeAt(i);
     return new Blob([bytes], { type: 'image/jpeg' });
 }
 
 export {
     readFile,
     arrayBufferToFormData,
-    jsonBinaryToBlob
+    binaryStringToBlob
 };
