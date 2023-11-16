@@ -1,5 +1,4 @@
-import {useRef, useEffect, useMemo} from 'react';
-// load Matthew's python rendering here?
+import {useRef, forwardRef, useEffect, useMemo, useImperativeHandle} from 'react';
 
 const [MAX_CANV_WIDTH, MAX_CANV_HEIGHT] = [8000, 8000];
 
@@ -45,35 +44,39 @@ function draw(ctx, src) {
     }
 }
 
-function init(canvasRef) {
-    if (!canvasRef.current) return {canvas: null, ctx: null};
+function init(canvasDomNode) {
+    if (!canvasDomNode) return null;
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const context = canvasDomNode.getContext('2d');
 
-    if (ctx === null) {
+    if (context === null) {
         alert(
           "Unable to initialize WebGL. Your browser or machine may not support it.",
         );
         return;
     }
   
-    resizeCanvasToDisplaySize(canvas);
-    drawGrid(ctx);
+    resizeCanvasToDisplaySize(canvasDomNode);
+    drawGrid(context);
 
-    return {canvas: canvas, ctx: ctx};
+    return context;
 }
 
-export default function EditCanvas(props) {
-    const canvasRef = useRef(null);
-    const {canvas, ctx} = useMemo(() => init(canvasRef), [canvasRef.current]);
+export default forwardRef(function EditCanvas(props, ref) {
 
     useEffect(() => {
-        if (props.src) {
-            console.log(props.src);
+        const ctx = init(ref.current);
+        if (props.src)
             draw(ctx, props.src);
-        }
-    }, [canvas])
+    }, [props.src]);
 
-    return canvas ? <canvas ref={canvasRef} {...props}/> : (<><h1>Drag an Image here to begin editing!</h1><canvas ref={canvasRef} {...props}/></>);
-}
+    return props.src
+    ?   <canvas ref={ref} {...props}/> 
+    :   (
+        <>
+            <h1>Drag an Image here to begin editing!</h1>
+            <canvas ref={ref} {...props}/>
+        </>
+    );
+});
+

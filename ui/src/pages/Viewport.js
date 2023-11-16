@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react';
 import DropZone from '../components/DropZone.js';
-import EditCanvas from '../components/EditCanvas.js';
-import {readFile, arrayBufferToFormData, binaryStringToBlob} from '../util/file_processing.js';
+import {readFile, arrayBufferToFormData} from '../util/file_processing.js';
 import API from '../API_Interface/API_Interface.js';
 import {useEditData, useEditDataUpdate, useImageData, useImageDataUpdate, useUserData} from '../util/DataContexts.js';
 import styles from './Viewport.module.css';
@@ -132,7 +131,7 @@ export default function Viewport(props) {
     return (
       <main className={styles['viewport']}>
           <DropZone handleFiles={handleFiles} handleZoom={handleZoom}
-                    zoom={zoom} setZoom={setZoom} mask={<EditCanvas src={image.blobURL}/>}/>
+                    zoom={zoom} setZoom={setZoom} maskId='canvas-mask'/>
       </main>
     );
 }

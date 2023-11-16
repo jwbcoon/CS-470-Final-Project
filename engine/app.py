@@ -39,7 +39,7 @@ def uploads():
         return jsonify({'error': str(e)}), 500
 
 @app.get('/downloads/<filename>')
-def download(filename, chunk_size=1024 * 1024):
+def downloads(filename, chunk_size=1024 * 1024):
     try:
         # generate bytes of image file 1mb at a time
         img_b64_stream = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], filename), chunk_size)
@@ -60,3 +60,5 @@ def read_file_in_chunks(file_path, chunk_size):
     data received in the uploads method above, since that method saves the images to the file system.
     Then we can implement a downloads() method for the client to receive edits from
     '''
+
+

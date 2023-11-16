@@ -38,8 +38,8 @@ export default function DropZone(props) {
                 onDragOver={e => dragOver(e)}
                 onDrop={e => drop(e, props.handleFiles)}>
               <input type='file' style={{ display: 'none' }}/>
-              <div className={styles['mask']} ref={ref}>
-                  { props.mask }
+              <div id={props.maskId} className={styles['mask']} ref={ref}>
+                  { props.mask && props.mask /*render props.mask if it exists, or do nothing*/ }
               </div>
           </div>;
 }

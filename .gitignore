@@ -136,3 +136,6 @@ database/.DS_Store
 .venv/
 __pycache__/
 
+# uploads folder
+engine/uploads/*.jpg
+engine/uploads/*.png

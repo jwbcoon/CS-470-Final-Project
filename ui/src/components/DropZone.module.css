@@ -20,6 +20,10 @@
     align-items: center;
 }
 
+.mask > h1 ~ canvas {
+    display: none;
+}
+
 .mask:only-child canvas {
     width: 100%;
     height: 100%;
