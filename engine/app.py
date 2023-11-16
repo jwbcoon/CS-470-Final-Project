@@ -60,3 +60,37 @@ def read_file_in_chunks(file_path, chunk_size):
     data received in the uploads method above, since that method saves the images to the file system.
     Then we can implement a downloads() method for the client to receive edits from
     '''
+
+
+def get_image(path):
+    return io.imread(path)
+
+def get_blue_image(img):
+    blue_img = img.copy()
+    
+    blue_img[:, :, 0] = 0  # Red channel
+    blue_img[:, :, 1] = 0  # Green channel
+    
+    return blue_img
+
+    #return img[:,:,2]
+
+def get_red_image(img):
+    red_img = img.copy()
+    
+    red_img[:, :, 1] = 0  # Red channel
+    red_img[:, :, 2] = 0  # Green channel
+    
+    return red_img
+
+def get_green_image(img):
+    green_img = img.copy()
+    
+    green_img[:, :, 0] = 0  # Red channel
+    green_img[:, :, 2] = 0  # Green channel
+    
+    return green_img
+
+# this is the code I used to save the image as a jpeg
+#im = Image.fromarray(get_green_image(int_img)).convert('RGB') 
+#    im.save("your_file_green.jpeg")
