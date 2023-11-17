@@ -1,30 +1,26 @@
-import {useState, useEffect, useRef, useCallback} from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
+import { useEditDataUpdate, useImageData, usePageData, useUserData, useUserDataUpdate } from '../util/DataContexts.js';
+import { useStatefulRef } from '../util/hooks.js';
 import TopNav from '../components/TopNav.js';
 import ToolBox from '../components/ToolBox.js';
 import EditCanvas from '../components/EditCanvas.js';
-import {useEditDataUpdate, useImageData, usePageData, useUserData, useUserDataUpdate} from '../util/DataContexts.js';
 import styles from './EditEase.module.css';
-
-function useStatefulRef(initialState) {
-    const [state, setState] = useState(initialState);
-    const ref = useRef(initialState);
-
-    useEffect(() => {
-      ref.current = state;
-    }, [state]);
-
-    return [state, setState, ref];
-}
 
 export default function EditEase(props) {
 
-    function handleToolBoxInputChange(ev, tbRefs, setRgbaInput) {
+    function handleToolBoxInputChange(ev, toolBoxRefs, setToolBoxState) {
         console.log('handling toolbox input change!');
-        setRgbaInput({...tbRefs.current});
+        setToolBoxState({...toolBoxRefs.current});
     }
 
-    const tbRefs = useRef({ red: 0, green: 0, blue: 0, alpha: 0 });
+    function applyEditChanges(updateEditData, innerCanvasRef, setInnerCanvasState) {
+        console.log('applying changes!');
+        updateEditData({ applyChanges: true });
+        setInnerCanvasState(innerCanvasRef.current);
+    }
+
+    const [toolBoxState, setToolBoxState, toolBoxRefs] = useStatefulRef({ red: 0, green: 0, blue: 0, alpha: 0 });
     const [innerCanvasState, setInnerCanvasState, innerCanvasRef] = useStatefulRef();
 
     const canvasPortal = useCallback(createPortal, [innerCanvasState, innerCanvasRef]);
@@ -36,7 +32,6 @@ export default function EditEase(props) {
     const updateEditData = useEditDataUpdate();
 
     const [toolsOpen, setToolsOpen] = useState(false);
-    const [rgbaInput, setRgbaInput] = useState({ red: 0, green: 0, blue: 0, alpha: 0 });
     const [selectedPage, setSelectedPage] = useState(pages['viewport']);
     const [barOptions, setBarOptions] = useState([{child: <p>Open Tools</p>, onClick: () => setToolsOpen(toolsOpen => !toolsOpen)}]);
     const [canvasDomNodeLoaded, setCanvasDomNodeLoaded] = useState(false);
@@ -88,7 +83,7 @@ export default function EditEase(props) {
                     ...baseOpts,
                     {
                         child: <p>Save Image</p>,
-                        onClick: () => updateEditData({actions: { saveImage: true }})
+                        onClick: () => updateEditData({ saveImage: true })
                     },
                     {
                         child: <p>Load Image</p>,
@@ -100,7 +95,7 @@ export default function EditEase(props) {
                 return [...baseOpts];
         }
     };
-  
+
 
     /*
      *
@@ -129,8 +124,9 @@ export default function EditEase(props) {
                 {selectedPage.element}
                 {
                     toolsOpen &&
-                    <ToolBox onChange={ev => handleToolBoxInputChange(ev, tbRefs, setRgbaInput)} 
-                             rgbaMin={0} rgbaMax={255} ref={tbRefs}/>
+                    <ToolBox onChange={ev => handleToolBoxInputChange(ev, toolBoxRefs, setToolBoxState)} 
+                             onApply={() => applyEditChanges(updateEditData, innerCanvasRef, setInnerCanvasState)}
+                             rgbaMin={0} rgbaMax={255} ref={toolBoxRefs}/>
                 }
                 {
                     canvasDomNodeLoaded && 

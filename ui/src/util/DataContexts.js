@@ -34,45 +34,30 @@ export function ImageDataProvider({children}) {
 
 /*------------------------------------- EDIT DATA ---------------------------------------------*/ 
 
-const EditDataContext = React.createContext();
-const EditDataUpdateContext = React.createContext();
+const EditorStateContext = React.createContext();
+const EditorStateUpdateContext = React.createContext();
 
-export function useEditData() { return useContext(EditDataContext); }
-export function useEditDataUpdate() { return useContext(EditDataUpdateContext); }
+export function useEditData() { return useContext(EditorStateContext); }
+export function useEditDataUpdate() { return useContext(EditorStateUpdateContext); }
 
-export function EditDataProvider({children}) {
+export function EditorStateProvider({children}) {
 
-    function initEditData() {
+    function initEditorState() {
         return {
-            /*filters: {
-                rgba: {
-                    red: undefined,
-                    blue: undefined,
-                    green: undefined,
-                    alpha: undefined
-                }
-            },
-            dims: undefined, // Add info for cropping and resizing in future?*/
-            actions: {
-                saveImage: true, // initially true to save new images when dropped in
-                loadImage: false,
-                applyChanges: false
-            }
+            saveImage: true, // initially true to save new images when dropped in
+            loadImage: false,
+            applyChanges: false
         };
     }
 
-    function updateEditData(editData, setEditData, change) {
-        setEditData({...editData, ...change});
-    }
-
-    const [editData, setEditData] = useState(initEditData);
+    const [editorState, setEditorState] = useState(initEditorState);
 
     return (
-        <EditDataContext.Provider value={editData}>
-            <EditDataUpdateContext.Provider value={change => updateEditData(editData, setEditData, change)}>
+        <EditorStateContext.Provider value={editorState}>
+            <EditorStateUpdateContext.Provider value={setEditorState}>
                 {children}
-            </EditDataUpdateContext.Provider>
-        </EditDataContext.Provider>
+            </EditorStateUpdateContext.Provider>
+        </EditorStateContext.Provider>
     )
 }
 
@@ -131,11 +116,11 @@ export default function MasterDataProvider({children}) {
     return (
         <PageDataProvider>
             <UserDataProvider>
-                <EditDataProvider>
+                <EditorStateProvider>
                     <ImageDataProvider>
                         {children}
                     </ImageDataProvider>
-                </EditDataProvider>
+                </EditorStateProvider>
             </UserDataProvider>
         </PageDataProvider>
     )

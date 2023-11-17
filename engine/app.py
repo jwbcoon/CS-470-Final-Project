@@ -43,7 +43,7 @@ def downloads(filename, chunk_size=1024 * 1024):
     try:
         # generate bytes of image file 1mb at a time
         img_b64_stream = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], filename), chunk_size)
-        return Response(img_b64_stream, content_type='image/jpeg')
+        return Response(img_b64_stream, content_type='application/octet-stream')
     except:
         abort(404) # The image wasn't found in upload folder
 
@@ -78,8 +78,8 @@ def get_blue_image(img):
 def get_red_image(img):
     red_img = img.copy()
     
-    red_img[:, :, 1] = 0  # Red channel
-    red_img[:, :, 2] = 0  # Green channel
+    red_img[:, :, 1] = 0  # Green channel
+    red_img[:, :, 2] = 0  # Blue channel
     
     return red_img
 
@@ -87,7 +87,7 @@ def get_green_image(img):
     green_img = img.copy()
     
     green_img[:, :, 0] = 0  # Red channel
-    green_img[:, :, 2] = 0  # Green channel
+    green_img[:, :, 2] = 0  # Blue channel
     
     return green_img
 

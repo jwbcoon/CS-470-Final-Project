@@ -1,15 +1,7 @@
-import {forwardRef, useRef, useImperativeHandle} from 'react';
-import {useEditDataUpdate} from '../util/DataContexts.js';
+import { forwardRef, useRef, useImperativeHandle } from 'react';
 import styles from './ToolBox.module.css';
 
-function applyEditChanges(updateEditData) {
-    console.log('applying changes!');
-    updateEditData({actions: { applyChanges: true }});
-}
-
-const ToolBox = forwardRef(function ToolBox(props, ref) {
-
-    const updateEditData = useEditDataUpdate();
+export default forwardRef(function ToolBox(props, ref) {
 
     const redRef = useRef({value: 0});
     const greenRef = useRef({value: 0});
@@ -53,10 +45,9 @@ const ToolBox = forwardRef(function ToolBox(props, ref) {
                 </span>
             </div>
             <div className={styles['apply']}>
-                <button onClick={() => applyEditChanges(updateEditData)}>Apply</button>
+                <button onClick={props.onApply}>Apply</button>
             </div>
         </menu>
     );
 });
 
-export default ToolBox;
