@@ -9,10 +9,9 @@ import styles from './EditEase.module.css';
 
 export default function EditEase(props) {
 
-    function handleToolBoxInputChange(ev, editParamRefs, setEditParams) {
-        console.log('handling toolbox input change!\n', JSON.stringify(editParamRefs));
-        console.log(ev.target);
-        setEditParams({...editParamRefs.current});
+    function handleToolBoxInputChange(ev, editParams, setEditParams) {
+        console.log('handling toolbox input change!\n', JSON.stringify(editParams));
+        setEditParams(editParams);
     }
 
     function applyEditChanges(updateEditorState) {
@@ -20,7 +19,6 @@ export default function EditEase(props) {
         updateEditorState({ applyChanges: true });
     }
 
-    const [editParams, setEditParams, editParamRefs] = useStatefulRef();
     const [innerCanvasState, setInnerCanvasState, innerCanvasRef] = useStatefulRef();
 
     const canvasPortal = useCallback(createPortal, [innerCanvasState, innerCanvasRef]);
@@ -31,12 +29,14 @@ export default function EditEase(props) {
     const setUser = useUserDataUpdate();
     const updateEditorState = useEditorStateUpdate();
 
+    const [editParams, setEditParams] = useState({red: 0, green: 0, blue: 0, alpha: 0});
     const [toolsOpen, setToolsOpen] = useState(false);
     const [selectedPage, setSelectedPage] = useState(pages['viewport']);
     const [barOptions, setBarOptions] = useState([{child: <p>Open Tools</p>, onClick: () => setToolsOpen(toolsOpen => !toolsOpen)}]);
     const [canvasDomNodeLoaded, setCanvasDomNodeLoaded] = useState(false);
 
 
+    // Send editParams to flask server and update image state on edit download
     useImageApi(editParams, () => setInnerCanvasState(innerCanvasRef.current));
 
 
@@ -121,6 +121,10 @@ export default function EditEase(props) {
         setCanvasDomNodeLoaded(selectedPage === pages['viewport']);
     }, [selectedPage]);
 
+    useEffect(() => {
+        console.log(`RGBA update!\n${JSON.stringify(editParams)}`)
+    }, [editParams]);
+
     return (
         <div className={styles['layout']}>
             <>
@@ -128,9 +132,9 @@ export default function EditEase(props) {
                 {selectedPage.element}
                 {
                     toolsOpen &&
-                    <ToolBox onChange={ev => handleToolBoxInputChange(ev, editParamRefs, setEditParams)} 
-                             onApply={() => applyEditChanges(updateEditorState)}
-                             rgbaMin={0} rgbaMax={255} ref={editParamRefs}/>
+                    <ToolBox onApply={() => applyEditChanges(updateEditorState)}
+                             editParams={editParams} setEditParams={setEditParams}
+                             rgbaMin={0} rgbaMax={255}/>
                 }
                 {
                     canvasDomNodeLoaded && 
