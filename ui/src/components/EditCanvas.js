@@ -20,13 +20,13 @@ function resizeCanvasToDisplaySize(canvas, newDims={width: MAX_CANV_WIDTH, heigh
 }
 
 function drawGrid(ctx) {
-    const width = ctx.canvas.width, height = ctx.canvas.height;
+    const {width, height} = ctx.canvas;
     const widthSpacing = width / 100, heightSpacing = height / 100;
     for (var x = 0; x <= width; x += widthSpacing) {
         ctx.moveTo(0.5 + x, 0);
         ctx.lineTo(0.5 + x, height);
     }
-    for (var y = 0; y <= height; y += widthSpacing) {
+    for (var y = 0; y <= height; y += heightSpacing) {
         ctx.moveTo(0, 0.5 + y);
         ctx.lineTo(width, 0.5 + y);
     }
@@ -50,9 +50,12 @@ function draw(ctx, src) {
 
 export default forwardRef(function EditCanvas(props, ref) {
 
+    const {src, editorState, ...rest} = props;
+
     useEffect(() => {
 
         if (!ref.current) { console.log('cannot render canvas before ref is mounted'); return; }
+        if (!editorState.saveImage && !editorState.applyChanges) return;
 
         const canvas = ref.current;
         const ctx = canvas.getContext('2d');
@@ -67,17 +70,17 @@ export default forwardRef(function EditCanvas(props, ref) {
         resizeCanvasToDisplaySize(canvas);
         drawGrid(ctx);
 
-        if (props.src)
-            draw(ctx, props.src);
+        if (src)
+            draw(ctx, src);
 
-    }, [props.src]);
+    }, [src, editorState]);
 
-    return props.src
-    ?   <canvas ref={ref} {...props}/> 
+    return src
+    ?   <canvas ref={ref} {...rest}/> 
     :   (
         <>
             <h1>Drag an Image here to begin editing!</h1>
-            <canvas ref={ref} {...props}/>
+            <canvas ref={ref} {...rest}/>
         </>
     );
 

@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { useEditorStateUpdate, useImageData, usePageData, useUserData, useUserDataUpdate } from '../util/DataContexts.js';
+
+import { useEditorState, useEditorStateUpdate,
+         useUserData, useUserDataUpdate,
+         useImageData, usePageData } 
+from '../util/DataContexts.js';
+
 import { useImageApi, useStatefulRef } from '../util/hooks.js';
 import TopNav from '../components/TopNav.js';
 import ToolBox from '../components/ToolBox.js';
@@ -25,9 +30,8 @@ export default function EditEase(props) {
 
     const image = useImageData();
     const pages = usePageData();
-    const user = useUserData();
-    const setUser = useUserDataUpdate();
-    const updateEditorState = useEditorStateUpdate();
+    const [user, setUser] = [useUserData(), useUserDataUpdate()];
+    const [editorState, updateEditorState] = [useEditorState(), useEditorStateUpdate()];
 
     const [editParams, setEditParams] = useState({red: 0, green: 0, blue: 0, alpha: 0});
     const [toolsOpen, setToolsOpen] = useState(false);
@@ -133,13 +137,13 @@ export default function EditEase(props) {
                 {
                     toolsOpen &&
                     <ToolBox onApply={() => applyEditChanges(updateEditorState)}
-                             editParams={editParams} setEditParams={setEditParams}
+                             editParams={editParams} setEditParams={setEditParams}  
                              rgbaMin={0} rgbaMax={255}/>
                 }
                 {
                     canvasDomNodeLoaded && 
                     canvasPortal(
-                        <EditCanvas src={image.blobURL} ref={innerCanvasRef}/>,
+                        <EditCanvas src={image.blobURL} editorState={editorState} ref={innerCanvasRef}/>,
                         document.getElementById('canvas-mask')
                     )
                 }
