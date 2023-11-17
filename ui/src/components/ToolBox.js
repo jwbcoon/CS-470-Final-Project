@@ -9,13 +9,15 @@ export default forwardRef(function ToolBox(props, ref) {
     const alphaRef = useRef({value: 0});
 
     useImperativeHandle(ref, () => {
+
         return {
             red: redRef.current.value,
             green: greenRef.current.value,
             blue: blueRef.current.value,
             alpha: alphaRef.current.value
         };
-    }, [redRef.current.value, greenRef.current.value, blueRef.current.value, alphaRef.current.value]);
+
+    }, [redRef.current, greenRef.current, blueRef.current, alphaRef.current]);
 
     return (
         <menu className={styles['toolbox']}>

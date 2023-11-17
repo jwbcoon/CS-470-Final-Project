@@ -8,5 +8,11 @@
     left: 0;
     z-index: 0;
     overflow: scroll;
+    scrollbar-width: none; /* hide scrollbar for firefox */
+}
+
+/* hide scrollbar for chrome, opera, or safari */
+.viewport::-webkit-scrollbar {
+    display: none;
 }
 

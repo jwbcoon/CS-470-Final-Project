@@ -74,11 +74,12 @@ export default class APIInterface {
     }
 
     // Flask server routes
-    async putImageToEditEngine(formData) {
+    async putImageToEditEngine(editQuery, formData) {
         return flaskAgent.put('uploads', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
-            }
+            },
+            params: editQuery
         });
     }
 

@@ -4,6 +4,7 @@ import { useEditorState, useEditorStateUpdate, useImageData, useImageDataUpdate,
 import API from '../API_Interface/API_Interface.js';
 
 export function useStatefulRef(initialState) {
+
     const [state, setState] = useState(initialState);
     const ref = useRef(initialState);
 
@@ -12,10 +13,11 @@ export function useStatefulRef(initialState) {
     }, [state]);
 
     return [state, setState, ref];
+
 }
 
 
-export function useImageApi() {
+export function useImageApi(editParams, updateCanvasRef=warn('useImageApi without updateCanvasRef')) {
 
     const [image, editorState] = [useImageData(), useEditorState()];
     const [updateImage, updateEditorState] = [useImageDataUpdate(), useEditorStateUpdate()];
@@ -47,6 +49,7 @@ export function useImageApi() {
         const api = new API();
 
         async function putUserOriginalImage() {
+
             console.log(`uploading this file: ${image.name} to DB.\n Image size: ${image.blob.size}\n Image type: ${image.blob.type}`);
             api.putUserOriginalImage(user.userID, image.name)
                 .then(putImageInfo => {
@@ -57,10 +60,12 @@ export function useImageApi() {
                         console.log('image save request failed :(');
             });
             updateEditorState({ saveImage: false });
+
         }
 
 
         async function uploadImageToEngine() {
+
             console.log(`reading ${image.name} from a blob to a file before sending to DB\nsize: ${image.blob.size}`);
 
             const fileArrayBuffer = await readFile(image.blob, 'buffer');
@@ -72,7 +77,7 @@ export function useImageApi() {
             formData.append('filename', image.name);
 
             console.log('uploading an image to Flask server engine');
-            api.putImageToEditEngine(formData)
+            api.putImageToEditEngine(editParams, formData)
             .then(putImageInfo => {
                 console.log(`Response from put request to engine::putImageToEditEngine: ${JSON.stringify(putImageInfo.data)}`);
                 if (putImageInfo.status === 200)
@@ -80,10 +85,12 @@ export function useImageApi() {
                 else
                     console.log('request to Flask server failed :(');
             }).catch(err => console.log(err));
+
         }
 
 
         async function downloadImageFromEngine() {
+
             console.log(`sending request to download image edits from the flask server`);
             api.getImageFromEditEngine(image.name)
             .then(getImageInfo => {
@@ -93,13 +100,14 @@ export function useImageApi() {
                 if (getImageInfo.status === 200) {
                     console.log('image received from Flask server!\nRendering new changes');
                     // atob (ascii to binary) is an oldschool browser env method using utf-8 representation of b64
-                    handleFiles(new Blob([atob(getImageInfo.data)]), `tmpedit_${image.name}`);
+                    handleFiles(new Blob([atob(getImageInfo.data)], { type: 'image/jpeg' }), `tmpedit_${image.name}`);
                 }
                 else
                     console.log('request to Flask server failed :(');
 
             }).catch(err => console.log(err));
             updateEditorState({ applyChanges: false });
+
         }
 
         if (editorState.applyChanges)
@@ -108,8 +116,9 @@ export function useImageApi() {
             putUserOriginalImage();
             uploadImageToEngine();
         }
+        else // condition when image changes and all editor states are false
+            updateCanvasRef()
 
     }, [editorState, image]);
 
-    return handleFiles;
 }

@@ -17,9 +17,9 @@
 }
 
 .preview svg {
-    width: 30px;
-    height: 30px;
-    margin-left: 1em;
+    width: 20px;
+    height: 20px;
+    margin-left: 1.5em;
     color: transparent;
     transform: translateY(-100%) rotate(-90deg);
     transition: 0.1s ease-in;
@@ -27,7 +27,7 @@
 
 .preview:hover svg {
     color: var(--primary-text);
-    transform: translateY(30%) rotate(90deg);
+    transform: translateY(70%) rotate(90deg);
     transition: 0.3s ease-out;
 }
 

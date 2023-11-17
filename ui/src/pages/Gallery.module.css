@@ -72,12 +72,13 @@
     max-width: 950px;
     min-width: 400px;
     width: calc(Max(100%, 400px + 0.5em) + 0.5em);
-    height: calc(80vh - 100px);
+    height: 62vh;
     padding: 0.5em;
+    margin-bottom: 1em;
     background: linear-gradient(175deg, var(--accent-text), var(--accent-bg) 4%, var(--secondary-bg));
     border: var(--btn-border);
     border-top: transparent;
-    border-bottom: transparent;
+    border-bottom: var(accent-text);
 
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
@@ -85,5 +86,6 @@
     grid-gap: 2vh;
     justify-items: center;
     align-items: center;
+    overflow: hidden;
 }
 

@@ -1,12 +1,15 @@
 import os
 import io
 import base64
+from urllib.parse import urlparse, parse_qs
 from flask import Flask, request, jsonify, abort, Response
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import PIL.Image as Image
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
+MEGABYTES = 1024 * 1024
+EDIT_PARAMS = { 'filename': '', 'params': '' }
 
 app = Flask(__name__) 
 CORS(app, supports_credentials=True, origins='http://localhost:3000')
@@ -21,16 +24,21 @@ def uploads():
     try:
         print(request.form) # print to console in debug mode
         print(request.files) # print to console in debug mode
+        print(request.url)
 
         if request.files: 
             img_bytes = bytearray()
 
             for key, byte in request.files.items(): # request.files is a dict whose values are bytes of image data
-                if (key != 'filename'):
+                if (key != 'filename' and key != 'edit-data'):
                     img_bytes.extend(byte.read())
 
             image = Image.open(io.BytesIO(img_bytes))
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], request.form['filename']))
+
+            EDIT_PARAMS['filename'] = request.form['filename']
+            EDIT_PARAMS['params'] = dict(request.args)
+            print('EDIT_PARAMS are', EDIT_PARAMS)
 
             return jsonify({'message': 'Upload successful!', 'headers': { 'Access-Control-Allow-Methods': 'PUT' }})
         else:
@@ -39,8 +47,10 @@ def uploads():
         return jsonify({'error': str(e)}), 500
 
 @app.get('/downloads/<filename>')
-def downloads(filename, chunk_size=1024 * 1024):
+def downloads(filename, chunk_size=MEGABYTES):
     try:
+        if type(chunk_size) is str: # convert to size in megabytes
+            chunk_size = int([char for char in chunk_size.split() if char.isdigit()]) * MEGABYTES
         # generate bytes of image file 1mb at a time
         img_b64_stream = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], filename), chunk_size)
         return Response(img_b64_stream, content_type='application/octet-stream')

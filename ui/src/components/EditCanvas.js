@@ -1,8 +1,9 @@
-import {useRef, forwardRef, useEffect, useMemo, useImperativeHandle} from 'react';
+import { forwardRef, useEffect } from 'react';
 
 const [MAX_CANV_WIDTH, MAX_CANV_HEIGHT] = [8000, 8000];
 
 function resizeCanvasToDisplaySize(canvas, newDims={width: MAX_CANV_WIDTH, height: MAX_CANV_HEIGHT}, offset={width: 0, height: 0}) {
+
     newDims.width += offset.width;
     newDims.height += offset.height;
 
@@ -32,9 +33,11 @@ function drawGrid(ctx) {
 
     ctx.strokeStyle = 'black';
     ctx.stroke();
+
 }
 
 function draw(ctx, src) {
+
     const img = new Image();
     img.src = src;
     img.onload = () => {
@@ -42,32 +45,31 @@ function draw(ctx, src) {
         drawGrid(ctx);
         ctx.drawImage(img, MAX_CANV_WIDTH / 2, MAX_CANV_HEIGHT / 2);
     }
-}
 
-function init(canvasDomNode) {
-    if (!canvasDomNode) return null;
-
-    const context = canvasDomNode.getContext('2d');
-
-    if (context === null) {
-        alert(
-          "Unable to initialize WebGL. Your browser or machine may not support it.",
-        );
-        return;
-    }
-  
-    resizeCanvasToDisplaySize(canvasDomNode);
-    drawGrid(context);
-
-    return context;
 }
 
 export default forwardRef(function EditCanvas(props, ref) {
 
     useEffect(() => {
-        const ctx = init(ref.current);
+
+        if (!ref.current) { console.log('cannot render canvas before ref is mounted'); return; }
+
+        const canvas = ref.current;
+        const ctx = canvas.getContext('2d');
+
+        if (ctx === null) {
+            alert(
+              "Unable to initialize WebGL. Your browser or machine may not support it.",
+            );
+            return;
+        }
+
+        resizeCanvasToDisplaySize(canvas);
+        drawGrid(ctx);
+
         if (props.src)
             draw(ctx, props.src);
+
     }, [props.src]);
 
     return props.src
@@ -78,5 +80,6 @@ export default forwardRef(function EditCanvas(props, ref) {
             <canvas ref={ref} {...props}/>
         </>
     );
+
 });
 

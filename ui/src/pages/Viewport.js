@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useImageApi } from '../util/hooks.js';
+import { useState, useEffect, useRef } from 'react';
 import DropZone from '../components/DropZone.js';
 import styles from './Viewport.module.css';
 
 const ZOOM_BASE = 0.05;
 
 function handleZoom(ev, element, zoom, setZoom) {
+
     if (ev.ctrlKey) {
         console.log('in handleZoom!');
         ev.preventDefault();
@@ -28,19 +28,28 @@ function handleZoom(ev, element, zoom, setZoom) {
             setZoom(zoomDelta);
         }
     }
+
 }
 
 
 export default function Viewport(props) {
 
     const [zoom, setZoom] = useState(1);
-    const handleFiles = useImageApi();
+    const ref = useRef();
+
+    useEffect(() => {
+        const div = ref.current;
+        const onWheel = (e) => handleZoom(e, div, zoom, setZoom);
+        if (div)
+            div.addEventListener('wheel', onWheel, { passive: false });
+        return () => div.removeEventListener('wheel', onWheel);
+    }, [zoom])
 
     return (
       <main className={styles['viewport']}>
-          <DropZone handleFiles={handleFiles} handleZoom={handleZoom}
-                    zoom={zoom} setZoom={setZoom} maskId='canvas-mask'/>
+          <DropZone handleZoom={handleZoom} zoom={zoom} setZoom={setZoom} maskId='canvas-mask' ref={ref}/>
       </main>
     );
+
 }
 

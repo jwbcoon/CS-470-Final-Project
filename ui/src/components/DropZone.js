@@ -1,5 +1,7 @@
-import {useRef, useEffect} from 'react';
+import { forwardRef } from 'react';
 import styles from './DropZone.module.css';
+import { useImageDataUpdate } from '../util/DataContexts.js';
+import { readFile } from '../util/file_processing.js';
 
 function dragEnter(e) {
     e.stopPropagation();
@@ -11,35 +13,32 @@ function dragOver(e) {
     e.preventDefault();
 }
 
-function drop(e, handleFiles) {
+async function drop(e, handleFiles) {
     e.stopPropagation();
     e.preventDefault();
 
     const dt = e.dataTransfer;
     const files = dt.files;
 
-    handleFiles(files[0]);
+    handleFiles({ name: files[0].name, blob: files[0], blobURL: await readFile(files[0], 'url') });
 }
 
 
-export default function DropZone(props) {
-    const ref = useRef();
+export default forwardRef(function DropZone(props, ref) {
 
-    useEffect(() => {
-        const div = ref.current;
-        const onWheel = (e) => props.handleZoom(e, div, props.zoom, props.setZoom);
-        if (div)
-            div.addEventListener('wheel', onWheel, { passive: false });
-        return () => div.removeEventListener('wheel', onWheel);
-    }, [props.zoom])
+    const updateImageData = useImageDataUpdate();
 
-    return <div className={styles['dropzone']}
-                onDragEnter={e => dragEnter(e)}
-                onDragOver={e => dragOver(e)}
-                onDrop={e => drop(e, props.handleFiles)}>
-              <input type='file' style={{ display: 'none' }}/>
-              <div id={props.maskId} className={styles['mask']} ref={ref}>
-                  { props.mask && props.mask /*render props.mask if it exists, or do nothing*/ }
-              </div>
-          </div>;
-}
+    return (
+        <div className={styles['dropzone']}
+            onDragEnter={e => dragEnter(e)}
+            onDragOver={e => dragOver(e)}
+            onDrop={e => drop(e, updateImageData)}>
+            <input type='file' style={{ display: 'none' }}/>
+            <div id={props.maskId} className={styles['mask']} ref={ref}>
+                { props.mask && props.mask /*render props.mask if it exists, or do nothing*/ }
+            </div>
+        </div>
+    );
+
+});
+
