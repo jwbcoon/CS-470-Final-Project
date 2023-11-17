@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { useEditDataUpdate, useImageData, usePageData, useUserData, useUserDataUpdate } from '../util/DataContexts.js';
+import { useEditorStateUpdate, useImageData, usePageData, useUserData, useUserDataUpdate } from '../util/DataContexts.js';
 import { useStatefulRef } from '../util/hooks.js';
 import TopNav from '../components/TopNav.js';
 import ToolBox from '../components/ToolBox.js';
@@ -14,9 +14,9 @@ export default function EditEase(props) {
         setToolBoxState({...toolBoxRefs.current});
     }
 
-    function applyEditChanges(updateEditData, innerCanvasRef, setInnerCanvasState) {
+    function applyEditChanges(updateEditorState, innerCanvasRef, setInnerCanvasState) {
         console.log('applying changes!');
-        updateEditData({ applyChanges: true });
+        updateEditorState({ applyChanges: true });
         setInnerCanvasState(innerCanvasRef.current);
     }
 
@@ -29,7 +29,7 @@ export default function EditEase(props) {
     const pages = usePageData();
     const user = useUserData();
     const setUser = useUserDataUpdate();
-    const updateEditData = useEditDataUpdate();
+    const updateEditorState = useEditorStateUpdate();
 
     const [toolsOpen, setToolsOpen] = useState(false);
     const [selectedPage, setSelectedPage] = useState(pages['viewport']);
@@ -125,7 +125,7 @@ export default function EditEase(props) {
                 {
                     toolsOpen &&
                     <ToolBox onChange={ev => handleToolBoxInputChange(ev, toolBoxRefs, setToolBoxState)} 
-                             onApply={() => applyEditChanges(updateEditData, innerCanvasRef, setInnerCanvasState)}
+                             onApply={() => applyEditChanges(updateEditorState, innerCanvasRef, setInnerCanvasState)}
                              rgbaMin={0} rgbaMax={255} ref={toolBoxRefs}/>
                 }
                 {

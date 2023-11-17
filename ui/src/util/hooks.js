@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { readFile, arrayBufferToFormData } from '../util/file_processing.js';
-import { useEditData, useEditDataUpdate, useImageData, useImageDataUpdate, useUserData } from '../util/DataContexts.js';
+import { useEditorState, useEditorStateUpdate, useImageData, useImageDataUpdate, useUserData } from '../util/DataContexts.js';
 import API from '../API_Interface/API_Interface.js';
 
 export function useStatefulRef(initialState) {
@@ -17,8 +17,8 @@ export function useStatefulRef(initialState) {
 
 export function useImageApi() {
 
-    const [image, editState] = [useImageData(), useEditData()];
-    const [updateImage, updateEditState] = [useImageDataUpdate(), useEditDataUpdate()];
+    const [image, editorState] = [useImageData(), useEditorState()];
+    const [updateImage, updateEditorState] = [useImageDataUpdate(), useEditorStateUpdate()];
     const user = useUserData();
 
 
@@ -41,6 +41,9 @@ export function useImageApi() {
     *
     * **********************/
     useEffect(() => {
+
+        if (!image.blob) return;
+
         const api = new API();
 
         async function putUserOriginalImage() {
@@ -53,7 +56,7 @@ export function useImageApi() {
                     else
                         console.log('image save request failed :(');
             });
-            updateEditState({ saveImage: false });
+            updateEditorState({ saveImage: false });
         }
 
 
@@ -96,18 +99,17 @@ export function useImageApi() {
                     console.log('request to Flask server failed :(');
 
             }).catch(err => console.log(err));
-            updateEditState({ applyChanges: false });
+            updateEditorState({ applyChanges: false });
         }
 
-        if (image.blob) {
-            if (editState.applyChanges)
-                downloadImageFromEngine();
-            else if (editState.saveImage) {
-                putUserOriginalImage();
-                uploadImageToEngine();
-            }
+        if (editorState.applyChanges)
+            downloadImageFromEngine();
+        else if (editorState.saveImage) {
+            putUserOriginalImage();
+            uploadImageToEngine();
         }
-    }, [editState, image]);
+
+    }, [editorState, image]);
 
     return handleFiles;
 }

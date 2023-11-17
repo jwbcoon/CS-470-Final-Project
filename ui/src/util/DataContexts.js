@@ -37,8 +37,8 @@ export function ImageDataProvider({children}) {
 const EditorStateContext = React.createContext();
 const EditorStateUpdateContext = React.createContext();
 
-export function useEditData() { return useContext(EditorStateContext); }
-export function useEditDataUpdate() { return useContext(EditorStateUpdateContext); }
+export function useEditorState() { return useContext(EditorStateContext); }
+export function useEditorStateUpdate() { return useContext(EditorStateUpdateContext); }
 
 export function EditorStateProvider({children}) {
 
@@ -54,7 +54,7 @@ export function EditorStateProvider({children}) {
 
     return (
         <EditorStateContext.Provider value={editorState}>
-            <EditorStateUpdateContext.Provider value={setEditorState}>
+            <EditorStateUpdateContext.Provider value={change => setEditorState({ ...editorState, ...change })}>
                 {children}
             </EditorStateUpdateContext.Provider>
         </EditorStateContext.Provider>

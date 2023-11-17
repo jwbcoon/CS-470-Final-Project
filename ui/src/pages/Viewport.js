@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { useImageApi } from '../util/hooks.js';
 import DropZone from '../components/DropZone.js';
 import styles from './Viewport.module.css';
-import { useImageApi } from '../util/hooks.js';
 
 const ZOOM_BASE = 0.05;
 
