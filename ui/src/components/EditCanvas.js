@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from 'react';
+import { forwardRef, useLayoutEffect } from 'react';
 
 const [MAX_CANV_WIDTH, MAX_CANV_HEIGHT] = [8000, 8000];
 
@@ -41,9 +41,30 @@ function draw(ctx, src) {
     const img = new Image();
     img.src = src;
     img.onload = () => {
-        resizeCanvasToDisplaySize(ctx.canvas, img, {width: MAX_CANV_WIDTH - img.width, height: MAX_CANV_HEIGHT - img.height});
+
+        const viewport = window.visualViewport;
+        const aspectRatio = img.naturalHeight / img.naturalWidth;
+        const resizedW = img.width / 3 < viewport.width ? viewport.width / 3 : img.width / 3; // resizing conditions
+
+        const imWidth = resizedW;
+        const imHeight = resizedW * aspectRatio;
+        const magicOffset = { // offset to center image in initial viewport
+            width: imWidth / 2 + ((-1 * (img.width <= viewport.width))
+                                 * (aspectRatio * img.width * img.width / MAX_CANV_WIDTH))
+                               + ((img.width > viewport.width)
+                                 * (aspectRatio * img.width * img.width / MAX_CANV_WIDTH)),
+            height: imHeight / 2 + (-1 * ((img.height <= viewport.height))
+                                 * (aspectRatio * img.height * img.height / MAX_CANV_HEIGHT))
+                               + ((img.height > viewport.height)
+                                 * (aspectRatio * img.height * img.height / MAX_CANV_HEIGHT))
+        }
+
+        resizeCanvasToDisplaySize(ctx.canvas, img, {width: MAX_CANV_WIDTH - imWidth, height: MAX_CANV_HEIGHT - imHeight});
         drawGrid(ctx);
-        ctx.drawImage(img, MAX_CANV_WIDTH / 2, MAX_CANV_HEIGHT / 2);
+        ctx.drawImage(img,
+            MAX_CANV_WIDTH / 2 + magicOffset.width,
+            MAX_CANV_HEIGHT / 2 + magicOffset.height,
+            imWidth, imHeight);
     }
 
 }
@@ -52,7 +73,7 @@ export default forwardRef(function EditCanvas(props, ref) {
 
     const {src, editorState, ...rest} = props;
 
-    useEffect(() => {
+    useLayoutEffect(() => {
 
         if (!ref.current) { console.log('cannot render canvas before ref is mounted'); return; }
         if (!editorState.saveImage && !editorState.applyChanges) return;
@@ -68,7 +89,7 @@ export default forwardRef(function EditCanvas(props, ref) {
         }
 
         resizeCanvasToDisplaySize(canvas);
-        drawGrid(ctx);
+        drawGrid(ctx, src);
 
         if (src)
             draw(ctx, src);
