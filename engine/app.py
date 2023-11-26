@@ -1,4 +1,4 @@
-import os
+ how import os
 import io
 import base64
 from urllib.parse import urlparse, parse_qs
@@ -100,6 +100,74 @@ def get_green_image(img):
     green_img[:, :, 2] = 0  # Blue channel
     
     return green_img
+
+            elif direction == "vertical":
+                draw.line([(0, line_number), (im.width, line_number)], tuple(colour), width=1)
+            else:
+                draw.line([(line_number, 0), (0, line_number)], tuple(colour), width=1)
+
+            line_number += 1
+
+    return im
+
+def draw_gradient(im, *colours, direction="diagonal"):
+    def _interpolate(start, end):
+        diffs = [(t - f) / lines for f, t in zip(start, end)]
+        for i in range(lines):
+            yield [round(value + (diff * i)) for value, diff in zip(start, diffs)]
+
+    draw = ImageDraw.Draw(im)
+
+    if direction == "horizontal":
+        lines = im.width // (len(colours) - 1)
+    elif direction == "vertical":
+        lines = im.height // (len(colours) - 1)
+    else:
+        lines = (im.width * 2) // len(colours)
+
+    line_number = 0
+
+    for i in range(len(colours) - 1):
+        for colour in _interpolate(colours[i], colours[i + 1]):
+            if direction == "horizontal":
+                draw.line([(line_number, 0), (line_number, im.height)], tuple(colour), width=1)
+            elif direction == "vertical":
+                draw.line([(0, line_number), (im.width, line_number)], tuple(colour), width=1)
+            else:
+                draw.line([(line_number, 0), (0, line_number)], tuple(colour), width=1)
+
+            line_number += 1
+
+    return im
+
+def custom_still(im, red=0, green=0, blue=0, alpha=0, direction="diagonal"):
+    """
+    Desc: Takes in RGBA values, and applies a single color filter over the images
+    Params:
+        im (PIL Image): image to be edited
+        red (int): representing the intensity of the red
+        green (int): representing the intensity of the green
+        blue (int): representing the intensity of the blue 
+        alpha (int): representing the intensity of the alpha
+    Retruns:
+        PIL image with the filter applied
+    """
+    grad = Image.new("RGBA", im.size, color=(0, 0, 0, 0))
+    colours = (
+        (red,   green,  blue),
+        (red,   green,  blue),
+        (red,   green,  blue),
+        (red,   green,  blue),
+        (red,   green,  blue),
+        (red,   green,  blue),
+    )
+    grad = draw_gradient(grad, *colours, direction=direction)
+    grad.putalpha(alpha)
+    return Image.alpha_composite(im, grad)
+
+
+def greyscale(im):
+    return im.convert("L")
 
 # this is the code I used to save the image as a jpeg
 #im = Image.fromarray(get_green_image(int_img)).convert('RGB') 
