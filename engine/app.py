@@ -6,6 +6,7 @@ from flask import Flask, request, jsonify, abort, Response
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import PIL.Image as Image
+from PIL import ImageDraw
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
 MEGABYTES = 1024 * 1024
