@@ -1,4 +1,4 @@
- how import os
+import os
 import io
 import base64
 from urllib.parse import urlparse, parse_qs
@@ -41,6 +41,10 @@ def uploads():
             EDIT_PARAMS['params'] = dict(request.args)
             print('EDIT_PARAMS are', EDIT_PARAMS)
 
+            # invoke image processing
+            apply_edits(os.path.join(app.config['UPLOAD_FOLDER'], request.form['filename']))
+            print('passed apply_edits')
+
             return jsonify({'message': 'Upload successful!', 'headers': { 'Access-Control-Allow-Methods': 'PUT' }})
         else:
             return jsonify({'error': 'Image data missing from request body'}), 400
@@ -53,7 +57,7 @@ def downloads(filename, chunk_size=MEGABYTES):
         if type(chunk_size) is str: # convert to size in megabytes
             chunk_size = int([char for char in chunk_size.split() if char.isdigit()]) * MEGABYTES
         # generate bytes of image file 1mb at a time
-        img_b64_stream = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], filename), chunk_size)
+        img_b64_stream = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], 'tmp_edit{0}'.format(filename)), chunk_size)
         return Response(img_b64_stream, content_type='application/octet-stream')
     except:
         abort(404) # The image wasn't found in upload folder
@@ -65,6 +69,14 @@ def read_file_in_chunks(file_path, chunk_size):
     with open(file_path, 'rb') as file:
         while chunk := file.read(chunk_size):
             yield base64.b64encode(chunk).decode('utf-8')
+
+def apply_edits(filepath):
+    print('entered ap')
+    im = Image.open(filepath)
+    print('opened image', type(im))
+    im = custom_still(im, EDIT_PARAMS.params.red, EDIT_PARAMS.params.green, EDIT_PARAMS.params.blue, EDIT_PARAMS.params.alpha)
+    print('images edited')
+    im.save('tmp_edit{0}'.format(filepath))
 
     '''
     Down here, Matthew can write all the code for performing edits on the application using the image 
@@ -101,15 +113,6 @@ def get_green_image(img):
     green_img[:, :, 2] = 0  # Blue channel
     
     return green_img
-
-            elif direction == "vertical":
-                draw.line([(0, line_number), (im.width, line_number)], tuple(colour), width=1)
-            else:
-                draw.line([(line_number, 0), (0, line_number)], tuple(colour), width=1)
-
-            line_number += 1
-
-    return im
 
 def draw_gradient(im, *colours, direction="diagonal"):
     def _interpolate(start, end):
@@ -153,6 +156,7 @@ def custom_still(im, red=0, green=0, blue=0, alpha=0, direction="diagonal"):
     Retruns:
         PIL image with the filter applied
     """
+    print('custom_still')
     grad = Image.new("RGBA", im.size, color=(0, 0, 0, 0))
     colours = (
         (red,   green,  blue),
@@ -163,6 +167,7 @@ def custom_still(im, red=0, green=0, blue=0, alpha=0, direction="diagonal"):
         (red,   green,  blue),
     )
     grad = draw_gradient(grad, *colours, direction=direction)
+    print('grad drawn')
     grad.putalpha(alpha)
     return Image.alpha_composite(im, grad)
 

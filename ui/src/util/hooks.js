@@ -100,7 +100,7 @@ export function useImageApi(editParams, updateCanvasRef=warn('useImageApi withou
                 if (getImageInfo.status === 200) {
                     console.log('image received from Flask server!\nRendering new changes');
                     // atob (ascii to binary) is an oldschool browser env method using utf-8 representation of b64
-                    handleFiles(new Blob([atob(getImageInfo.data)], { type: 'image/jpeg' }), `tmpedit_${image.name}`);
+                    handleFiles(new Blob([atob(getImageInfo.data)], { type: 'image/jpeg' }), image.name);
                 }
                 else
                     console.log('request to Flask server failed :(');

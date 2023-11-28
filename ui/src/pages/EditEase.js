@@ -14,11 +14,6 @@ import styles from './EditEase.module.css';
 
 export default function EditEase(props) {
 
-    function handleToolBoxInputChange(ev, editParams, setEditParams) {
-        console.log('handling toolbox input change!\n', JSON.stringify(editParams));
-        setEditParams(editParams);
-    }
-
     function applyEditChanges(updateEditorState) {
         console.log('applying changes!');
         updateEditorState({ applyChanges: true });
@@ -102,7 +97,7 @@ export default function EditEase(props) {
             default:
                 return [...baseOpts];
         }
-    };
+    }
 
 
     /*
@@ -124,10 +119,6 @@ export default function EditEase(props) {
         );
         setCanvasDomNodeLoaded(selectedPage === pages['viewport']);
     }, [selectedPage]);
-
-    useEffect(() => {
-        console.log(`RGBA update!\n${JSON.stringify(editParams)}`)
-    }, [editParams]);
 
     return (
         <div className={styles['layout']}>
