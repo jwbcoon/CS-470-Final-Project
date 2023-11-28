@@ -6,7 +6,7 @@ import { useUserData } from './util/DataContexts.js';
 export default function App() {
 
     const user = useUserData();
-    const [theme, setTheme] = useState('dark');
+    const [theme, setTheme] = useState('light');
 
     return (
         <div id={theme}>
@@ -16,7 +16,7 @@ export default function App() {
                 <EditEase updateColorTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}/>
                 )
                 : (
-                <Login updateColorTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}/>
+                <Login theme={theme} updateColorTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}/>
                 )
             }
         </div>

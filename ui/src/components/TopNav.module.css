@@ -38,7 +38,7 @@
     min-height: 50px;
     display: flex;
     justify-content: space-between;
-    background: linear-gradient(to bottom, var(--primary-bg), #2f2f2f);
+    background: var(--accent-bright);
     color: var(--primary-text);
     border-color: #000;
     border-style: solid;
@@ -81,7 +81,7 @@
 }
 
 .left div:first-of-type:hover {
-    background: linear-gradient(to bottom, #bbb, #ad82b5 80%, #ad82b5);
+    background: linear-gradient(to bottom, #bbb, #fafafa 80%, var(--accent-bright));
 }
 
 .left div:first-of-type:hover svg {
@@ -134,7 +134,7 @@
 }
 
 .right .nav-ul > li:hover, .right .nav-ul + nav:hover {
-    background: linear-gradient(to bottom, #bbb, #ad82b5 80%, #ad82b5);
+    background: linear-gradient(to bottom, #bbb, #fafafa 80%, var(--accent-bright));
 }
 
 .nav .nav-ul .selected {
@@ -147,7 +147,7 @@
     align-self: stretch;
     flex-wrap: wrap;
     align-content: flex-end;
-    background: linear-gradient(to bottom, #bbb, #ad82b5 80%, #ad82b5);
+    background: linear-gradient(to bottom, #bbb, #fafafa 80%, var(--accent-bright));
     transition: 0.3s;
 }
 
@@ -165,7 +165,7 @@
 }
 
 .nav .nav-li:hover {
-    background: linear-gradient(to bottom, #bbb, #ad82b5 80%, #ad82b5);
+    background: linear-gradient(to bottom, #bbb, #fafafa 80%, var(--accent-bright));
 }
 
 .nav .nav-li p {

@@ -22,6 +22,7 @@
     "mysql": "^2.18.1"
   },
   "devDependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "nodemon": "^1.19.4"
   }
 }

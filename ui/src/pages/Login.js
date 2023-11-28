@@ -3,6 +3,7 @@ import API from '../API_Interface/API_Interface.js';
 import styles from './Login.module.css';
 
 import { ReactComponent as EditEaseLogo } from '../icons/editease-logo.svg';
+import { ReactComponent as SystemTheme } from '../icons/light-off-or-dark-mode-black-sun-21626.svg';
 import CredentialField from '../components/CredentialField.js';
 import { useUserDataUpdate } from '../util/DataContexts.js';
 
@@ -78,7 +79,7 @@ export default function Login(props) {
 
     return (
         <div className={styles['container']}>
-            <span className={styles['theme-btn']} onClick={props.updateColorTheme}>Change Theme</span>
+            <SystemTheme theme={props.theme} className={styles['theme-btn']} onClick={props.updateColorTheme}>Change Theme</SystemTheme>
             <header className={styles['logo-box']}>
                 <EditEaseLogo/>
             </header>
