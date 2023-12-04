@@ -71,12 +71,23 @@ def read_file_in_chunks(file_path, chunk_size):
             yield base64.b64encode(chunk).decode('utf-8')
 
 def apply_edits(filepath):
-    print('entered ap')
+    # print('entered ap')
+    dir, filename = os.path.split(filepath)
     im = Image.open(filepath)
-    print('opened image', type(im))
-    im = custom_still(im, EDIT_PARAMS.params.red, EDIT_PARAMS.params.green, EDIT_PARAMS.params.blue, EDIT_PARAMS.params.alpha)
-    print('images edited')
-    im.save('tmp_edit{0}'.format(filepath))
+    if im.mode != 'RGBA':
+        im = im.convert('RGBA')
+    # print('opened image', type(im))
+    im = custom_still(
+        im,
+        int(EDIT_PARAMS['params']['red']),
+        int(EDIT_PARAMS['params']['green']),
+        int(EDIT_PARAMS['params']['blue']),
+        int(EDIT_PARAMS['params']['alpha'])
+    )
+    # print('images edited')
+    if im.mode == 'RGBA':
+        im = im.convert('RGB')
+    im.save(os.path.join(dir, 'tmp_edit' + filename))
 
     '''
     Down here, Matthew can write all the code for performing edits on the application using the image 
@@ -115,6 +126,7 @@ def get_green_image(img):
     return green_img
 
 def draw_gradient(im, *colours, direction="diagonal"):
+    # print('entered draw grad')
     def _interpolate(start, end):
         diffs = [(t - f) / lines for f, t in zip(start, end)]
         for i in range(lines):
@@ -122,12 +134,14 @@ def draw_gradient(im, *colours, direction="diagonal"):
 
     draw = ImageDraw.Draw(im)
 
+    # print('successful draw')
     if direction == "horizontal":
         lines = im.width // (len(colours) - 1)
     elif direction == "vertical":
         lines = im.height // (len(colours) - 1)
     else:
         lines = (im.width * 2) // len(colours)
+    # print('lines done')
 
     line_number = 0
 
@@ -156,7 +170,7 @@ def custom_still(im, red=0, green=0, blue=0, alpha=0, direction="diagonal"):
     Retruns:
         PIL image with the filter applied
     """
-    print('custom_still')
+    # print('custom_still')
     grad = Image.new("RGBA", im.size, color=(0, 0, 0, 0))
     colours = (
         (red,   green,  blue),
@@ -166,8 +180,9 @@ def custom_still(im, red=0, green=0, blue=0, alpha=0, direction="diagonal"):
         (red,   green,  blue),
         (red,   green,  blue),
     )
+    # print('bout to draw grad')
     grad = draw_gradient(grad, *colours, direction=direction)
-    print('grad drawn')
+    # print('grad drawn')
     grad.putalpha(alpha)
     return Image.alpha_composite(im, grad)
 
