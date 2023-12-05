@@ -1,4 +1,4 @@
-import { forwardRef, useLayoutEffect } from 'react';
+import { forwardRef, useEffect } from 'react';
 
 const [MAX_CANV_WIDTH, MAX_CANV_HEIGHT] = [8000, 8000];
 
@@ -73,7 +73,7 @@ export default forwardRef(function EditCanvas(props, ref) {
 
     const {src, editorState, ...rest} = props;
 
-    useLayoutEffect(() => {
+    useEffect(() => {
 
         if (!ref.current) { console.log('cannot render canvas before ref is mounted'); return; }
         if (!editorState.saveImage && !editorState.applyChanges) return;

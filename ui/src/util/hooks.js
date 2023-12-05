@@ -92,7 +92,7 @@ export function useImageApi(editParams, updateCanvasRef=warn('useImageApi withou
         async function downloadImageFromEngine() {
 
             console.log(`sending request to download image edits from the flask server`);
-            api.getImageFromEditEngine(`tmp_edit${image.name}`) // The working copy is named tmp_edit<image.name>
+            api.getImageFromEditEngine(image.name) // The working copy is named tmp_edit<image.name>
             .then(getImageInfo => {
 
                 console.log(`Response from get request to engine::getImageFromEditEngine:
@@ -110,14 +110,17 @@ export function useImageApi(editParams, updateCanvasRef=warn('useImageApi withou
 
         }
 
-        if (editorState.applyChanges)
+        if (editorState.applyChanges) {
             downloadImageFromEngine();
+            updateCanvasRef();
+        }
         else if (editorState.saveImage) {
             putUserOriginalImage();
             uploadImageToEngine();
+            updateCanvasRef();
         }
         else // condition when image changes and all editor states are false
-            updateCanvasRef()
+            updateCanvasRef();
 
     }, [editorState, image]);
 

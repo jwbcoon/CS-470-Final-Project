@@ -48,7 +48,10 @@ export default function EditEase(props) {
         {
             child: <p>Editor</p>,
             name: 'viewport',
-            onClick: () => setSelectedPage(pages['viewport'])
+            onClick: () => {
+                setSelectedPage(pages['viewport']);
+                if (innerCanvasRef.current) setInnerCanvasState(innerCanvasRef.current);
+            }
         },
         {
             child: <p>Gallery</p>,

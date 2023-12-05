@@ -57,10 +57,13 @@ def downloads(filename, chunk_size=MEGABYTES):
         if type(chunk_size) is str: # convert to size in megabytes
             chunk_size = int([char for char in chunk_size.split() if char.isdigit()]) * MEGABYTES
         # generate bytes of image file 1mb at a time
-        img_b64_stream = read_file_in_chunks(os.path.join(app.config['UPLOAD_FOLDER'], 'tmp_edit{0}'.format(filename)), chunk_size)
+        print('printing filename:', filename)
+        newfilename = os.path.join(app.config['UPLOAD_FOLDER'], 'tmp_edit{0}'.format(filename))
+        print('printing new filename', newfilename)
+        img_b64_stream = read_file_in_chunks(newfilename, chunk_size)
         return Response(img_b64_stream, content_type='application/octet-stream')
-    except:
-        abort(404) # The image wasn't found in upload folder
+    except Exception as e:
+        jsonify({'error': str(e)}) # The image wasn't found in upload folder
 
 
 
@@ -73,21 +76,36 @@ def read_file_in_chunks(file_path, chunk_size):
 def apply_edits(filepath):
     # print('entered ap')
     dir, filename = os.path.split(filepath)
+    basename, format = os.path.splitext(filename)
+    print(
+        'dir is {0}, filename is {1}, basename is {2}, format is {3}'.format(
+        dir,
+        filename,
+        basename,
+        format)
+    )
+
+    # convert to PNG to enable RGBA edits
     im = Image.open(filepath)
-    if im.mode != 'RGBA':
-        im = im.convert('RGBA')
+    buffer = io.BytesIO()
+    im.save(buffer, format='PNG')
+    working_im = Image.open(buffer)
+
+    if working_im.mode != 'RGBA':
+        working_im = working_im.convert('RGBA')
     # print('opened image', type(im))
-    im = custom_still(
-        im,
+    working_im = custom_still(
+        working_im,
         int(EDIT_PARAMS['params']['red']),
         int(EDIT_PARAMS['params']['green']),
         int(EDIT_PARAMS['params']['blue']),
         int(EDIT_PARAMS['params']['alpha'])
     )
     # print('images edited')
-    if im.mode == 'RGBA':
-        im = im.convert('RGB')
-    im.save(os.path.join(dir, 'tmp_edit' + filename))
+    # return format to jpg if it was jpg originally
+    if format == '.jpg':
+        working_im = working_im.convert('RGB')
+    working_im.save(os.path.join(dir, 'tmp_edit' + basename + format))
 
     '''
     Down here, Matthew can write all the code for performing edits on the application using the image 
